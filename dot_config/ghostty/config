@@ -1,0 +1,19 @@
+# Font
+font-family = Maple Mono
+font-size = 12
+
+# ArteOdyssey Dark Theme
+background = #18181b
+foreground = #fafafa
+cursor-color = #5eead4
+cursor-text = #18181b
+selection-background = #3f3f46
+selection-foreground = #fafafa
+
+# Split Panes
+unfocused-split-opacity = 0.75
+unfocused-split-fill = #27272a
+split-divider-color = #52525b
+
+# Scrollback
+scrollback-limit = 10000

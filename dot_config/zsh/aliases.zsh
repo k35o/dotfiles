@@ -1,0 +1,1 @@
+alias nf='nano $(fzf)'
