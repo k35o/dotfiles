@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "theme": "dark",
+  "editor": {
+    "tab_size": 2,
+    "use_tabs": false,
+    "trim_trailing_whitespace_on_save": true,
+    "ensure_final_newline_on_save": true,
+    "diagnostics_inline_text": true,
+    "auto_save": true,
+    "auto_save_interval": 30
+  }
+}
