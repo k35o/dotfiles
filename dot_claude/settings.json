@@ -6,6 +6,13 @@
   },
   "feedbackSurveyRate": 0,
   "alwaysThinkingEnabled": true,
+  "sandbox": {
+    "excludedCommands": [
+      "git commit",
+      "chezmoi",
+      "pnpm install"
+    ]
+  },
   "hooks": {
     "Stop": [
       {
