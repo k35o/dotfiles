@@ -1,0 +1,5 @@
+minimum-release-age=10080
+save-exact=true
+strict-dep-builds=true
+verify-deps-before-run=install
+block-exotic-subdeps=true
