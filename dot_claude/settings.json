@@ -5,7 +5,11 @@
     "pr": ""
   },
   "feedbackSurveyRate": 0,
-  "alwaysThinkingEnabled": true,
+  "skipAutoPermissionPrompt": true,
+  "agentPushNotifEnabled": true,
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "sandbox": {
     "excludedCommands": [
       "git commit",
