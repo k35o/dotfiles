@@ -9,6 +9,7 @@
   "agentPushNotifEnabled": true,
   "defaultToAgentsView": true,
   "leftArrowOpensAgents": true,
+  "autoMemoryEnabled": false,
   "permissions": {
     "defaultMode": "auto",
     "deny": [
