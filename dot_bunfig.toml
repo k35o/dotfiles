@@ -1,4 +1,2 @@
 [install]
-# 7日経過したnpmリリースのみインストール可能にして、突発的なsupply chain
-# 攻撃の流入を抑える。pnpm の minimumReleaseAge (10080 minutes) と揃える。
 minimumReleaseAge = 604800
