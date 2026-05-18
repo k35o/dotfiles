@@ -10,7 +10,45 @@
   "defaultToAgentsView": true,
   "leftArrowOpensAgents": true,
   "permissions": {
-    "defaultMode": "auto"
+    "defaultMode": "auto",
+    "deny": [
+      "Bash(npx:*)",
+      "Bash(npm exec:*)",
+      "Bash(npm x:*)",
+      "Bash(npm create:*)",
+      "Bash(pnpm dlx:*)",
+      "Bash(pnpx:*)",
+      "Bash(pnpm create:*)",
+      "Bash(yarn dlx:*)",
+      "Bash(yarn create:*)",
+      "Bash(bunx:*)",
+      "Bash(bun x:*)",
+      "Bash(bun create:*)",
+      "Bash(sudo:*)",
+      "Bash(brew install:*)",
+      "Bash(brew uninstall:*)",
+      "Bash(git push --no-verify:*)",
+      "Bash(git commit --no-verify:*)",
+      "Bash(git commit -n:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean -fd:*)",
+      "Bash(git clean -fdx:*)",
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.development)",
+      "Read(**/.env.development.local)",
+      "Read(**/.env.production)",
+      "Read(**/.env.production.local)",
+      "Read(**/.env.test)",
+      "Read(**/.env.test.local)",
+      "Read(**/.env.staging)",
+      "Read(**/.env.vault)",
+      "Read(**/.aws/**)",
+      "Read(**/.ssh/**)"
+    ],
+    "ask": [
+      "Bash(git push:*)"
+    ]
   },
   "sandbox": {
     "excludedCommands": [
