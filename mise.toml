@@ -1,0 +1,5 @@
+[tools]
+node = "24.15.0"
+pnpm = "11.1.2"
+chezmoi = "2.70.3"
+shellcheck = "0.11.0"
