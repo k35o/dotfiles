@@ -2,12 +2,13 @@
 description: Preview generated Markdown (plans, design notes, reviews, research reports) in the user's browser. Use when sharing long, structured output — documents with headings, tables, code blocks, or Mermaid diagrams — that is hard to read in the terminal.
 license: MIT
 metadata:
-    github-path: skills/mdscroll
-    github-ref: refs/tags/mdscroll@0.3.0
-    github-repo: https://github.com/k35o/mdscroll
-    github-tree-sha: 30e77f2c0be81ed1d7e2c9b62a0d96be0a1dc6da
+  github-path: skills/mdscroll
+  github-ref: refs/tags/mdscroll@0.3.0
+  github-repo: https://github.com/k35o/mdscroll
+  github-tree-sha: 30e77f2c0be81ed1d7e2c9b62a0d96be0a1dc6da
 name: mdscroll
 ---
+
 # mdscroll
 
 Serve generated Markdown to the local mdscroll preview server so the user can read it in their browser. It renders content with GitHub-style styling, Shiki syntax highlighting, Mermaid diagrams, GFM alerts, task lists, and tables. Point it at a file and every change to that file is auto-reloaded in the browser over Server-Sent Events. Multiple invocations cooperate — a second file opened with `mdscroll` shows up as a new tab in the same browser window, not on a new port.

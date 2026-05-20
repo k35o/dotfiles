@@ -30,8 +30,12 @@ useEffect(() => {
 }, [countryId, cityId]);
 
 // ✅ 分割する
-useEffect(() => { fetchCountry(countryId); }, [countryId]);
-useEffect(() => { fetchCities(cityId); }, [cityId]);
+useEffect(() => {
+  fetchCountry(countryId);
+}, [countryId]);
+useEffect(() => {
+  fetchCities(cityId);
+}, [cityId]);
 ```
 
 ## 3. 更新関数の活用
@@ -49,7 +53,7 @@ useEffect(() => {
 // ✅ 更新関数でmessagesを依存値から除去
 useEffect(() => {
   connection.on('message', (msg) => {
-    setMessages(prev => [...prev, msg]);
+    setMessages((prev) => [...prev, msg]);
   });
 }, []); // 再接続不要
 ```
@@ -83,6 +87,7 @@ useEffect(() => {
 ```
 
 **useEffectEventのルール:**
+
 - エフェクト内部からのみ呼び出す
 - 他のコンポーネントやフックに渡さない
 - 依存配列に含めない

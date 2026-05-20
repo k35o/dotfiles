@@ -29,6 +29,7 @@ difit <target> \
 ```
 
 **コメントのルール:**
+
 - `type` は常に `"thread"`
 - `position.side`: 変更後の行は `"new"`、削除された行は `"old"`
 - 複数行にまたがる場合は `line: {"start": N, "end": M}` で範囲指定

@@ -37,7 +37,7 @@ useEffect(() => {
 }, [userId]);
 
 // ✅ keyで別コンポーネントにする
-<Profile userId={userId} key={userId} />
+<Profile userId={userId} key={userId} />;
 ```
 
 ## 4. props変更時の部分的なstate調整
@@ -92,8 +92,12 @@ function handleSubmit(e) {
 
 ```tsx
 // ❌ 複数のエフェクトが連鎖的にstateを更新
-useEffect(() => { setB(computeB(a)); }, [a]);
-useEffect(() => { setC(computeC(b)); }, [b]);
+useEffect(() => {
+  setB(computeB(a));
+}, [a]);
+useEffect(() => {
+  setC(computeC(b));
+}, [b]);
 
 // ✅ イベントハンドラで一度に計算する
 function handleChange(a) {
@@ -142,7 +146,9 @@ function handleToggle(nextIsOn) {
 // ❌ 子がエフェクトで親のstateを更新
 function Child({ onData }) {
   const data = useSomeAPI();
-  useEffect(() => { onData(data); }, [data, onData]);
+  useEffect(() => {
+    onData(data);
+  }, [data, onData]);
 }
 
 // ✅ 親がデータを取得してpropsで渡す
@@ -178,6 +184,6 @@ const isOnline = useSyncExternalStore(
     };
   },
   () => navigator.onLine,
-  () => true // SSR用
+  () => true, // SSR用
 );
 ```

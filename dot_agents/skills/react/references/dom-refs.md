@@ -16,9 +16,7 @@ function Form() {
   return (
     <>
       <input ref={inputRef} />
-      <button onClick={() => inputRef.current?.focus()}>
-        フォーカス
-      </button>
+      <button onClick={() => inputRef.current?.focus()}>フォーカス</button>
     </>
   );
 }
@@ -30,7 +28,7 @@ function Form() {
 ref.current?.scrollIntoView({
   behavior: 'smooth',
   block: 'nearest',
-  inline: 'center'
+  inline: 'center',
 });
 ```
 
@@ -42,7 +40,7 @@ ref.current?.scrollIntoView({
 function List({ items }) {
   const mapRef = useRef<Map<string, HTMLElement>>(new Map());
 
-  return items.map(item => (
+  return items.map((item) => (
     <li
       key={item.id}
       ref={(node) => {
@@ -71,7 +69,7 @@ function MyInput({ ref, ...props }) {
 
 // 親
 const inputRef = useRef(null);
-<MyInput ref={inputRef} />
+<MyInput ref={inputRef} />;
 ```
 
 ### useImperativeHandle: 公開APIの制限
@@ -114,26 +112,30 @@ function handleAdd(text: string) {
 refコールバックからクリーンアップ関数を返せる。
 
 ```tsx
-<div ref={(node) => {
-  // ノードがDOMに追加されたとき
-  const observer = new IntersectionObserver(callback);
-  if (node) observer.observe(node);
+<div
+  ref={(node) => {
+    // ノードがDOMに追加されたとき
+    const observer = new IntersectionObserver(callback);
+    if (node) observer.observe(node);
 
-  return () => {
-    // ノードがDOMから削除されたとき
-    observer.disconnect();
-  };
-}} />
+    return () => {
+      // ノードがDOMから削除されたとき
+      observer.disconnect();
+    };
+  }}
+/>
 ```
 
 ## DOM操作の安全ルール
 
 **安全な操作（読み取り専用）:**
+
 - フォーカス管理: `focus()`, `blur()`
 - スクロール: `scrollIntoView()`, `scrollTo()`
 - 測定: `getBoundingClientRect()`, `offsetWidth`
 
 **危険な操作（Reactが管理するDOMの変更）:**
+
 - `removeChild()` — ReactのDOMツリーと不整合になる
 - `innerHTML` の直接変更
 - `appendChild()` でReact管理ツリーにノードを追加

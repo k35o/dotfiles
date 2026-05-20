@@ -11,13 +11,13 @@ description: Reactの正しい書き方を徹底するスキル。useRef/useStat
 
 ### useStateとuseRefの使い分け
 
-| 基準 | useState | useRef |
-|------|----------|--------|
-| レンダーに影響する値 | ✅ | ❌ |
-| 変更時に再レンダーが必要 | ✅ | ❌ |
-| タイムアウト/インターバルID | ❌ | ✅ |
-| DOM要素への参照 | ❌ | ✅ |
-| レンダーに不要な最新値の保持 | ❌ | ✅ |
+| 基準                         | useState | useRef |
+| ---------------------------- | -------- | ------ |
+| レンダーに影響する値         | ✅       | ❌     |
+| 変更時に再レンダーが必要     | ✅       | ❌     |
+| タイムアウト/インターバルID  | ❌       | ✅     |
+| DOM要素への参照              | ❌       | ✅     |
+| レンダーに不要な最新値の保持 | ❌       | ✅     |
 
 **判断基準**: その値が画面に表示されるか？ → useState。表示されないが保持が必要か？ → useRef。
 
@@ -30,6 +30,7 @@ refでのDOM操作（フォーカス、スクロール、リスト内の複数re
 useEffectは**外部システムとの同期**のためだけに使う。それ以外の用途は大抵間違い。
 
 **正しい用途**:
+
 - ブラウザAPI（IntersectionObserver、ResizeObserverなど）との同期
 - サードパーティライブラリとの連携
 - WebSocket/EventSourceへのサブスクリプション
@@ -107,12 +108,14 @@ function Input({ ref, ...props }) {
 refコールバックからクリーンアップ関数を返せる:
 
 ```tsx
-<div ref={(node) => {
-  // セットアップ
-  return () => {
-    // クリーンアップ
-  };
-}} />
+<div
+  ref={(node) => {
+    // セットアップ
+    return () => {
+      // クリーンアップ
+    };
+  }}
+/>
 ```
 
 ## Concurrent Mode
@@ -142,6 +145,7 @@ startTransition(() => {
 Server Componentsがデフォルト。`"use client"`をつけたものだけがClient Component。
 
 **核心ルール:**
+
 - Server ComponentsではuseState/useEffect/イベントハンドラは使えない
 - `"use client"`の境界はできるだけ葉に近い位置に置く。ページ全体をClient Componentにしない
 - Server Actionsの引数は信頼できない入力として扱い、認証・認可を必ず検証する

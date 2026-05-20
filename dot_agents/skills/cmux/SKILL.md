@@ -59,17 +59,17 @@ cmux browser surface:7 eval 'document.title'
 
 ## 通知
 
-| 用途 | コマンド |
-|------|---------|
-| cmux内の通知（ペインリング） | `cmux notify --title "T" --body "B"` |
+| 用途                               | コマンド                                                                        |
+| ---------------------------------- | ------------------------------------------------------------------------------- |
+| cmux内の通知（ペインリング）       | `cmux notify --title "T" --body "B"`                                            |
 | システム通知（他アプリにいるとき） | `osascript -e 'display notification "B" with title "T" sound name "Submarine"'` |
 
 ## 環境変数
 
-| 変数 | 用途 |
-|------|------|
-| `CMUX_SOCKET_PATH` | 制御ソケット |
+| 変数                | 用途               |
+| ------------------- | ------------------ |
+| `CMUX_SOCKET_PATH`  | 制御ソケット       |
 | `CMUX_WORKSPACE_ID` | ワークスペースUUID |
-| `CMUX_SURFACE_ID` | サーフェスUUID |
+| `CMUX_SURFACE_ID`   | サーフェスUUID     |
 
 フラグ省略時は現在のworkspace/surfaceがデフォルト。
