@@ -7,5 +7,11 @@
   "mise": {
     "enabled": true,
     "managerFilePatterns": ["/^dot_config/mise/config\\.toml$/"]
-  }
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ]
 }
