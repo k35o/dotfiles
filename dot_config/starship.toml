@@ -6,3 +6,10 @@ add_newline = true
 success_symbol = '[🫠](bold green)'
 error_symbol = '[🤯](bold red)'
 
+[custom.dotfiles]
+command = 'cat "${XDG_CACHE_HOME:-$HOME/.cache}/dotfiles-notify/count"'
+when = 'test -s "${XDG_CACHE_HOME:-$HOME/.cache}/dotfiles-notify/count"'
+symbol = 'dotfiles ⇣'
+style = 'bold yellow'
+format = '[$symbol$output]($style) '
+
