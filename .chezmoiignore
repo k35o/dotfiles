@@ -1,2 +1,14 @@
+README.md
+LICENSE
+
 renovate.json
 install-claude-code.sh
+
+package.json
+pnpm-lock.yaml
+pnpm-workspace.yaml
+vite.config.ts
+tsconfig.json
+mise.toml
+commitlint.config.js
+node_modules

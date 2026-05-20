@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# vite-plus
+.vite-hooks
+.turbo
+
+# Logs
+*.log
+
+# Environment
+.env*
+*.local
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.sw?
+
+# Local Claude settings
+settings.local.json

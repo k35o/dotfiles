@@ -1,0 +1,27 @@
+{
+  "name": "dotfiles",
+  "private": true,
+  "description": "k8o's dotfiles managed by chezmoi",
+  "license": "MIT",
+  "author": "k8o",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k35o/dotfiles.git"
+  },
+  "type": "module",
+  "scripts": {
+    "prepare": "vp config",
+    "check": "vp check",
+    "check:write": "vp check --fix"
+  },
+  "devDependencies": {
+    "@k8o/oxc-config": "0.1.2",
+    "@types/node": "24.12.2",
+    "typescript": "6.0.3",
+    "vite-plus": "0.1.20"
+  },
+  "engines": {
+    "node": ">=24.13.0"
+  },
+  "packageManager": "pnpm@11.1.2"
+}
