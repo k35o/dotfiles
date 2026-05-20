@@ -1,0 +1,19 @@
+# OpenAI Codex CLI 設定
+# 参考: https://github.com/openai/codex/blob/main/docs/config.md
+
+# Claude の defaultMode="auto" に相当する組み合わせ。
+# サンドボックス内の編集は自動で実行し、外側に出る操作だけ承認を求める。
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+# 通知を有効化（Claude の agentPushNotifEnabled 相当）。
+[tui]
+notifications = true
+notification_condition = "unfocused"
+
+# git push / npm install などのネットワーク必要操作は承認経由にする。
+[sandbox_workspace_write]
+network_access = false
+
+[history]
+persistence = "save-all"
