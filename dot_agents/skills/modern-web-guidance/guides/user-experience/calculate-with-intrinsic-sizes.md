@@ -15,16 +15,18 @@
 .element {
   /* MANDATORY: Always provide a fallback for browsers that do not support calc-size() */
   inline-size: min-content;
-  
+
   /* DO: Use calc-size to modify an intrinsic basis with a calculation or function */
   inline-size: calc-size(min-content, size + 2rem);
 }
 ```
 
 ### 有効な基準引数（`<calc-size-basis>`）
+
 第1引数は計算の「基準」サイズを定義します。
 
 **標準キーワード:**
+
 - `auto`: 要素のデフォルトサイジング。
 - `min-content`: 要素がオーバーフローせずに取り得る最小サイズ。
 - `max-content`: コンテンツを1行に収めるサイズ。
@@ -32,6 +34,7 @@
 - `content`: `flex-basis` プロパティ内で `calc-size()` を使う場合のみ有効。
 
 **特別な引数:**
+
 - `any`: 特定の内在型が不明な場合や、計算をネストする場合に使う汎用基準。
 - ネストされた `calc-size()`: 多段階や条件付き計算が可能。
 - `<calc-sum>`: 特定の長さ、パーセンテージ、または数学式（例: `100px` や `20%`）。固定値を基準として使う場合、**`size` キーワードは依然として使用可能**（ただし第2引数内のみ）で、その基準の解決値を参照します。
@@ -39,7 +42,9 @@
 **MANDATORY**: `size` キーワードは第1引数（`<calc-size-basis>`）自体では**有効ではありません**。これは第2引数（`<calc-sum>`）内から基準を参照するためのみに存在するローカル変数です。
 
 ### 有効な計算引数（`<calc-sum>`）
+
 第2引数は数学式です。
+
 - 通常 `size` キーワードを使って基準の値を参照します。
 - `size` キーワードは技術的にはオプションですが、省略すると計算は固定値に解決され、基準は完全に無視されます。
 - 標準の数学演算子（`+`、`-`、`*`、`/`）を含められます。
@@ -49,9 +54,11 @@
 ## ユースケース
 
 ### 内在サイズへ・からのアニメーション
+
 デフォルトではブラウザは長さ（例: `0px`）と内在キーワード（例: `auto`）の間を補間できません。キーワードを `calc-size()` で包むことで補間可能な値になります。
 
 #### アニメーションに適切なツールを選ぶ
+
 - **MANDATORY: `interpolate-size: allow-keywords` を使う**: 数学的な変更なしの内在サイズへ・からのシンプルなアニメーション（例: `height: 0` から `height: auto`）に使用します。シンプルなキーワード補間に必須のアプローチであり、`:root` でグローバルに適用するのが理想的です。
 
   ```css
@@ -97,12 +104,15 @@
 **MANDATORY**: 2つの内在サイズキーワード間の補間は直接行えません。トランジションの一方は長さまたはパーセンテージである必要があります。
 
 #### ユーザーのモーション設定を尊重する
+
 大きなレイアウト領域のサイズを変えるアニメーションは、前庭障害のあるユーザーにとって特に不快なものとなり得ます。**MANDATORY**: `prefers-reduced-motion` メディアクエリを使って、必須ではないアニメーションを簡素化または最小化することで、ユーザーのモーション設定を尊重してください。一般的な戦略には、モーションを完全に無効化する、再生時間を短縮する、レイアウトの変化を控えめな不透明度のトランジションに置き換えるなどがあります。
 
 ```css
 .accordion-content {
   opacity: 0;
-  transition: block-size 0.3s ease, opacity 0.3s ease;
+  transition:
+    block-size 0.3s ease,
+    opacity 0.3s ease;
 }
 
 .accordion-content.open {
@@ -126,8 +136,8 @@
 }
 ```
 
-
 ### 内在サイズへの制約の適用
+
 `calc-size()` をCSSの任意の数学関数—`min()`、`max()`、`clamp()`、`round()` など—と組み合わせて使い、要素の内在サイズをデザインの境界内に収めることができます。
 
 ```css
@@ -140,7 +150,10 @@
     1. Enforcing boundaries using CSS math functions (min, clamp, etc.)
     2. Modifying the intrinsic size with fixed or relative offsets
   */
-  inline-size: calc-size(fit-content, min(size + var(--extra-space), var(--max-allowed)));
+  inline-size: calc-size(
+    fit-content,
+    min(size + var(--extra-space), var(--max-allowed))
+  );
 }
 ```
 
@@ -164,13 +177,14 @@ interpolate-size は limited availability。
 ```css
 .element {
   /* Fallback for browsers that don't support calc-size() */
-  inline-size: fit-content; 
+  inline-size: fit-content;
   /* Modern browsers will override the fallback */
   inline-size: calc-size(fit-content, size + 2rem);
 }
 ```
 
 ### アニメーションとトランジションのフォールバック
+
 `calc-size()` や `interpolate-size` をサポートしないブラウザでは、内在サイズキーワードを伴うトランジションは補間に失敗します。
 
 - **グレースフルデグラデーション**: デフォルトのフォールバックは状態間の「即時ジャンプ」（例: `0` から `auto`）です。これはレイアウトが機能するため、しばしば受容可能です。

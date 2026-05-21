@@ -13,7 +13,7 @@
 1. **デフォルトのスタイリングを定義する**: コンテナ要素にベースのレイアウトスタイル（例: 単一カラムのシンプルなスタック）を適用します。
 2. **コンテンツベースのオーバーライドを適用する**: `:has([child-selector])` でコンテナをターゲットし、そのコンテンツが存在する場合の新しいレイアウトスタイル（例: 複数カラムのグリッド）を適用します。
 
-*例: 画像があれば横並びレイアウトに切り替わるカードコンポーネント。*
+_例: 画像があれば横並びレイアウトに切り替わるカードコンポーネント。_
 
 ```css
 /* 1. Define the default state on the component container */
@@ -65,7 +65,10 @@
 <article class="article-card">
   <div class="content">
     <h2>Text-Only Card</h2>
-    <p>This card lays out its content vertically, and gets its background color from the :not(:has()) rule.</p>
+    <p>
+      This card lays out its content vertically, and gets its background color
+      from the :not(:has()) rule.
+    </p>
   </div>
 </article>
 ```
@@ -94,7 +97,7 @@
     flex-direction: row;
     align-items: center;
   }
-  
+
   .article-card:not(.has-image) {
     background-color: #f9f9f9;
   }
@@ -107,8 +110,8 @@
 if (!CSS.supports('selector(:has(*))')) {
   // Find all components that need checking
   const cards = document.querySelectorAll('.article-card');
-  
-  cards.forEach(card => {
+
+  cards.forEach((card) => {
     // If the critical content exists, manually add the fallback class
     if (card.querySelector('img')) {
       card.classList.add('has-image');

@@ -12,14 +12,14 @@
   /* Define the animation first */
   animation: fade-in 0.4s;
   /* Set the `animation-delay` to a time multipled by the `sibling-index()` */
-  animation-delay: calc(sibling-index() * var(--stagger-time))
+  animation-delay: calc(sibling-index() * var(--stagger-time));
 }
 ```
 
 **必須:** モーション削減を希望するユーザー向けには、ユーザー設定を尊重してアニメーションを無効化します。
 
 ```css
-@media (prefers-reduced-motion: reduce){
+@media (prefers-reduced-motion: reduce) {
   /* Disable animation for users who prefer reduced motion. */
   #stagger-list > .item {
     animation: none;
@@ -38,9 +38,11 @@ sibling-count() と sibling-index() は限定的に利用可能です。
 古いブラウザでスタガーアニメーションをサポートするには、JavaScript で兄弟要素それぞれに `--sibling-index` カスタムプロパティを追加します。必須: 不要な JavaScript の実行を避けるため、これを `CSS.supports('animation-delay: calc(sibling-index() * 0.1s)')` のテストでラップしてください。
 
 ```js
-if(!CSS.supports('animation-delay: calc(sibling-index() * 0.1s)')){
+if (!CSS.supports('animation-delay: calc(sibling-index() * 0.1s)')) {
   const staggerList = document.getElementById('stagger-list');
-  [...staggerList.children].forEach((el, index)=>el.style.setProperty('--sibling-index', index + 1));
+  [...staggerList.children].forEach((el, index) =>
+    el.style.setProperty('--sibling-index', index + 1),
+  );
 }
 ```
 

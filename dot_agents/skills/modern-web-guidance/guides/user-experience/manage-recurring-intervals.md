@@ -9,8 +9,8 @@
 1. **必須:** **開始日をパースする**: `Temporal.PlainDate.from()`で日付オブジェクトを生成します。
 2. **必須:** **期間を加算する**: `.add()`メソッドに期間オブジェクト（例: `{ months: 1 }`）を渡します。
 3. **任意:** **オーバーフローの挙動を指定する**: `overflow`オプションで、2月31日のような無効な日付の扱い方を制御します。
-    - `'constrain'`（デフォルト）: 月内の最終有効日にクランプします。
-    - `'reject'`: `RangeError`をスローします。
+   - `'constrain'`（デフォルト）: 月内の最終有効日にクランプします。
+   - `'reject'`: `RangeError`をスローします。
 
 ### 例: サブスクリプションの請求サイクル
 
@@ -34,7 +34,7 @@ try {
   // Jan 31 + 1 month with 'reject' throws because Feb 31 is invalid
   const invalidDate = startDate.add({ months: 1 }, { overflow: 'reject' });
 } catch (e) {
-  console.log("Caught expected error:", e.name); // RangeError
+  console.log('Caught expected error:', e.name); // RangeError
 }
 ```
 
@@ -58,7 +58,7 @@ Unsupported in: Safari.
 (async () => {
   if (typeof Temporal === 'undefined') {
     // Load the polyfill conditionally
-    const module = await import("https://esm.sh/@js-temporal/polyfill");
+    const module = await import('https://esm.sh/@js-temporal/polyfill');
     globalThis.Temporal = module.Temporal;
     // Extend Date.prototype if needed
     Date.prototype.toTemporalInstant = module.toTemporalInstant;

@@ -13,20 +13,20 @@ MANDATORY: `performance.getEntriesByType('visibility-state')` を使用して、
 function getVisibilityInfo() {
   // Retrieve VisibilityStateEntry members:
   const entries = performance.getEntriesByType('visibility-state');
-  
+
   if (entries.length > 0) {
     const firstEntry = entries[0];
-    
+
     // If the first performance entry for visibility is 'hidden',
     // the page was loaded in the background.
     const initiallyBackgrounded = firstEntry.name === 'hidden';
-    
-    // Find the precise, high-resolution timestamp of when the page 
+
+    // Find the precise, high-resolution timestamp of when the page
     // was first backgrounded.
     let timeBackgrounded = null;
     for (const entry of entries) {
       if (entry.name === 'hidden') {
-        // entry.startTime is used because it provides the exact browser 
+        // entry.startTime is used because it provides the exact browser
         // timestamp of the visibility change, which is required for precision
         timeBackgrounded = entry.startTime;
         break;
@@ -35,7 +35,7 @@ function getVisibilityInfo() {
 
     return {
       initiallyBackgrounded,
-      timeBackgrounded
+      timeBackgrounded,
     };
   }
 }
@@ -49,7 +49,7 @@ Page visibility state は限定的に利用可能です。
 
 未対応の環境では、`document.visibilityState` プロパティの確認や `visibilitychange` イベントの購読にフォールバックできます。
 
-**MANDATORY:** このフォールバックアプローチは、**初期のバックグラウンド状態を判定するには非常に不正確** であることが多いことを理解しておく必要があります。スクリプトは非同期で読み込まれて実行されることがあるため、ページがバックグラウンドタブで開かれたあと、スクリプトのダウンロードと実行が完了する *前に* ユーザーによってフォアグラウンドに切り替えられる可能性があります。スクリプトが最終的に実行されたとき、`document.visibilityState` は同期的に `'visible'` と読み取れるため、ページがフォアグラウンドで読み込まれたと誤って判断し、初期の hidden 状態を完全に見逃してしまいます。さらに、フォールバックのタイムスタンプはPerformance APIの内部精度を欠いています。精度が重要であれば、フォールバックを使用しないでください。
+**MANDATORY:** このフォールバックアプローチは、**初期のバックグラウンド状態を判定するには非常に不正確** であることが多いことを理解しておく必要があります。スクリプトは非同期で読み込まれて実行されることがあるため、ページがバックグラウンドタブで開かれたあと、スクリプトのダウンロードと実行が完了する _前に_ ユーザーによってフォアグラウンドに切り替えられる可能性があります。スクリプトが最終的に実行されたとき、`document.visibilityState` は同期的に `'visible'` と読み取れるため、ページがフォアグラウンドで読み込まれたと誤って判断し、初期の hidden 状態を完全に見逃してしまいます。さらに、フォールバックのタイムスタンプはPerformance APIの内部精度を欠いています。精度が重要であれば、フォールバックを使用しないでください。
 
 ```javascript
 /**
@@ -58,26 +58,30 @@ Page visibility state は限定的に利用可能です。
  */
 function getFallbackVisibilityInfo() {
   // Check the state exactly when this script executes.
-  // This will fail to detect an initial background state if the user 
+  // This will fail to detect an initial background state if the user
   // foregrounded the page before this script executed.
   let initiallyBackgrounded = document.visibilityState === 'hidden';
-  
+
   // If it's hidden now, we approximate that it was hidden from load (time 0).
   let timeBackgrounded = initiallyBackgrounded ? 0 : null;
 
   // Listen for future visibility changes to capture if it is backgrounded later.
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden' && timeBackgrounded === null) {
-      // performance.now() is used here as a fallback, but it only gives 
-      // us the time the event listener fired, not the precise internal 
+      // performance.now() is used here as a fallback, but it only gives
+      // us the time the event listener fired, not the precise internal
       // browser time the visibility actually changed.
       timeBackgrounded = performance.now();
     }
   });
 
   return {
-    get initiallyBackgrounded() { return initiallyBackgrounded; },
-    get timeBackgrounded() { return timeBackgrounded; }
+    get initiallyBackgrounded() {
+      return initiallyBackgrounded;
+    },
+    get timeBackgrounded() {
+      return timeBackgrounded;
+    },
   };
 }
 

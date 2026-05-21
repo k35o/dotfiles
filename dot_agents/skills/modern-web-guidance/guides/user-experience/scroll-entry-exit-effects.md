@@ -10,17 +10,20 @@
 
     ```css
     @keyframes slide-in {
-      from { transform: translateX(-100%); }
+      from {
+        transform: translateX(-100%);
+      }
     }
     @keyframes slide-out {
-      to { transform: translateX(100%); }
+      to {
+        transform: translateX(100%);
+      }
     }
     ```
 
 2.  **エントリーとエグジットのキーフレームを要素に紐づける。** `animation`プロパティで複数のアニメーションを定義することで実現できます。
-
-    -   エントリーアニメーションには`animation-fill-mode`を`backwards`にして、アニメーション開始前に初期状態を適用するようにします。
-    -   エグジットアニメーションには`animation-fill-mode`を`forwards`にして、アニメーション完了後に最終状態を維持するようにします。
+    - エントリーアニメーションには`animation-fill-mode`を`backwards`にして、アニメーション開始前に初期状態を適用するようにします。
+    - エグジットアニメーションには`animation-fill-mode`を`forwards`にして、アニメーション完了後に最終状態を維持するようにします。
 
     ```css
     .animated-element {
@@ -41,9 +44,8 @@
     デフォルトでは、`view()`は`block`軸で要素を追跡します。`inline`軸で追跡したい場合は、`view(inline)`を使えます。
 
 4.  **アニメーションを`entry`と`exit`の範囲に限定する。** `animation-range`プロパティを使うと、アニメーションをタイムラインのどの部分で実行するかを指定できます。
-
-    -   `entry`範囲は要素が最初にビューポートに入ってから完全に見えるようになるまでの時間をカバーします。
-    -   `exit`範囲は要素がビューポートから出始めてから完全に隠れるまでの時間をカバーします。
+    - `entry`範囲は要素が最初にビューポートに入ってから完全に見えるようになるまでの時間をカバーします。
+    - `exit`範囲は要素がビューポートから出始めてから完全に隠れるまでの時間をカバーします。
 
     ```css
     .animated-element {
@@ -151,7 +153,9 @@ Unsupported in: Firefox.. そのため、通常はフォールバック戦略が
 
 ```html
 <script>
-  if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) {
+  if (
+    !CSS.supports('(animation-timeline: view()) and (animation-range: entry)')
+  ) {
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -162,7 +166,7 @@ Unsupported in: Firefox.. そのため、通常はフォールバック戦略が
       },
       {
         threshold: Array.from({ length: 101 }, (_, i) => i / 100),
-      }
+      },
     );
 
     document.querySelectorAll('.scroller > *').forEach((el) => {

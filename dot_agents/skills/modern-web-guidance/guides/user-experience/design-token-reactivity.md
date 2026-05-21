@@ -81,11 +81,11 @@
 
 ```css
 /* This example uses `:where()` to avoid increasing specificity */
-:where([data-density="compact"]) .card {
+:where([data-density='compact']) .card {
   padding: var(--card-padding-compact);
 }
 
-:where([data-density="spacious"]) .card {
+:where([data-density='spacious']) .card {
   padding: var(--card-padding-spacious);
 }
 ```
@@ -102,11 +102,11 @@
   --card-padding-spacious: 24px;
 }
 
-:where([data-density="compact"]) .card {
+:where([data-density='compact']) .card {
   padding: var(--card-padding-compact);
 }
 
-:where([data-density="spacious"]) .card {
+:where([data-density='spacious']) .card {
   padding: var(--card-padding-spacious);
 }
 
@@ -166,7 +166,11 @@ JavaScript で機能検出する場合は少し複雑です。`CSSContainerRule`
 そして JavaScript で次のように計算値をチェックします。
 
 ```js
-if (getComputedStyle(document.body).getPropertyValue("--style-queries-supported") === "yes") {
+if (
+  getComputedStyle(document.body).getPropertyValue(
+    '--style-queries-supported',
+  ) === 'yes'
+) {
   // Use container style queries
 } else {
   // Use fallback strategy

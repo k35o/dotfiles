@@ -3,11 +3,12 @@
 ## 実装
 
 ### 1. CSSでスクロールスナップを構成する
+
 コンテナに `scroll-snap-type` を定義し、子要素に `scroll-snap-align` を設定して、ブラウザがスナップ対象を追跡できるようにする必要があります。目次付きの長い記事では、これを使ってセクション見出しをビューポートの上端にスナップさせることができます。
 
 ```css
 main {
-    /* Enable scroll snapping on the container */  
+  /* Enable scroll snapping on the container */
   scroll-snap-type: y proximity;
   overflow-y: auto;
 }
@@ -19,6 +20,7 @@ h2 {
 ```
 
 ### 2. スナップの変化をリッスンする
+
 スクロールコンテナに `scrollsnapchange` イベントを使い、ユーザーがスクロールを終えてブラウザが新しい要素にスナップしたタイミングで反応します。本ドキュメントの目次デモではこれを使ってサイドバーのアクティブリンクをハイライトしています。
 
 ```html
@@ -39,13 +41,12 @@ const links = document.querySelectorAll('nav a');
 main.addEventListener('scrollsnapchange', (event) => {
   // Use snapTargetBlock for vertical or snapTargetInline for horizontal
   const snappedHeader = event.snapTargetBlock;
-  
+
   if (snappedHeader) {
     setSelectedParagraph(snappedHeader.id);
   }
 });
 ```
-
 
 ## アクセシビリティ
 
@@ -54,7 +55,6 @@ main.addEventListener('scrollsnapchange', (event) => {
 目次の場合、サイドバーのリンクがアクティブな時には `aria-current="true"` か `aria-current="location"` を使うようにしてください。
 
 加えて、`scroll-snap-type` に `mandatory` 値を使う場合は、スナップポイント間のコンテンツが画面より長いときにそのコンテンツへアクセスできなくなる可能性があるため注意してください。
-
 
 ## フォールバック戦略
 

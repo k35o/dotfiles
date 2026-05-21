@@ -2,8 +2,8 @@
 
 標準のCSSプロパティ `scrollbar-color` と `scrollbar-width` を使って、スクロールバーの見た目をカスタマイズできます。
 
-*   **`scrollbar-color`**: 2つの `<color>` 値を受け取ります。最初はサム（動く部分）、2番目はトラック（固定の背景）に適用されます。
-*   **`scrollbar-width`**: `auto`（デフォルト）、`thin`（細いバリアント）、または `none`（スクロール機能を維持しつつスクロールバーを完全に非表示）を受け取ります。
+- **`scrollbar-color`**: 2つの `<color>` 値を受け取ります。最初はサム（動く部分）、2番目はトラック（固定の背景）に適用されます。
+- **`scrollbar-width`**: `auto`（デフォルト）、`thin`（細いバリアント）、または `none`（スクロール機能を維持しつつスクロールバーを完全に非表示）を受け取ります。
 
 ## `scrollbar-color` と `scrollbar-width` の適用
 

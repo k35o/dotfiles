@@ -10,7 +10,7 @@
 const newParent = document.getElementById('new-parent');
 const elementWithState = document.getElementById('iframe-or-focused-input');
 
-// MANDATORY: Use moveBefore to preserve state. 
+// MANDATORY: Use moveBefore to preserve state.
 // Passing null as the second argument appends the element to the end of newParent.
 newParent.moveBefore(elementWithState, null);
 ```
@@ -26,7 +26,7 @@ class MyCustomElement extends HTMLElement {
   connectedCallback() {
     // Runs on initial insertion.
   }
-  
+
   connectedMoveCallback() {
     // Runs when the element is moved via moveBefore().
     // Use this to update state that depends on the new DOM location.
@@ -50,7 +50,7 @@ const nodeToMove = document.getElementById('moving-element');
 if ('moveBefore' in Element.prototype) {
   targetParent.moveBefore(nodeToMove, null);
 } else {
-  // Fallback: traditional move. 
+  // Fallback: traditional move.
   // Note: This WILL reset <iframe>, animation, and focus state in unsupported browsers.
   targetParent.insertBefore(nodeToMove, null);
 }

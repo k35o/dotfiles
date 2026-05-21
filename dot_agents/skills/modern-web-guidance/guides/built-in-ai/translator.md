@@ -1,6 +1,5 @@
 **Translator API**を使うと、開発者はChromeのビルトインAIモデルを使ってクライアントサイドのテキスト翻訳を実行できます。このアプローチにより、一時的なコンテンツに対するクラウドベースの翻訳サービスが不要になり、コストを削減しデータをユーザーのデバイス上に保持することでプライバシーを向上させます。
 
-
 ## 前提条件と要件
 
 ### ブラウザサポート
@@ -39,16 +38,18 @@ const availability = await Translator.availability(options);
 
 if (availability === 'available' || availability === 'downloadable') {
   // A user gesture is strictly required to trigger create when downloadable
-  document.getElementById('start-translation-btn').addEventListener('click', async () => {
-    const translator = await Translator.create({
-      ...options,
-      monitor(m) {
-        m.addEventListener('downloadprogress', (e) => {
-          console.log(`Downloaded ${Math.round(e.loaded * 100)}%`);
-        });
-      },
+  document
+    .getElementById('start-translation-btn')
+    .addEventListener('click', async () => {
+      const translator = await Translator.create({
+        ...options,
+        monitor(m) {
+          m.addEventListener('downloadprogress', (e) => {
+            console.log(`Downloaded ${Math.round(e.loaded * 100)}%`);
+          });
+        },
+      });
     });
-  });
 }
 ```
 
@@ -152,6 +153,7 @@ if ('Translator' in self) {
 `Translator` APIがサポートされていない、または可用性チェックが `'unavailable'` を返した場合、グレースフルなフォールバックが必要です。
 
 推奨オプション:
+
 1. **リモートAPIフォールバック**: 翻訳リクエストをサーバーエンドポイントやクラウドリモートAPI（Vertex AI Gemini APIなど）にリダイレクトして、翻訳機能を提供します。
 2. **グレースフルデグラデーション**: 翻訳コントロール要素やボタンを視覚的に無効化し、エンドユーザー向けのフレンドリーな注記（例: `"Client-side translation is currently unsupported in this browser"`）を表示します。未処理の例外を許可しないでください。
 3. **ポリフィルフォールバック**: コミュニティが保守する `built-in-ai-task-apis-polyfills` や `prompt-api-polyfill` などのポリフィルを使って、リモートサービスでAPI面をエミュレートできます。

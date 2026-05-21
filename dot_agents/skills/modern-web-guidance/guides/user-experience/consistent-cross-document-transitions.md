@@ -50,7 +50,7 @@ MANDATORY: ソースページとデスティネーションページの両方に
   <!--
     DO: Mark layout-critical scripts with blocking="render".
   -->
-  <script type=module blocking="render">
+  <script type="module" blocking="render">
     // Example: apply a stored theme before the page renders,
     // so the transition snapshot reflects the correct theme.
     document.documentElement.dataset.theme =
@@ -73,7 +73,7 @@ MANDATORY: ソースページとデスティネーションページの両方に
 
 ```html
 <head>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css" />
 
   <!--
     DO: Block rendering until the main content area is parsed,
@@ -81,7 +81,7 @@ MANDATORY: ソースページとデスティネーションページの両方に
     snapshot the page before visible content exists in the DOM,
     causing the cross-fade to reveal a blank or partial page.
   -->
-  <link rel="expect" href="#main-content" blocking="render">
+  <link rel="expect" href="#main-content" blocking="render" />
 </head>
 <body>
   <header>...</header>
@@ -100,7 +100,7 @@ MANDATORY: ソースページとデスティネーションページの両方に
 
 ```html
 <head>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css" />
 
   <!--
     DO: Block rendering until the element participating in the
@@ -108,7 +108,7 @@ MANDATORY: ソースページとデスティネーションページの両方に
     may start the transition before #hero exists, causing the
     morph to degrade to a fade-out/fade-in.
   -->
-  <link rel="expect" href="#hero" blocking="render">
+  <link rel="expect" href="#hero" blocking="render" />
 
   <!--
     When multiple blocking="render" resources are present,
@@ -122,7 +122,11 @@ MANDATORY: ソースページとデスティネーションページの両方に
   <header>...</header>
   <section id="hero">
     <h1 style="view-transition-name: page-title">Product Name</h1>
-    <img style="view-transition-name: hero-image" src="/img/product.webp" alt="Product">
+    <img
+      style="view-transition-name: hero-image"
+      src="/img/product.webp"
+      alt="Product"
+    />
   </section>
 </body>
 ```
@@ -144,13 +148,13 @@ MANDATORY: ソースページとデスティネーションページの両方に
     href="#hero"
     blocking="render"
     media="screen and (width <= 768px)"
-  >
+  />
   <link
     rel="expect"
     href="#sidebar"
     blocking="render"
     media="screen and (width > 768px)"
-  >
+  />
 </head>
 ```
 

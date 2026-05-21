@@ -14,12 +14,12 @@
 
 ```css
 .content-area {
-  font-family: "MyCustomWebFont";
+  font-family: 'MyCustomWebFont';
   /* Automatically extract and apply x-height ratio from MyCustomWebFont */
   font-size-adjust: from-font;
 }
-.content-area span{
-  font-family: "MyOtherCustomWebFont"
+.content-area span {
+  font-family: 'MyOtherCustomWebFont';
 }
 ```
 
@@ -28,10 +28,10 @@
 調整したいフォントが基準にしたいフォントの子要素ではない場合、x-height を調整する値を指定します。
 
 ```css
-.theme{
+.theme {
   font-family: Verdana, sans-serif;
 }
-.theme.alternate{
+.theme.alternate {
   font-family: Times;
   /* Set to the aspect ratio (x-height / font-size) of the primary font */
   font-size-adjust: 0.51;

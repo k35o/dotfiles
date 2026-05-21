@@ -10,11 +10,21 @@
 
 ```css
 #tracked {
-  section:nth-child(1){ view-timeline: --tl-1 block; }
-  section:nth-child(2){ view-timeline: --tl-2 block; }
-  section:nth-child(3){ view-timeline: --tl-3 block; }
-  section:nth-child(4){ view-timeline: --tl-4 block; }
-  section:nth-child(5){ view-timeline: --tl-5 block; }
+  section:nth-child(1) {
+    view-timeline: --tl-1 block;
+  }
+  section:nth-child(2) {
+    view-timeline: --tl-2 block;
+  }
+  section:nth-child(3) {
+    view-timeline: --tl-3 block;
+  }
+  section:nth-child(4) {
+    view-timeline: --tl-4 block;
+  }
+  section:nth-child(5) {
+    view-timeline: --tl-5 block;
+  }
 }
 ```
 
@@ -23,15 +33,29 @@
 ```css
 #animated {
   section {
-    animation: animate-in auto linear both, animate-out auto linear forwards;
-    animation-range: entry 25% cover 50%, exit 50% exit 75%;
+    animation:
+      animate-in auto linear both,
+      animate-out auto linear forwards;
+    animation-range:
+      entry 25% cover 50%,
+      exit 50% exit 75%;
   }
 
-  section:nth-child(1){ animation-timeline: --tl-1; }
-  section:nth-child(2){ animation-timeline: --tl-2; }
-  section:nth-child(3){ animation-timeline: --tl-3; }
-  section:nth-child(4){ animation-timeline: --tl-4; }
-  section:nth-child(5){ animation-timeline: --tl-5; }
+  section:nth-child(1) {
+    animation-timeline: --tl-1;
+  }
+  section:nth-child(2) {
+    animation-timeline: --tl-2;
+  }
+  section:nth-child(3) {
+    animation-timeline: --tl-3;
+  }
+  section:nth-child(4) {
+    animation-timeline: --tl-4;
+  }
+  section:nth-child(5) {
+    animation-timeline: --tl-5;
+  }
 }
 ```
 
@@ -47,7 +71,9 @@ html {
 
 ```css
 #animated section {
-  animation-range: entry 25% cover 50%, exit 50% exit 75%;
+  animation-range:
+    entry 25% cover 50%,
+    exit 50% exit 75%;
 }
 ```
 
@@ -59,33 +85,66 @@ html {
 }
 
 #tracked {
-  section:nth-child(1){ view-timeline: --tl-1 block; }
-  section:nth-child(2){ view-timeline: --tl-2 block; }
-  section:nth-child(3){ view-timeline: --tl-3 block; }
-  section:nth-child(4){ view-timeline: --tl-4 block; }
-  section:nth-child(5){ view-timeline: --tl-5 block; }
+  section:nth-child(1) {
+    view-timeline: --tl-1 block;
+  }
+  section:nth-child(2) {
+    view-timeline: --tl-2 block;
+  }
+  section:nth-child(3) {
+    view-timeline: --tl-3 block;
+  }
+  section:nth-child(4) {
+    view-timeline: --tl-4 block;
+  }
+  section:nth-child(5) {
+    view-timeline: --tl-5 block;
+  }
 }
 
 @keyframes animate-in {
-  from { scale: 0.5; opacity: 0; transform: rotateY(-180deg); }
-  to { transform: rotateY(0deg); }
+  from {
+    scale: 0.5;
+    opacity: 0;
+    transform: rotateY(-180deg);
+  }
+  to {
+    transform: rotateY(0deg);
+  }
 }
 @keyframes animate-out {
-  to { translate: 100% 0; opacity: 0; }
+  to {
+    translate: 100% 0;
+    opacity: 0;
+  }
 }
 
 #animated {
   section {
-    animation: animate-in auto linear both, animate-out auto linear forwards;
-    animation-range: entry 25% cover 50%, exit 50% exit 75%;
+    animation:
+      animate-in auto linear both,
+      animate-out auto linear forwards;
+    animation-range:
+      entry 25% cover 50%,
+      exit 50% exit 75%;
     backface-visibility: hidden;
   }
 
-  section:nth-child(1){ animation-timeline: --tl-1; }
-  section:nth-child(2){ animation-timeline: --tl-2; }
-  section:nth-child(3){ animation-timeline: --tl-3; }
-  section:nth-child(4){ animation-timeline: --tl-4; }
-  section:nth-child(5){ animation-timeline: --tl-5; }
+  section:nth-child(1) {
+    animation-timeline: --tl-1;
+  }
+  section:nth-child(2) {
+    animation-timeline: --tl-2;
+  }
+  section:nth-child(3) {
+    animation-timeline: --tl-3;
+  }
+  section:nth-child(4) {
+    animation-timeline: --tl-4;
+  }
+  section:nth-child(5) {
+    animation-timeline: --tl-5;
+  }
 }
 
 /* MANDATORY Copy-Paste Safety: Disable continuous storytelling motion for sensitive users */
@@ -108,7 +167,7 @@ html {
   - アニメーションが装飾的なものに限られる場合は、プログレッシブエンハンスメントを採用し、**DO NOT** フォールバックを提供しないでください。
 - **DO** ユーザー設定を尊重すること: 一部のユーザーはモーションを抑えた表示を好みます。`prefers-reduced-motion` メディアクエリを使ってこれらのユーザー向けにアニメーションを無効化または抑制してください。
 - **DO** パフォーマンスの良いCSSプロパティのみをアニメーションさせること: 最もスムーズなアニメーションのためには、`transform` や `opacity` のようにブラウザのコンポジタースレッドで処理できるプロパティに絞ってアニメーションさせてください。`width` や `height` のような他のプロパティをアニメーションするとパフォーマンス問題を引き起こす可能性があります。
-- **DO** 正しい宣言順序を使用すること: `animation` ショートハンドプロパティを使用する際は、ショートハンドがタイムラインをリセットしないように、その *後* に `animation-timeline` と `animation-range` を宣言してください。
+- **DO** 正しい宣言順序を使用すること: `animation` ショートハンドプロパティを使用する際は、ショートハンドがタイムラインをリセットしないように、その _後_ に `animation-timeline` と `animation-range` を宣言してください。
 
 `view-timeline` プロパティを使ってスクロール駆動アニメーションを作成する場合:
 
@@ -133,28 +192,33 @@ html {
 ```js
 const animatedSections = document.querySelectorAll('#animated section');
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    const sectionIndex = Array.from(document.querySelectorAll('#tracked section')).indexOf(entry.target);
-    if (sectionIndex !== -1) {
-      const animatedSection = animatedSections[sectionIndex];
-      const ratio = entry.intersectionRatio;
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      const sectionIndex = Array.from(
+        document.querySelectorAll('#tracked section'),
+      ).indexOf(entry.target);
+      if (sectionIndex !== -1) {
+        const animatedSection = animatedSections[sectionIndex];
+        const ratio = entry.intersectionRatio;
 
-      // Animate-in
-      animatedSection.style.opacity = ratio;
-      animatedSection.style.transform = `scale(${0.5 + ratio * 0.5}) rotateY(${-180 + ratio * 180}deg)`;
+        // Animate-in
+        animatedSection.style.opacity = ratio;
+        animatedSection.style.transform = `scale(${0.5 + ratio * 0.5}) rotateY(${-180 + ratio * 180}deg)`;
 
-      // Animate-out
-      if (ratio < 0.5) {
-        animatedSection.style.translate = `${(0.5 - ratio) * 2 * 100}% 0`;
-      } else {
-        animatedSection.style.translate = '0 0';
+        // Animate-out
+        if (ratio < 0.5) {
+          animatedSection.style.translate = `${(0.5 - ratio) * 2 * 100}% 0`;
+        } else {
+          animatedSection.style.translate = '0 0';
+        }
       }
-    }
-  });
-}, { threshold: Array.from({length: 101}, (_, i) => i / 100) });
+    });
+  },
+  { threshold: Array.from({ length: 101 }, (_, i) => i / 100) },
+);
 
-document.querySelectorAll('#tracked section').forEach(section => {
+document.querySelectorAll('#tracked section').forEach((section) => {
   observer.observe(section);
 });
 ```
@@ -164,7 +228,7 @@ document.querySelectorAll('#tracked section').forEach(section => {
 ```css
 #animated section {
   opacity: 0;
-  transform: scale(0.5)  rotateY(-180deg);
+  transform: scale(0.5) rotateY(-180deg);
   backface-visibility: hidden;
 }
 

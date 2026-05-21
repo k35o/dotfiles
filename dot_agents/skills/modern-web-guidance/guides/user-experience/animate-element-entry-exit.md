@@ -76,8 +76,8 @@ const animations = element.getAnimations();
 if (animations.length > 0) {
   await Promise.race([
     // Promise.allSettled ensures we wait even if some animations fail
-    Promise.allSettled(animations.map(a => a.finished)),
-    new Promise(r => setTimeout(r, 2000))
+    Promise.allSettled(animations.map((a) => a.finished)),
+    new Promise((r) => setTimeout(r, 2000)),
   ]);
 }
 
@@ -104,8 +104,7 @@ element.remove();
 ```javascript
 // Detect support for discrete transitions and starting-style
 const supportsModernTransitions =
-  window.CSS &&
-  CSS.supports('transition-behavior', 'allow-discrete');
+  window.CSS && CSS.supports('transition-behavior', 'allow-discrete');
 
 if (!supportsModernTransitions) {
   // Implement manual JS-based fallback for entry/exit
@@ -125,7 +124,11 @@ requestAnimationFrame(() => {
 
 // To hide:
 el.setAttribute('hidden', true);
-el.addEventListener('transitionend', () => {
-  if (el.classList.contains('hidden')) el.style.display = 'none';
-}, { once: true });
+el.addEventListener(
+  'transitionend',
+  () => {
+    if (el.classList.contains('hidden')) el.style.display = 'none';
+  },
+  { once: true },
+);
 ```

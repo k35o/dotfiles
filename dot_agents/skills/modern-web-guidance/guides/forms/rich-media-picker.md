@@ -17,12 +17,20 @@
 <label for="role-picker">Select your role</label>
 <select class="custom-select" name="role" id="role-picker">
   <button>
-    <selectedcontent></selectedcontent> <!-- Mirrors the selected option's content automatically so you do not need JS to update the button -->
+    <selectedcontent></selectedcontent>
+    <!-- Mirrors the selected option's content automatically so you do not need JS to update the button -->
   </button>
 
   <!-- Define concise aria-label values on options whose mirrored rich content would otherwise read awkwardly as a concatenated string -->
   <option value="frontend" aria-label="Frontend Developer">
-    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <svg
+      aria-hidden="true"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+    >
       <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
     </svg>
     <div class="option-text">
@@ -32,7 +40,14 @@
   </option>
 
   <option value="backend" aria-label="Backend Developer">
-    <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <svg
+      aria-hidden="true"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+    >
       <rect x="2" y="12" width="20" height="14" rx="2" ry="2"></rect>
     </svg>
     <div class="option-text">
@@ -68,7 +83,9 @@ select.custom-select::picker(select) {
   border-radius: 8px;
   padding: 8px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-  width: anchor-size(width); /* Uses Anchor Positioning API to keep the dropdown precisely aligned to the button trigger width */
+  width: anchor-size(
+    width
+  ); /* Uses Anchor Positioning API to keep the dropdown precisely aligned to the button trigger width */
 }
 
 select.custom-select option {
@@ -121,11 +138,10 @@ Unsupported in: Firefox and Safari.
 - **非テキストコンテンツの無視**: 古いブラウザは`<option>`タグ内の(`<svg>`や`<div>`などの)HTMLタグを取り除き、テキストノードのみをレンダリングします。`<option>`のテキストコンテンツがそれ単体で読みやすく意味のあるものになっていることを確認してください。
 - **HTML構造の処理**: 標準的なパーサーは`<select>`内の`<button>`や`<selectedcontent>`タグを無視するか、無効なものとして扱う可能性があります。標準的なテキストを読みやすいフォールバックとして見るならば、プログレッシブエンハンスメントのために重いJavaScriptポリフィルは厳密には必要ありません。
 
-
 ```javascript
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   // Check if browser supports base-select value
-  if (!CSS.supports("appearance", "base-select")) {
+  if (!CSS.supports('appearance', 'base-select')) {
     // Custom select overrides are not supported natively.
   }
 });

@@ -47,7 +47,6 @@
   position: absolute;
   place-self: center;
 
-
   /* Position each element around the parent center */
   transform: translate(
     calc(cos(var(--angle)) * var(--radius)),

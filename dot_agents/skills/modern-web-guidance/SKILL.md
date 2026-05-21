@@ -90,19 +90,19 @@ guides/user-experience/animate-to-from-top-layer.md
 
 ## カテゴリ一覧
 
-| カテゴリ | パス | 内容 |
-| --- | --- | --- |
-| アクセシビリティ | `guides/accessibility/` | エラー通知、フォーカス管理など |
-| Built-in AI | `guides/built-in-ai/` | 翻訳・要約・言語検出・言語モデル等のローカルクライアントAI |
-| CSS | `guides/css/` | テキスト範囲ハイライト等のモダンCSS |
-| CSS レイアウト | `guides/css-layout/` | コンテナクエリ、subgrid、oklch、text-wrap など |
-| フォーム | `guides/forms/` | autofill、Popover API、`:user-invalid`、ネイティブセレクト等 |
-| HTML | `guides/html/` | HTML 全般 |
-| パスキー | `guides/passkeys/` | 登録、認証、再認証、管理 |
-| パフォーマンス | `guides/performance/` | LCP/INP、Fetch Priority、`scheduler.yield`、`content-visibility` 等 |
-| プライバシー | `guides/privacy/` | プライバシー周り |
-| セキュリティ | `guides/security/` | セキュリティ周り |
-| ユーザー体験 | `guides/user-experience/` | View Transitions、スクロール駆動アニメ、anchor positioning、tooltip など |
-| WebMCP | `guides/webmcp/` | エージェント対応フォーム・JS ツール |
+| カテゴリ         | パス                      | 内容                                                                     |
+| ---------------- | ------------------------- | ------------------------------------------------------------------------ |
+| アクセシビリティ | `guides/accessibility/`   | エラー通知、フォーカス管理など                                           |
+| Built-in AI      | `guides/built-in-ai/`     | 翻訳・要約・言語検出・言語モデル等のローカルクライアントAI               |
+| CSS              | `guides/css/`             | テキスト範囲ハイライト等のモダンCSS                                      |
+| CSS レイアウト   | `guides/css-layout/`      | コンテナクエリ、subgrid、oklch、text-wrap など                           |
+| フォーム         | `guides/forms/`           | autofill、Popover API、`:user-invalid`、ネイティブセレクト等             |
+| HTML             | `guides/html/`            | HTML 全般                                                                |
+| パスキー         | `guides/passkeys/`        | 登録、認証、再認証、管理                                                 |
+| パフォーマンス   | `guides/performance/`     | LCP/INP、Fetch Priority、`scheduler.yield`、`content-visibility` 等      |
+| プライバシー     | `guides/privacy/`         | プライバシー周り                                                         |
+| セキュリティ     | `guides/security/`        | セキュリティ周り                                                         |
+| ユーザー体験     | `guides/user-experience/` | View Transitions、スクロール駆動アニメ、anchor positioning、tooltip など |
+| WebMCP           | `guides/webmcp/`          | エージェント対応フォーム・JS ツール                                      |
 
 詳細は [guides/INDEX.md](guides/INDEX.md) を参照。

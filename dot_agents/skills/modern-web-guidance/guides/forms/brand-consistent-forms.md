@@ -36,23 +36,23 @@ body {
 <form>
   <!-- Checkbox -->
   <label for="subscribe">
-    <input type="checkbox" id="subscribe" checked>
+    <input type="checkbox" id="subscribe" checked />
     Subscribe to newsletter
   </label>
 
   <!-- Radio Buttons -->
   <label for="plan-monthly">
-    <input type="radio" id="plan-monthly" name="plan" value="monthly">
+    <input type="radio" id="plan-monthly" name="plan" value="monthly" />
     Monthly
   </label>
   <label for="plan-yearly">
-    <input type="radio" id="plan-yearly" name="plan" value="yearly" checked>
+    <input type="radio" id="plan-yearly" name="plan" value="yearly" checked />
     Yearly
   </label>
 
   <!-- Range Slider -->
   <label for="volume">Volume:</label>
-  <input type="range" id="volume" min="0" max="100" value="70">
+  <input type="range" id="volume" min="0" max="100" value="70" />
 
   <!-- Progress Bar -->
   <label for="file">Upload Progress:</label>
@@ -81,21 +81,30 @@ Unsupported in: Safari.
 `accent-color`がサポートされていない場合のみカスタムフォールバックスタイルを適用するには、`@supports not`ルールを使用しなければなりません。これにより、モダンブラウザでは`accent-color`のシンプルさを活用しつつ、古いブラウザに対しても一貫したブランド体験を保証できます。
 
 #### 1. HTML構造
+
 CSSの兄弟セレクタを使えるように、ラベルがテキストを`<span>`でラップしていることを確認してください:
+
 ```html
 <label for="subscribe-fallback">
-  <input type="checkbox" id="subscribe-fallback" class="visually-hidden" checked>
+  <input
+    type="checkbox"
+    id="subscribe-fallback"
+    class="visually-hidden"
+    checked
+  />
   <span>Subscribe to newsletter</span>
 </label>
 ```
 
 #### 2. CSSフォールバック
+
 `@supports not`ブロック内でカスタムスタイルを適用します:
+
 ```css
 /* Fallback for older browsers without accent-color */
 @supports not (accent-color: var(--brand-color)) {
   /* Visually hide the native input using the canonical accessible recipe */
-  form input[type="checkbox"].visually-hidden {
+  form input[type='checkbox'].visually-hidden {
     position: absolute !important;
     clip-path: inset(50%) !important;
     overflow: hidden !important;
@@ -117,8 +126,8 @@ CSSの兄弟セレクタを使えるように、ラベルがテキストを`<spa
   }
 
   /* Custom box for checkbox */
-  input[type="checkbox"] + span::before {
-    content: "";
+  input[type='checkbox'] + span::before {
+    content: '';
     position: absolute;
     left: 0;
     top: 50%;
@@ -133,20 +142,20 @@ CSSの兄弟セレクタを使えるように、ラベルがテキストを`<spa
   }
 
   /* Ensure custom checkbox shows focus for keyboard users */
-  input[type="checkbox"]:focus-visible + span::before {
+  input[type='checkbox']:focus-visible + span::before {
     outline: 2px solid #000;
     outline-offset: 2px;
   }
 
   /* Checked State */
-  input[type="checkbox"]:checked + span::before {
+  input[type='checkbox']:checked + span::before {
     background-color: var(--brand-color, #6200ee);
     border-color: var(--brand-color, #6200ee);
   }
 
   /* Checkmark (Unicode) */
-  input[type="checkbox"]:checked + span::after {
-    content: "✓";
+  input[type='checkbox']:checked + span::after {
+    content: '✓';
     position: absolute;
     left: 0.25rem;
     top: 50%;
@@ -157,22 +166,26 @@ CSSの兄弟セレクタを使えるように、ラベルがテキストを`<spa
   }
 
   /* Fallback for Range Slider */
-  input[type="range"] {
+  input[type='range'] {
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
   }
 
   /* Webkit (Chrome, Safari, Edge) */
-  input[type="range"]::-webkit-slider-runnable-track {
+  input[type='range']::-webkit-slider-runnable-track {
     width: 100%;
     height: 8px;
     /* Use gradient to show progress for a static value (e.g., 70%) or update with JS */
-    background: linear-gradient(to right, var(--brand-color, #6200ee) 70%, #ccc 70%);
+    background: linear-gradient(
+      to right,
+      var(--brand-color, #6200ee) 70%,
+      #ccc 70%
+    );
     border-radius: 4px;
   }
 
-  input[type="range"]::-webkit-slider-thumb {
+  input[type='range']::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     height: 16px;
@@ -184,14 +197,14 @@ CSSの兄弟セレクタを使えるように、ラベルがテキストを`<spa
   }
 
   /* Firefox */
-  input[type="range"]::-moz-range-track {
+  input[type='range']::-moz-range-track {
     width: 100%;
     height: 8px;
     background: #ccc;
     border-radius: 4px;
   }
 
-  input[type="range"]::-moz-range-thumb {
+  input[type='range']::-moz-range-thumb {
     height: 16px;
     width: 16px;
     border-radius: 50%;
@@ -200,7 +213,7 @@ CSSの兄弟セレクタを使えるように、ラベルがテキストを`<spa
   }
 
   /* Firefox specific progress bar */
-  input[type="range"]::-moz-range-progress {
+  input[type='range']::-moz-range-progress {
     background-color: var(--brand-color, #6200ee);
     height: 8px;
     border-radius: 4px;
@@ -239,13 +252,19 @@ CSSの兄弟セレクタを使えるように、ラベルがテキストを`<spa
 (accent-colorなしで)Webkitブラウザのレンジスライダーで進捗の塗りつぶしをサムと共に動かすには、CSS変数とわずかなJavaScriptを使用できます。
 
 1. **CSSの更新**: グラデーションのストップにCSS変数を使用します:
+
 ```css
-input[type="range"]::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, var(--brand-color) var(--progress, 0%), #ccc var(--progress, 0%));
+input[type='range']::-webkit-slider-runnable-track {
+  background: linear-gradient(
+    to right,
+    var(--brand-color) var(--progress, 0%),
+    #ccc var(--progress, 0%)
+  );
 }
 ```
 
 2. **JavaScriptの追加**: `input`イベントで変数を更新します:
+
 ```javascript
 if (!CSS.supports('accent-color')) {
   const slider = document.getElementById('volume');

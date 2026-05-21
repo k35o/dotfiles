@@ -9,9 +9,7 @@
 1.  **ラッパー要素を作る:** この要素はパララックス効果のすべてのレイヤーをグループ化するためだけのものです。スクロール対象の要素ではないので、オーバーフローはクリップしてください。また、パララックスを構成するレイヤーのうち1つと同じ高さになるよう`height`を指定します。
 
     ```html
-    <div class="wrapper">
-      …
-    </div>
+    <div class="wrapper">…</div>
     ```
 
     ```css
@@ -58,50 +56,62 @@
 5.  **アニメーションをずらす:** レイヤーを異なる速度で動かすには、2つの主なアプローチがあります。**キーフレームでずらす方法**と、**`animation-range`をずらす方法**です。
 
     どちらのアプローチでもハードコードした値を使えるほか、`sibling-index()`／`sibling-count()`による実装も使えます。ハードコードした値は最も簡単で、レイヤー数が限られているときにも便利です。`sibling-index()`／`sibling-count()`の実装は、レイヤーが多いときに有用です。
+    - **キーフレームでずらす方法:**
 
-    *   **キーフレームでずらす方法:**
+      **ハードコードした値**を使う場合、各レイヤーにカスタムプロパティを定義して、それぞれのパララックスオフセットを手動で制御できます。
 
-        **ハードコードした値**を使う場合、各レイヤーにカスタムプロパティを定義して、それぞれのパララックスオフセットを手動で制御できます。
+      ```css
+      .layer:nth-child(1) {
+        --offset: 100px;
+      }
+      .layer:nth-child(2) {
+        --offset: 200px;
+      }
+      .layer:nth-child(3) {
+        --offset: 300px;
+      }
 
-        ```css
-        .layer:nth-child(1) { --offset: 100px; }
-        .layer:nth-child(2) { --offset: 200px; }
-        .layer:nth-child(3) { --offset: 300px; }
-
-        @keyframes parallax {
-          from {
-            transform: translateY(var(--offset));
-          }
+      @keyframes parallax {
+        from {
+          transform: translateY(var(--offset));
         }
-        ```
+      }
+      ```
 
-        **`sibling-index()`**を使う場合、子要素の兄弟内でのインデックスを返す`sibling-index()`関数によって、ずらし効果を自動的に計算させられます。
+      **`sibling-index()`**を使う場合、子要素の兄弟内でのインデックスを返す`sibling-index()`関数によって、ずらし効果を自動的に計算させられます。
 
-        ```css
-        @keyframes parallax {
-          from {
-            transform: translateY(calc(100px * sibling-index()));
-          }
+      ```css
+      @keyframes parallax {
+        from {
+          transform: translateY(calc(100px * sibling-index()));
         }
-        ```
+      }
+      ```
 
-    *   **`animation-range`をずらす方法:**
+    - **`animation-range`をずらす方法:**
 
-        **ハードコードした値**を使う場合、各レイヤーごとに`animation-range`の境界を明示的に定義できます。
+      **ハードコードした値**を使う場合、各レイヤーごとに`animation-range`の境界を明示的に定義できます。
 
-        ```css
-        .layer:nth-child(1) { animation-range: entry 25% exit 50%; }
-        .layer:nth-child(2) { animation-range: entry 25% exit 75%; }
-        .layer:nth-child(3) { animation-range: entry 25% exit 100%; }
-        ```
+      ```css
+      .layer:nth-child(1) {
+        animation-range: entry 25% exit 50%;
+      }
+      .layer:nth-child(2) {
+        animation-range: entry 25% exit 75%;
+      }
+      .layer:nth-child(3) {
+        animation-range: entry 25% exit 100%;
+      }
+      ```
 
-        **`sibling-index()`と`sibling-count()`**を使う場合、レイヤーの総数（`sibling-count()`）を元に範囲を数学的に計算できます。
+      **`sibling-index()`と`sibling-count()`**を使う場合、レイヤーの総数（`sibling-count()`）を元に範囲を数学的に計算できます。
 
-        ```css
-        .layer {
-          animation-range: entry 25% exit calc(100% / sibling-count() * sibling-index());
-        }
-        ```
+      ```css
+      .layer {
+        animation-range: entry 25% exit
+          calc(100% / sibling-count() * sibling-index());
+      }
+      ```
 
 ## コード例
 
@@ -171,7 +181,6 @@
 - **DO** すべてのレイヤーで同じ開始オフセット（例: `entry 25%`）を指定する
 - **DO** すべてのレイヤーで終了オフセットを変え、`sibling-count()`と`sibling-index()`でオフセットを分散させる（例: `exit calc(100% / sibling-count() * sibling-index())`）。
 
-
 ## ブラウザサポートとフォールバック戦略
 
 Scroll-driven animations has limited availability.
@@ -188,19 +197,24 @@ Unsupported in: Firefox.. そのため、通常はフォールバック戦略が
 
 ```js
 // Fallback for browsers that don't support scroll-driven animations
-if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) {
+if (
+  !CSS.supports('(animation-timeline: view()) and (animation-range: entry)')
+) {
   const wrapper = document.querySelector('.wrapper');
   const layers = document.querySelectorAll('.layer');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        window.addEventListener('scroll', onScroll);
-      } else {
-        window.removeEventListener('scroll', onScroll);
-      }
-    });
-  }, { threshold: 0 });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          window.addEventListener('scroll', onScroll);
+        } else {
+          window.removeEventListener('scroll', onScroll);
+        }
+      });
+    },
+    { threshold: 0 },
+  );
 
   observer.observe(wrapper);
 
@@ -211,9 +225,14 @@ if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) 
     const wrapperHeight = wrapperRect.height;
     const windowHeight = window.innerHeight;
 
-    if (scrollY >= wrapperTop - windowHeight && scrollY <= wrapperTop + wrapperHeight) {
-      const scrollPercent = (scrollY - (wrapperTop - windowHeight)) / (wrapperHeight + windowHeight);
-      
+    if (
+      scrollY >= wrapperTop - windowHeight &&
+      scrollY <= wrapperTop + wrapperHeight
+    ) {
+      const scrollPercent =
+        (scrollY - (wrapperTop - windowHeight)) /
+        (wrapperHeight + windowHeight);
+
       layers.forEach((layer, index) => {
         // This matches the effect as defined in the CSS example above.
         // Customize this further if needed.

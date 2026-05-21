@@ -18,13 +18,13 @@
 // Options generation example (discoverable flow)
 const options = {
   challenge: serverGeneratedBase64UrlChallenge, // High-entropy random challenge stored in session
-  rpId: "example.com",
+  rpId: 'example.com',
   allowCredentials: [], // Request discoverable passkeys
-  userVerification: "preferred",
+  userVerification: 'preferred',
 };
 
 // Persist expected UV level to user session
-req.session.expectedUserVerification = "preferred";
+req.session.expectedUserVerification = 'preferred';
 ```
 
 ### 検証エンドポイント
@@ -79,7 +79,7 @@ Conditional UIをネイティブに活用するために、ユーザー名およ
 
 ```javascript
 // optionsFetch and loginVerifyFetch are app-defined HTTP methods
-import { optionsFetch, loginVerifyFetch } from "./api.js";
+import { optionsFetch, loginVerifyFetch } from './api.js';
 
 let autofillAbortController = new AbortController();
 
@@ -96,7 +96,7 @@ async function initializeConditionalAutofill() {
       const credential = await navigator.credentials.get({
         publicKey,
         signal: autofillAbortController.signal,
-        mediation: "conditional",
+        mediation: 'conditional',
       });
 
       // Segregated verification fetch
@@ -113,10 +113,10 @@ async function initializeConditionalAutofill() {
       }
     } catch (err) {
       // Silently swallow expected client WebAuthn exceptions
-      if (["NotAllowedError", "AbortError"].includes(err.name)) {
+      if (['NotAllowedError', 'AbortError'].includes(err.name)) {
         return;
       }
-      console.error("Unexpected conditional get error:", err);
+      console.error('Unexpected conditional get error:', err);
     }
   }
 }
@@ -138,10 +138,10 @@ async function triggerButtonAuthentication() {
       signal: autofillAbortController.signal,
     });
   } catch (err) {
-    if (err.name === "NotAllowedError") {
-      console.log("User cancelled passkey login.");
-    } else if (err.name === "AbortError") {
-      console.log("The authentication operation was aborted.");
+    if (err.name === 'NotAllowedError') {
+      console.log('User cancelled passkey login.');
+    } else if (err.name === 'AbortError') {
+      console.log('The authentication operation was aborted.');
     }
     // Re-arm Conditional autofill Suggestions after cancelled explicit button prompts
     initializeConditionalAutofill();
@@ -160,12 +160,12 @@ async function triggerButtonAuthentication() {
       });
     }
   } catch (serverErr) {
-    console.error("Verification request error:", serverErr);
+    console.error('Verification request error:', serverErr);
   }
 }
 
 // Trigger Conditional Get on load
-window.addEventListener("DOMContentLoaded", initializeConditionalAutofill);
+window.addEventListener('DOMContentLoaded', initializeConditionalAutofill);
 ```
 
 ## フォールバック戦略
@@ -178,9 +178,9 @@ api.PublicKeyCredential.getClientCapabilities_static機能のBaselineステー�
 必ず'webauthn-polyfills'をインストールし、コンテキストにインポートしてください。
 `PublicKeyCredential`がサポートされていれば、`PublicKeyCredential.getClientCapabilities`もサポートされていると考えてください。
 
-```js 
+```js
 import 'webauthn-polyfills';
-``` 
+```
 
 ### Signal API同期のフォールバック
 
@@ -200,6 +200,6 @@ api.PublicKeyCredential.parseRequestOptionsFromJSON_static機能のBaselineス�
 必ず'webauthn-polyfills'をインストールし、コンテキストにインポートしてください。
 `PublicKeyCredential`がサポートされていれば、`PublicKeyCredential.parseRequestOptionsFromJSON`および`PublicKeyCredential.prototype.toJSON`もサポートされていると考えてください。
 
-```js 
+```js
 import 'webauthn-polyfills';
-``` 
+```

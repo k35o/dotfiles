@@ -79,7 +79,7 @@ header {
   - アニメーションが装飾的なものに限られる場合は、プログレッシブエンハンスメントを採用し、**DO NOT** フォールバックを提供しないでください。
 - **DO** ユーザー設定を尊重すること: 一部のユーザーはモーションを抑えた表示を好みます。`prefers-reduced-motion` メディアクエリを使ってこれらのユーザー向けにアニメーションを無効化または抑制してください。
 - **DO** パフォーマンスの良いCSSプロパティのみをアニメーションさせること: 最もスムーズなアニメーションのためには、`transform` や `opacity` のようにブラウザのコンポジタースレッドで処理できるプロパティに絞ってアニメーションさせてください。`width` や `height` のような他のプロパティをアニメーションするとパフォーマンス問題を引き起こす可能性があります。
-- **DO** 正しい宣言順序を使用すること: `animation` ショートハンドプロパティを使用する際は、ショートハンドがタイムラインをリセットしないように、その *後* に `animation-timeline` と `animation-range` を宣言してください。
+- **DO** 正しい宣言順序を使用すること: `animation` ショートハンドプロパティを使用する際は、ショートハンドがタイムラインをリセットしないように、その _後_ に `animation-timeline` と `animation-range` を宣言してください。
 
 `scroll()` 関数を使ってスクロール駆動アニメーションを作成する場合:
 
@@ -108,7 +108,9 @@ header {
 
 ```js
 // Fallback for browsers that don't support scroll-driven animations
-if (!CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)')) {
+if (
+  !CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)')
+) {
   const header = document.querySelector('header');
 
   const initialHeight = 200;
@@ -118,7 +120,8 @@ if (!CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)
   window.addEventListener('scroll', () => {
     const scrollY = window.scrollY;
     const scrollPercent = Math.min(1, scrollY / scrollDistance);
-    const newHeight = initialHeight - (initialHeight - finalHeight) * scrollPercent;
+    const newHeight =
+      initialHeight - (initialHeight - finalHeight) * scrollPercent;
 
     header.style.height = `${newHeight}px`;
   });

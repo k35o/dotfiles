@@ -5,6 +5,7 @@
 ### 推奨実装
 
 #### HTML
+
 ```html
 <div id="feature-target">Highlight this feature</div>
 
@@ -18,6 +19,7 @@
 ```
 
 #### CSS
+
 ```css
 #feature-target {
   anchor-name: --feature-target;
@@ -37,6 +39,7 @@
 ```
 
 #### JavaScript
+
 ```javascript
 const tourStep = document.getElementById('tour-step');
 tourStep.showPopover();
@@ -46,11 +49,11 @@ tourStep.querySelector('button').focus();
 
 ### 実装ガイドライン
 
-* **MANDATORY:** ユーザー操作中にツアーステップが誤って閉じないよう、`popover="manual"`を使ってください。
-* **MANDATORY:** コンテナに`role="dialog"`を付け、見出しを`aria-labelledby`でリンクしてください。
-* **MANDATORY:** 開いた直後にプログラム的にポップオーバー内へフォーカスを移動し、フォーカスの放置を防いでください。
-* **DO** CSSアンカーポジショニングを使い、ツアーステップを説明対象の特定の機能にテザリングしてください。
-* **DO** ポップオーバー内に、`popovertargetaction="hide"`を使う明示的な「閉じる」または「次へ」ボタンを用意してください。
+- **MANDATORY:** ユーザー操作中にツアーステップが誤って閉じないよう、`popover="manual"`を使ってください。
+- **MANDATORY:** コンテナに`role="dialog"`を付け、見出しを`aria-labelledby`でリンクしてください。
+- **MANDATORY:** 開いた直後にプログラム的にポップオーバー内へフォーカスを移動し、フォーカスの放置を防いでください。
+- **DO** CSSアンカーポジショニングを使い、ツアーステップを説明対象の特定の機能にテザリングしてください。
+- **DO** ポップオーバー内に、`popovertargetaction="hide"`を使う明示的な「閉じる」または「次へ」ボタンを用意してください。
 
 ### フォールバック戦略
 
@@ -76,12 +79,13 @@ Supported by: Chrome 116 (Aug 2023), Edge 116 (Aug 2023), Firefox 125 (Apr 2024)
 アンカーポジショニング非対応のブラウザに対応するには、ポリフィルか純粋なCSSフォールバックのいずれかを選べます。
 
 ##### オプション1: ポリフィルによるフォールバック
+
 `@oddbird/css-anchor-positioning`ポリフィルでアンカーポジショニングをエミュレートできます。暗黙アンカーはサポートされていないため、トリガーには明示的なアンカー名を**必ず**追加してください。さらに、このポリフィルはポップオーバー上での`position-area`をサポートしないため、目的のinsetには`position-area`ではなく**`anchor()`を必ず**使ってください。
 
 ```html
 <script type="module">
   if (!CSS.supports('anchor-name: --foo')) {
-    await import("https://unpkg.com/@oddbird/css-anchor-positioning");
+    await import('https://unpkg.com/@oddbird/css-anchor-positioning');
   }
 </script>
 ```
@@ -95,6 +99,7 @@ Supported by: Chrome 116 (Aug 2023), Edge 116 (Aug 2023), Firefox 125 (Apr 2024)
 ```
 
 ##### オプション2: ポリフィルを使わないCSSフォールバック
+
 ポリフィルを避けたい場合は、`@supports not`を使ってツールチップをビューポート下部の固定位置にデフォルトで配置できます。
 
 ```css

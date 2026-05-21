@@ -115,8 +115,14 @@ MANDATORY: サインインフォームのパスワード入力には、`autocomp
 MANDATORY: メールとパスワードの両方のフィールドに`required`属性を追加してください。モダンブラウザは、不足しているデータに対して自動的にプロンプトを表示しフォーカスを設定します。
 
 ```html
-<input type="email" id="email" name="email" autocomplete="username" required>
-<input type="password" id="password" name="password" autocomplete="current-password" required>
+<input type="email" id="email" name="email" autocomplete="username" required />
+<input
+  type="password"
+  id="password"
+  name="password"
+  autocomplete="current-password"
+  required
+/>
 ```
 
 ### パスワードの貼り付けを許可する

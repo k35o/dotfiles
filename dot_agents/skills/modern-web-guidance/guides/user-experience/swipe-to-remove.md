@@ -130,7 +130,7 @@
 
 アクションの色はスペーサー(ステップ2)にあります。アクションの **アイコン** はリスト項目そのものに、行の左右の端に固定して描画します。
 
-> **注:** 本ガイドを通じて、「左」は *行の左側* (右にスワイプすると現れる)を指し、「右」は *行の右側* (左にスワイプすると現れる)を指します。
+> **注:** 本ガイドを通じて、「左」は _行の左側_ (右にスワイプすると現れる)を指し、「右」は _行の右側_ (左にスワイプすると現れる)を指します。
 
 以下に示すアイコンの配置、サイズ、動きは **出発点としての提案** であり、必須ではありません。アイコンサイズ、エッジのインセット、しきい値到達時のスケール、遷移時間、さらには擬似要素 vs 実DOMノードの選択など、デザインに合わせて調整してください。機械的に必要なのは、アイコンが(スワイプ前にコンテンツで覆えるように)コンテンツの後ろにあり、(スペーサーと一緒にスクロールしないように)リスト項目の内側にあることだけです。それ以外は好みの問題です。
 
@@ -165,13 +165,19 @@
      pop (`scale`, see `.is-activating` below) and the removal fade
      (`scale` + `opacity`, see `.is-removing` below). 0.2s is an example
      duration. */
-  transition: scale 0.2s ease, opacity 0.2s ease;
+  transition:
+    scale 0.2s ease,
+    opacity 0.2s ease;
 
   background: var(--action-icon) center / contain no-repeat;
 }
 /* Inset from the row edge (example values; adjust to match your layout). */
-.SwipeableList-item.is-initialized::before { left: 1.5em; }
-.SwipeableList-item.is-initialized::after  { right: 1.5em; }
+.SwipeableList-item.is-initialized::before {
+  left: 1.5em;
+}
+.SwipeableList-item.is-initialized::after {
+  right: 1.5em;
+}
 
 /* Activating pop: scale the icon up when the user is past the visual
    activate point, so the row's affordance feels reactive. Toggled by JS
@@ -192,8 +198,8 @@
 
 /* Only show the icon on the *leading* side of the swipe; hide the
    trailing-side one. `data-swipe-direction` is set by JS in Step 4. */
-.SwipeableList-item.is-activating[data-swipe-direction="left"]::after,
-.SwipeableList-item.is-activating[data-swipe-direction="right"]::before {
+.SwipeableList-item.is-activating[data-swipe-direction='left']::after,
+.SwipeableList-item.is-activating[data-swipe-direction='right']::before {
   visibility: hidden;
 }
 ```
@@ -256,44 +262,46 @@ function setupItem(item) {
   // One inner observer per item, rooted at the track. Vertical scrolling of
   // the outer list moves root and target together, so the callback only fires
   // for the horizontal swipe.
-  const observer = new IntersectionObserver((entries, observer) => {
-    const entry = entries.at(-1);
-    const ratio = entry.intersectionRatio;
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      const entry = entries.at(-1);
+      const ratio = entry.intersectionRatio;
 
-    // Direction the user is swiping toward. A positive offset from the
-    // track's left edge means the content has been pulled right (left
-    // spacer revealed), so the leading icon is on the left.
-    const direction = (entry.boundingClientRect.x - entry.rootBounds.x) > 0
-      ? 'left'
-      : 'right';
+      // Direction the user is swiping toward. A positive offset from the
+      // track's left edge means the content has been pulled right (left
+      // spacer revealed), so the leading icon is on the left.
+      const direction =
+        entry.boundingClientRect.x - entry.rootBounds.x > 0 ? 'left' : 'right';
 
-    if (ratio < commitThreshold) {
-      // The IO entry's boundingClientRect is the last reliable measurement
-      // before the animation starts; reuse it for both the pre-collapse
-      // height and the slide-off translate distance.
-      removeItem(item, content, direction, entry);
-      viewportObserver.unobserve(item);
-      observer.disconnect();
-      return;
-    }
+      if (ratio < commitThreshold) {
+        // The IO entry's boundingClientRect is the last reliable measurement
+        // before the animation starts; reuse it for both the pre-collapse
+        // height and the slide-off translate distance.
+        removeItem(item, content, direction, entry);
+        viewportObserver.unobserve(item);
+        observer.disconnect();
+        return;
+      }
 
-    // Scale up the leading icon while the content is past the activate
-    // point; restore it at rest.
-    item.classList.toggle('is-activating', ratio < activateThreshold);
+      // Scale up the leading icon while the content is past the activate
+      // point; restore it at rest.
+      item.classList.toggle('is-activating', ratio < activateThreshold);
 
-    // Hold the previous direction at rest so the icon's exit animation
-    // finishes on the side the user was swiping toward.
-    if (entry.boundingClientRect.x !== entry.rootBounds.x) {
-      item.dataset.swipeDirection = direction;
-    }
-  }, {
-    root: track,
-    threshold: [commitThreshold, activateThreshold],
-  });
+      // Hold the previous direction at rest so the icon's exit animation
+      // finishes on the side the user was swiping toward.
+      if (entry.boundingClientRect.x !== entry.rootBounds.x) {
+        item.dataset.swipeDirection = direction;
+      }
+    },
+    {
+      root: track,
+      threshold: [commitThreshold, activateThreshold],
+    },
+  );
 
   // Return the handle without starting observation; the outer viewport observer
   // calls `observer.observe(content)` once the item is in view.
-  const handle = {observer, content};
+  const handle = { observer, content };
   swipeObservers.set(item, handle);
   return handle;
 }
@@ -305,9 +313,7 @@ async function removeItem(item, content, direction, entry) {
   // Content's pixel offset from the track's left edge.
   const x = rect.x - entry.rootBounds.x;
   // Pixel distance the content needs to travel to be fully out of view.
-  const translate = direction === 'left'
-    ? rect.width - x
-    : -(x + rect.width);
+  const translate = direction === 'left' ? rect.width - x : -(x + rect.width);
 
   // Use a combination of CSS transitions (for declarative styles) and
   // WAAPI animations (for computed values) to remove the element,
@@ -353,8 +359,10 @@ function setupList(list) {
   new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       for (const node of mutation.addedNodes) {
-        if (node.nodeType === Node.ELEMENT_NODE &&
-            node.matches('.SwipeableList-item')) {
+        if (
+          node.nodeType === Node.ELEMENT_NODE &&
+          node.matches('.SwipeableList-item')
+        ) {
           viewportObserver.observe(node);
         }
       }
@@ -391,7 +399,7 @@ if (ratio < commitThreshold) {
 }
 ```
 
-命名についての補足: `removeItem` は破壊的なケースを意識した名前ですが、実際に行う処理(行の高さを潰す、コンテンツを画面外へスライドさせる、ノードを取り除く)は「この行は終了したのでアニメーションして消す」という汎用ルーチンに過ぎません。アーカイブ、既読にする、スヌーズでも同様に動作します。いずれにせよ行は *このリスト* から消えます。ハンドラが実際には何も削除しない(例: 両方が要素を他へ移す)場合は、`dismissItem` のような中立的な名前にリネームしてコードが正しく読めるようにしてください。
+命名についての補足: `removeItem` は破壊的なケースを意識した名前ですが、実際に行う処理(行の高さを潰す、コンテンツを画面外へスライドさせる、ノードを取り除く)は「この行は終了したのでアニメーションして消す」という汎用ルーチンに過ぎません。アーカイブ、既読にする、スヌーズでも同様に動作します。いずれにせよ行は _このリスト_ から消えます。ハンドラが実際には何も削除しない(例: 両方が要素を他へ移す)場合は、`dismissItem` のような中立的な名前にリネームしてコードが正しく読めるようにしてください。
 
 2つのアクションを視覚的に区別するため、各方向の色とアイコンをリスト項目にホイストし、トラックを分割グラデーションで塗り、同じ変数から2つの擬似要素アイコンを描画します。
 
@@ -401,9 +409,9 @@ if (ratio < commitThreshold) {
      when the user swipes RIGHT (e.g., archive); `--right-*` is revealed
      when the user swipes LEFT (e.g., delete). */
   --left-action-color: hsl(140 50% 40%);
-  --left-action-icon: url("…archive svg…");
+  --left-action-icon: url('…archive svg…');
   --right-action-color: hsl(0 65% 50%);
-  --right-action-icon: url("…trash svg…");
+  --right-action-icon: url('…trash svg…');
 }
 
 .SwipeableList-item.is-initialized .SwipeableList-track {
@@ -423,8 +431,12 @@ if (ratio < commitThreshold) {
 }
 
 /* Per-side icons read from the same variables. */
-.SwipeableList-item.is-initialized::before { background-image: var(--left-action-icon); }
-.SwipeableList-item.is-initialized::after  { background-image: var(--right-action-icon); }
+.SwipeableList-item.is-initialized::before {
+  background-image: var(--left-action-icon);
+}
+.SwipeableList-item.is-initialized::after {
+  background-image: var(--right-action-icon);
+}
 ```
 
 この構成では、スペーサーに独自の背景色は不要になります(トラックのグラデーションが表示色を担うため)。デュアルアクションバリアントを使う場合は、ステップ2の `.SwipeableList-track::before, ::after` の `background-color` ルールを削除して構いません。
@@ -433,7 +445,7 @@ if (ratio < commitThreshold) {
 
 - **DO** `proximity` ではなく `mandatory` のスナップを使ってください。`proximity` だと行が部分的にスクロールした状態で止まり、アクションの背景が半分見えたままになる可能性があります。
 - **DO** トラックに `overscroll-behavior-x: none` を設定してください。これがないと、過剰スワイプでiOS/Androidのブラウザの戻るジェスチャーが発動する可能性があります。
-- **DO** コンテンツが完全に画面外になるのを待たず、スナップが落ち着く *前* のしきい値(例: `commitThreshold ≈ 0.2`)でコミットしてください。これにより削除アニメーションをジェスチャー中に開始でき、スナップの着地待ちよりはるかに応答性が良く感じられます。
+- **DO** コンテンツが完全に画面外になるのを待たず、スナップが落ち着く _前_ のしきい値(例: `commitThreshold ≈ 0.2`)でコミットしてください。これにより削除アニメーションをジェスチャー中に開始でき、スナップの着地待ちよりはるかに応答性が良く感じられます。
 - **DO** アイテム単位のセットアップはページロード時に全アイテムを配線するのではなく、ビューポートの外側 `IntersectionObserver` で駆動してください。これにより、レイアウト依存値(`clientWidth` など)をアイテム描画前に読むことを避け、アクティブなオブザーバー数をユーザーが実際に見える範囲に比例した数に保てます。
 - **DO** アイテムが動的に追加されるとき(データ読み込み後の初期描画、無限スクロール、サーバープッシュ)はリストに `MutationObserver` を使ってください。これがないと、ページロード後に追加されたアイテムが配線されません。
 - **DO NOT** 手動のトランスフォームを駆動するために `pointerdown`/`pointermove`/`pointerup` に頼らないでください。ブラウザが無償で提供してくれる慣性、スナップバック、キーボードアクセシビリティ、reduced-motion対応を失います。

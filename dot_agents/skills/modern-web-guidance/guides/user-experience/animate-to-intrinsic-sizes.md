@@ -24,7 +24,7 @@
   /* 1. Define a fixed initial size (or 0) and hide overflow */
   block-size: 100px;
   overflow: hidden;
-  
+
   /* 2. Transition the sizing property */
   transition: block-size 0.4s ease-out;
 }
@@ -61,7 +61,9 @@
   /* 1. Start with the natural content height */
   block-size: auto;
   overflow: hidden;
-  transition: block-size 0.5s ease-in-out, opacity 0.5s ease;
+  transition:
+    block-size 0.5s ease-in-out,
+    opacity 0.5s ease;
 }
 
 .collapsible-alert.is-dismissed {
@@ -85,7 +87,10 @@
 // MANDATORY Accessibility Synchronization: Ensure elements collapsed to zero dimensions are removed from the assistive technology tree, and sync aria-expanded states on triggers.
 const alertElement = document.querySelector('.collapsible-alert');
 alertElement.addEventListener('transitionend', (e) => {
-  if (e.propertyName === 'block-size' && alertElement.classList.contains('is-dismissed')) {
+  if (
+    e.propertyName === 'block-size' &&
+    alertElement.classList.contains('is-dismissed')
+  ) {
     alertElement.hidden = true;
   }
 });
@@ -100,9 +105,9 @@ triggerBtn?.addEventListener('click', () => {
 
 ## 主な制約
 
-*   **キーワード同士の制限**: 2つの異なるキーワード間（例: `min-content` から `max-content`）を直接アニメーションさせることはできません。トランジションの一方は固定長またはパーセンテージである必要があります（例: `0` から `auto`）。
-*   **calc-size 構文**: `calc-size()` の中で、同じ式内に異なる内在キーワードを混ぜることはできません。第1引数（基準）が `size` の意味を定義します。
-*   **オプトイン要件**: 内在キーワードへのトランジションは後方互換性のためにデフォルトで無効（`numeric-only`）です。要素または祖先に `interpolate-size: allow-keywords` を適用する必要があります。`calc-size()` は使用されると自動的に補間を有効化するため、プロパティごとのオーバーライドとして機能します。
+- **キーワード同士の制限**: 2つの異なるキーワード間（例: `min-content` から `max-content`）を直接アニメーションさせることはできません。トランジションの一方は固定長またはパーセンテージである必要があります（例: `0` から `auto`）。
+- **calc-size 構文**: `calc-size()` の中で、同じ式内に異なる内在キーワードを混ぜることはできません。第1引数（基準）が `size` の意味を定義します。
+- **オプトイン要件**: 内在キーワードへのトランジションは後方互換性のためにデフォルトで無効（`numeric-only`）です。要素または祖先に `interpolate-size: allow-keywords` を適用する必要があります。`calc-size()` は使用されると自動的に補間を有効化するため、プロパティごとのオーバーライドとして機能します。
 
 ## フォールバック戦略
 
@@ -115,8 +120,8 @@ calc-size() は limited availability。
 
 `interpolate-size` と `calc-size()` はプログレッシブエンハンスメントです。サポートしないブラウザでは目標サイズへ瞬時にジャンプします。
 
-*   **グレースフルデグラデーション**: 単純な `block-size: auto` のトランジションでは、標準ブラウザは即座にサイズを切り替えるだけで、機能はしますが洗練さに欠けます。
-*   **手動キーワードフォールバック**: `calc-size()` を使う場合は、古いブラウザが `calc-size()` 宣言全体を破棄するため、必ず標準のキーワードフォールバックを提供してください。
+- **グレースフルデグラデーション**: 単純な `block-size: auto` のトランジションでは、標準ブラウザは即座にサイズを切り替えるだけで、機能はしますが洗練さに欠けます。
+- **手動キーワードフォールバック**: `calc-size()` を使う場合は、古いブラウザが `calc-size()` 宣言全体を破棄するため、必ず標準のキーワードフォールバックを提供してください。
 
 ```css
 .card {

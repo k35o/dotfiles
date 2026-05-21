@@ -168,12 +168,16 @@
      their left edge during the transition so they feel like cards
      stacking over the previous view. */
   .Stack-view:not(:first-child) .Stack-viewContent {
-    animation: parallax linear both, shadow-fade linear both;
+    animation:
+      parallax linear both,
+      shadow-fade linear both;
     animation-timeline: view(inline), view(inline);
     /* parallax: only exit (the view sliding back as a deeper one comes in).
        shadow-fade: entry through exit (visible the whole time the view is
        transitioning, not when it's at rest). */
-    animation-range: exit 0% exit 100%, entry 0% exit 100%;
+    animation-range:
+      exit 0% exit 100%,
+      entry 0% exit 100%;
   }
 
   @keyframes parallax {
@@ -188,8 +192,14 @@
     /* Shadow ramps in during entry, holds across the middle of the
        gesture, and ramps out during exit — so it's only visible while
        the view is mid-transition, not when at rest. */
-    0%, 100% { box-shadow: 0 0 1.5rem #0000; }
-    25%, 75% { box-shadow: 0 0 1.5rem #0004; }
+    0%,
+    100% {
+      box-shadow: 0 0 1.5rem #0000;
+    }
+    25%,
+    75% {
+      box-shadow: 0 0 1.5rem #0004;
+    }
   }
 }
 ```
@@ -300,7 +310,7 @@ function drillDown(urlPath) {
   const newDepth = currentDepth + 1;
   // Push BEFORE creating the view so the URL is correct if anything
   // observing history (analytics, etc.) reads it during view creation.
-  history.pushState({depth: newDepth}, '', urlPath);
+  history.pushState({ depth: newDepth }, '', urlPath);
 
   // pushState truncates forward entries in real browser history;
   // mirror that truncation in our depth map so we don't hold references
@@ -312,14 +322,14 @@ function drillDown(urlPath) {
 
   const newView = createDrillDownView(routeData);
   stack.appendChild(newView);
-  entriesByDepth.set(newDepth, {urlPath, view: newView});
+  entriesByDepth.set(newDepth, { urlPath, view: newView });
 
   // Scroll one viewport-width to the right. behavior: 'auto' defers to
   // the CSS `scroll-behavior` set in step 2, which is smooth unless
   // prefers-reduced-motion is set. The snap container locks onto the
   // new view; the scrollsnapchange listener (step 7) fires when the
   // snap settles.
-  stack.scrollBy({left: stack.clientWidth, behavior: 'auto'});
+  stack.scrollBy({ left: stack.clientWidth, behavior: 'auto' });
 }
 ```
 
@@ -364,8 +374,8 @@ stack.addEventListener('click', (e) => {
 // a deep link lands on the root view and the platform Back from there
 // returns the user to where they came from.
 function goBack() {
-  const atDeepLinkRoot = currentDepth === 0
-    && entriesByDepth.get(0)?.view !== rootView;
+  const atDeepLinkRoot =
+    currentDepth === 0 && entriesByDepth.get(0)?.view !== rootView;
   if (atDeepLinkRoot) {
     synthesizeRootEntry();
   } else {
@@ -381,7 +391,7 @@ function synthesizeRootEntry() {
   // entry the user "came from"; the original deep-linked entry is now
   // behind us, so platform Back from the root view will return there.
   const newDepth = currentDepth + 1;
-  history.pushState({depth: newDepth}, '', '/');
+  history.pushState({ depth: newDepth }, '', '/');
 
   // Create the root view if it doesn't exist yet (we landed on a deep
   // link and never needed it before now), and insert it at the LEFT end
@@ -393,7 +403,7 @@ function synthesizeRootEntry() {
     stack.prepend(rootView);
     stack.scrollLeft += stack.clientWidth;
   }
-  entriesByDepth.set(newDepth, {urlPath: '/', view: rootView});
+  entriesByDepth.set(newDepth, { urlPath: '/', view: rootView });
 
   // Now scroll to the new entry (the root view). updateFromHistoryState
   // smooth-scrolls one step left, the parallax plays, and
@@ -418,7 +428,7 @@ function updateFromHistoryState(state, behaviorOverride) {
   // Ensure entriesByDepth has an entry for the destination depth.
   // If the URL changed (e.g. forward-nav into a previously-pruned
   // view), clear the cached view reference so the loop below rebuilds.
-  const entry = entriesByDepth.get(newDepth) ?? {view: null};
+  const entry = entriesByDepth.get(newDepth) ?? { view: null };
   if (entry.urlPath !== urlPath) {
     entry.urlPath = urlPath;
     entry.view = urlPath === '/' ? rootView : null;
@@ -475,8 +485,9 @@ function updateFromHistoryState(state, behaviorOverride) {
   // back-style (smooth).
   const forward = toIdx > fromIdx;
   const multiStep = Math.abs(toIdx - fromIdx) > 1;
-  const behavior = behaviorOverride ?? (forward || multiStep ? 'instant' : 'auto');
-  stack.scrollTo({left: toIdx * stack.clientWidth, behavior});
+  const behavior =
+    behaviorOverride ?? (forward || multiStep ? 'instant' : 'auto');
+  stack.scrollTo({ left: toIdx * stack.clientWidth, behavior });
 }
 ```
 
@@ -538,10 +549,10 @@ function onActiveViewChanged(currentView) {
   //    fights the snap and can land the user mid-snap.
   const stored = returnFocus.get(currentView);
   if (stored) {
-    stored.focus({preventScroll: true});
+    stored.focus({ preventScroll: true });
     returnFocus.delete(currentView);
   } else if (currentView !== rootView) {
-    currentView.querySelector('.back')?.focus({preventScroll: true});
+    currentView.querySelector('.back')?.focus({ preventScroll: true });
   }
 }
 
@@ -575,10 +586,10 @@ if (initialRouteData) {
 }
 stack.appendChild(initialView);
 
-entriesByDepth.set(0, {urlPath: initialUrlPath, view: initialView});
+entriesByDepth.set(0, { urlPath: initialUrlPath, view: initialView });
 // replaceState attaches a `depth` to the entry the user landed on, so
 // any subsequent pushState / popstate has a base depth to count from.
-history.replaceState({depth: 0}, '');
+history.replaceState({ depth: 0 }, '');
 
 updateFromHistoryState(history.state, 'instant');
 ```
@@ -597,7 +608,7 @@ updateFromHistoryState(history.state, 'instant');
 - **DO** `prefers-reduced-motion` を尊重し、`scroll-behavior: smooth` は `@media (prefers-reduced-motion: no-preference)` の中だけで宣言し、`scrollTo` / `scrollBy` は `behavior: 'smooth'` ではなく `behavior: 'auto'` で呼び出して、OSレベルの設定が反映されるようにしてください。`behavior: 'smooth'` をハードコードするとユーザー設定が無視されます。
 - **DO** ドリルダウンのトリガーには `<button onclick>` や `<div>` ではなく実際の `<a href>` 要素を描画してください。実際のアンカーは、ホバー時のURLプレビュー、共有性、中クリック、スクリーンリーダーの役割、SEOを自動で得られます。
 - **DO** 各ドリルダウンビューに明示的な戻るボタンを入れてください。スワイプジェスチャーはタッチでのみ動作するため、キーボード、ポインター、デスクトップユーザーには見えるアフォーダンスが必要です。
-- **DO NOT** `popstate` ハンドラーから `history.pushState` を呼ばないでください。ユーザーが戻ろうとしている最中に *新しい* エントリをプッシュし、ブラウザの戻るボタンを壊します。
+- **DO NOT** `popstate` ハンドラーから `history.pushState` を呼ばないでください。ユーザーが戻ろうとしている最中に _新しい_ エントリをプッシュし、ブラウザの戻るボタンを壊します。
 - **DO NOT** スクロール駆動アニメーションが利用可能なときに `scroll` イベントリスナーでパララックスを駆動しないでください。CSS経路はコンポジターで動きますが、JSのスクロールリスナーはメインスレッドで動作し、ジェスチャー中に目に見えてフレームを落とします。
 - **DO NOT** スワイプバック後にDOMから取り除いたビューを変更しないでください。`entriesByDepth` を正規の記録として扱い、削除済みエントリは `view: null` として、必要に応じて `updateFromHistoryState` で再構築してください。
 
@@ -619,17 +630,20 @@ updateFromHistoryState(history.state, 'instant');
 // event handler IDL attribute is added to the prototype when the feature
 // is supported, regardless of whether any element has the handler set.
 if (!('onscrollsnapchange' in HTMLElement.prototype)) {
-  const viewObserver = new IntersectionObserver((entries) => {
-    for (const entry of entries) {
-      // threshold:1 only fires for fully-visible entries, but the
-      // observer also emits a "leaving" entry per view that drops below
-      // ratio 1. Filter to the entering side, which is the snap-commit
-      // moment we're trying to detect.
-      if (entry.intersectionRatio === 1) {
-        onActiveViewChanged(entry.target);
+  const viewObserver = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        // threshold:1 only fires for fully-visible entries, but the
+        // observer also emits a "leaving" entry per view that drops below
+        // ratio 1. Filter to the entering side, which is the snap-commit
+        // moment we're trying to detect.
+        if (entry.intersectionRatio === 1) {
+          onActiveViewChanged(entry.target);
+        }
       }
-    }
-  }, {root: stack, threshold: 1});
+    },
+    { root: stack, threshold: 1 },
+  );
 
   // Auto-observe every .Stack-view as it's added to the stack, and stop
   // observing as it's removed. Using a MutationObserver lets the primary
@@ -641,10 +655,11 @@ if (!('onscrollsnapchange' in HTMLElement.prototype)) {
         if (node.classList?.contains('Stack-view')) viewObserver.observe(node);
       }
       for (const node of m.removedNodes) {
-        if (node.classList?.contains('Stack-view')) viewObserver.unobserve(node);
+        if (node.classList?.contains('Stack-view'))
+          viewObserver.unobserve(node);
       }
     }
-  }).observe(stack, {childList: true});
+  }).observe(stack, { childList: true });
 
   // Catch up to any views already in the stack at the time this code
   // runs (typically the initial view appended in step 8).

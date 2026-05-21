@@ -4,6 +4,7 @@
 これは、特定のカラースキームで常に表示されなければならないコンポーネント（例: 常にダーク／ライトモード）に有用です。
 
 ユースケースの例:
+
 - 美観的な理由でライトモードのページでもダークモードで表示されることが多い要素、たとえばコードブロック、メディアプレイヤー、写真ギャラリーなど。
 - ライト背景向けに設計されたメディア（画像、動画、イラスト、印刷プレビューなど）を含む領域は、ページの他の部分がダークモードであってもライトモードに設定できます。
 - ユーザーレベルの設定で `color-scheme` を制御する要素（例: コンポーネントプレビュー）。
@@ -31,7 +32,9 @@
 ページ全体の `color-scheme` が設定されており、それに敏感な色トークン（例: `light-dark()` 経由）を使用している場合、特定のコンポーネントに `color-scheme` を設定するだけで、そのサブツリーのカラーモードをオーバーライドできます:
 
 ```css
-pre, code, .dark {
+pre,
+code,
+.dark {
   color-scheme: dark;
 }
 ```
@@ -56,12 +59,14 @@ pre, code, .dark {
 つまり、`light-dark()` 色に設定された継承される `<color>` プロパティは、子孫に2つの色のうち1つしか渡せず、`light-dark()` 式そのものは渡しません。
 
 これには次が含まれます:
+
 - 継承するビルトインの色プロパティ。たとえば `color`、`accent-color`、`fill`、`stroke`、`text-shadow`、`caret-color`。
 - `syntax: <color>` と `inherits: true` で登録された継承可能なカスタムプロパティ。
 - `inherit` に設定されたその他の `<color>` プロパティ。
 
 これは以下を意味します:
-- *デザイントークン*（例: `--surface-color`）として保持することを意図したカスタムプロパティを `<color>` として**登録しない**でください。トークンは、子孫が異なる `color-scheme` の下で再解決できるよう、`light-dark()` 式を生かしておく必要があります。
+
+- _デザイントークン_（例: `--surface-color`）として保持することを意図したカスタムプロパティを `<color>` として**登録しない**でください。トークンは、子孫が異なる `color-scheme` の下で再解決できるよう、`light-dark()` 式を生かしておく必要があります。
 - 要素に `color-scheme` を設定する際は、`light-dark()` 値に設定された継承される `<color>` プロパティを（直接または設計トークン経由で）すべて、同じデザイントークンであっても再指定してください。
 - `color-scheme` のオーバーライドを持つ要素では、`<color>` プロパティに `inherit` を**使用しない**でください（子孫では使用してかまいません）。
 - 反対のユースケースには、登録された `<color>` プロパティを使ってください: 祖先の解決された色を意図的にスナップショット化し、子孫の `color-scheme` の下で再解決されないようにしたい場合です。たとえば、ページの背景を取得して別の場所で使う場合などです。
@@ -71,29 +76,30 @@ pre, code, .dark {
 
 ```css
 :root {
-	--accent-color: light-dark(blue, skyblue);
-	--surface-color: light-dark(white, #222);
-	--text-color: light-dark(#111, white);
+  --accent-color: light-dark(blue, skyblue);
+  --surface-color: light-dark(white, #222);
+  --text-color: light-dark(#111, white);
 
-	color-scheme: light dark;
-	accent-color: var(--accent-color);
-	color: var(--text-color);
+  color-scheme: light dark;
+  accent-color: var(--accent-color);
+  color: var(--text-color);
 }
 
 body {
-	/* --surface-color dynamically switches despite being inherited because --surface-color is not registered */
-	background: var(--surface-color);
+  /* --surface-color dynamically switches despite being inherited because --surface-color is not registered */
+  background: var(--surface-color);
 }
 
-pre, code {
-	color-scheme: dark;
-	background: var(--surface-color);
+pre,
+code {
+  color-scheme: dark;
+  background: var(--surface-color);
 
-	/* Without this, accent-color would be blue, not skyblue! */
-	accent-color: var(--accent-color);
+  /* Without this, accent-color would be blue, not skyblue! */
+  accent-color: var(--accent-color);
 
-	/* Without this, text-color would be #111, not white! */
-	color: var(--text-color);
+  /* Without this, text-color would be #111, not white! */
+  color: var(--text-color);
 }
 ```
 
@@ -135,7 +141,7 @@ color-scheme のBaselineステータス: Widely available。2022-02-03からBase
 }
 
 button.primary {
-	background-color: var(--color-brand);
+  background-color: var(--color-brand);
 }
 ```
 
@@ -160,7 +166,10 @@ light-dark() のBaselineステータス: Newly available。2024-05-13からBasel
 
   /* OPTIONAL: use light-dark() for more control of built-in UI colors */
   @supports (color: light-dark(white, black)) {
-    --accent-color: light-dark(var(--brand-accent-light), var(--brand-accent-dark));
+    --accent-color: light-dark(
+      var(--brand-accent-light),
+      var(--brand-accent-dark)
+    );
   }
 
   /* MANDATORY: Automatically adapt native UI to user system preferences */
@@ -170,7 +179,8 @@ light-dark() のBaselineステータス: Newly available。2024-05-13からBasel
   accent-color: var(--accent-color);
 }
 
-pre, code {
+pre,
+code {
   color-scheme: dark;
 
   /* **Mandatory**: any inherited color properties must be set again, even if to the same design tokens */

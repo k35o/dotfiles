@@ -16,25 +16,29 @@
 
 ```javascript
 // 1. Parse a date string from an input (e.g., "1990-01-01")
-const birthdateStr = "1990-01-01";
+const birthdateStr = '1990-01-01';
 const plainDate = Temporal.PlainDate.from(birthdateStr);
 
 // 2. Display the date
 // This will output "01/01/1990" (or equivalent) in any time zone
-console.log(plainDate.toLocaleString('en-GB')); 
+console.log(plainDate.toLocaleString('en-GB'));
 
 // 3. Compare with standard Date (which might drift)
-const dateObj = new Date("1990-01-01T00:00:00Z");
+const dateObj = new Date('1990-01-01T00:00:00Z');
 // In a UTC-5 time zone, this might print "31/12/1989"
-console.log(new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York' }).format(dateObj));
+console.log(
+  new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York' }).format(
+    dateObj,
+  ),
+);
 ```
 
 ## 戦略的実装とベストプラクティス
 
--   **DO**: 誕生日、記念日、祝日など、時間帯やタイムゾーンが無関係な「カレンダー上の日付」には `Temporal.PlainDate` を使用してください。
--   **DO**: 毎日午前9時のリマインダーなど、ユーザーがいるタイムゾーンに関わらず午前9時であってほしい「時計上の時刻」には `Temporal.PlainTime` を使用してください。
--   **DO NOT**: 物理的な特定の瞬間（「インスタント」）を表現する必要がある場合は、Plain型を使わないでください。ログ、イベントタイムスタンプ、タイムゾーンを意識する必要があるものには `Temporal.Instant` または `Temporal.ZonedDateTime` を使用してください。
--   **DO**: `Temporal` オブジェクトは**イミュータブル**であることを忘れないでください。`add()` や `with()` などのメソッドは元のインスタンスを変更せず、新しいインスタンスを返します。
+- **DO**: 誕生日、記念日、祝日など、時間帯やタイムゾーンが無関係な「カレンダー上の日付」には `Temporal.PlainDate` を使用してください。
+- **DO**: 毎日午前9時のリマインダーなど、ユーザーがいるタイムゾーンに関わらず午前9時であってほしい「時計上の時刻」には `Temporal.PlainTime` を使用してください。
+- **DO NOT**: 物理的な特定の瞬間（「インスタント」）を表現する必要がある場合は、Plain型を使わないでください。ログ、イベントタイムスタンプ、タイムゾーンを意識する必要があるものには `Temporal.Instant` または `Temporal.ZonedDateTime` を使用してください。
+- **DO**: `Temporal` オブジェクトは**イミュータブル**であることを忘れないでください。`add()` や `with()` などのメソッドは元のインスタンスを変更せず、新しいインスタンスを返します。
 
 ## フォールバック戦略
 
@@ -53,7 +57,7 @@ Temporal は limited availability。
 (async () => {
   if (typeof Temporal === 'undefined') {
     // Load the polyfill conditionally
-    const module = await import("https://esm.sh/@js-temporal/polyfill");
+    const module = await import('https://esm.sh/@js-temporal/polyfill');
     globalThis.Temporal = module.Temporal;
     // Extend Date.prototype if needed
     Date.prototype.toTemporalInstant = module.toTemporalInstant;

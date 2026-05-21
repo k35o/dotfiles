@@ -14,6 +14,7 @@
 - `none`: 開発者によるメカニズムでのみダイアログを閉じられます。
 
 ### バックドロップのスタイリング
+
 ダイアログが `showModal()` でモーダルとして開かれると、ブラウザは `::backdrop` 疑似要素を生成します。このバックドロップはビューポート全体を覆い、ダイアログの真後ろに配置されます。
 
 ```css
@@ -36,7 +37,9 @@ dialog::backdrop {
   </form>
 </dialog>
 
-<button onclick="document.getElementById('myDialog').showModal()">Open Dialog</button>
+<button onclick="document.getElementById('myDialog').showModal()">
+  Open Dialog
+</button>
 ```
 
 ## 制約とアクセシビリティ
@@ -45,7 +48,7 @@ dialog::backdrop {
 - **必須**: モーダルダイアログは常に `showModal()` で開くこと。これにより、ダイアログがトップレイヤーに乗り、フォーカスがトラップされ、`Esc` キーが処理されます。
 - **DO**: `aria-labelledby` または `aria-label` でダイアログのアクセシブルな名前を提供すること。
 - **DO NOT**: `show()` で開く非モーダルダイアログでは `closedby` を使わないこと。バックドロップを持たず、ライトディスミスがトリガーされません。
-- **DO NOT**: 閉じる *前に* 実行すべきクリティカルなロジックには `click` イベントを使わないこと。代わりに `close` または `cancel` イベントをリッスンしてください。
+- **DO NOT**: 閉じる _前に_ 実行すべきクリティカルなロジックには `click` イベントを使わないこと。代わりに `close` または `cancel` イベントをリッスンしてください。
 
 ## フォールバック戦略
 
@@ -68,12 +71,11 @@ if (!('closedBy' in HTMLDialogElement.prototype)) {
     // 2. Check if the click coordinates fall within the dialog's content box.
     // This distinguishes between a click on the backdrop vs a click on the dialog's background/padding.
     const rect = dialog.getBoundingClientRect();
-    const isDialogContent = (
+    const isDialogContent =
       rect.top <= event.clientY &&
       event.clientY <= rect.top + rect.height &&
       rect.left <= event.clientX &&
-      event.clientX <= rect.left + rect.width
-    );
+      event.clientX <= rect.left + rect.width;
 
     if (isDialogContent) return;
 

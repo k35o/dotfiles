@@ -33,14 +33,20 @@ function navigate(view) {
 
 ```css
 /* In the list view, give each */
-#product-1 { view-transition-name: p1 }
-#product-2 { view-transition-name: p2 }
-#product-3 { view-transition-name: p3 }
+#product-1 {
+  view-transition-name: p1;
+}
+#product-2 {
+  view-transition-name: p2;
+}
+#product-3 {
+  view-transition-name: p3;
+}
 ```
 
 ```js
-function updateDOM(clickedTransitionName){
-  const hero = document.getElementById("hero");
+function updateDOM(clickedTransitionName) {
+  const hero = document.getElementById('hero');
   hero.style.viewTransitionName = clickedTransitionName;
 }
 ```
@@ -50,7 +56,7 @@ function updateDOM(clickedTransitionName){
 詳細ページの`#hero`要素と、リストページで選択された`.thumbnail`要素が`view-transition-name`を共有します。
 
 ```css
-#hero{
+#hero {
   view-transition-name: hero;
 }
 .thumbnail.selected {
@@ -66,54 +72,51 @@ function updateDOM(clickedTransitionName){
 
 ```javascript
 // Function called when a thumbnail is clicked
-function goFromListToDetail(e){
-  e.currentTarget.classList.add("selected");
-  const hero = document.getElementById("hero");
+function goFromListToDetail(e) {
+  e.currentTarget.classList.add('selected');
+  const hero = document.getElementById('hero');
   const bgColor = getComputedStyle(e.currentTarget).backgroundColor;
   hero.style.background = bgColor;
 
   // Trigger the transition, checking for support
   if (!document.startViewTransition) {
-    document.body.classList.add("detail");
+    document.body.classList.add('detail');
     // MANDATORY Accessibility Routing: Route focus to the newly revealed heading to announce context and preserve logical tab flow
-    document.getElementById("detail-heading")?.focus();
-    return; // MANDATORY: End function execution if view transitions are not supported.  
+    document.getElementById('detail-heading')?.focus();
+    return; // MANDATORY: End function execution if view transitions are not supported.
   }
   const transition = document.startViewTransition(() => {
-    document.body.classList.add("detail");
+    document.body.classList.add('detail');
   });
   // MANDATORY Accessibility Routing: Route focus after the view transition resolves
   transition.finished.finally(() => {
-    document.getElementById("detail-heading")?.focus();
+    document.getElementById('detail-heading')?.focus();
   });
 }
 
 // Function called when navigating from detail back to list view
 function goFromDetailToList() {
   if (!document.startViewTransition) {
-    document.body.classList.remove("detail");
-    document.getElementById("list-heading")?.focus();
+    document.body.classList.remove('detail');
+    document.getElementById('list-heading')?.focus();
     return;
   }
   const transition = document.startViewTransition(() => {
-    document.body.classList.remove("detail");
+    document.body.classList.remove('detail');
   });
   // Clean up the list view and route focus
   transition.finished.finally(() => {
     // Route focus back to list view
-    document.getElementById("list-heading")?.focus();
+    document.getElementById('list-heading')?.focus();
     // Remove selected classList to remove view-transition-names
-    document.querySelectorAll(".selected").forEach(
-      (element) => {
-        element.classList.remove("selected");
-      },
-    );
+    document.querySelectorAll('.selected').forEach((element) => {
+      element.classList.remove('selected');
+    });
   });
 }
 ```
 
 どちらを選ぶかはユースケースに依存します。動的なリストアイテムはCSSの重複が少なくて済みますが、手動のJavaScriptクリーンアップが多くなります。
-
 
 ### ステップ3: アスペクト比の「ストレッチ」を解消する
 
@@ -133,7 +136,7 @@ function goFromDetailToList() {
 
 ```css
 ::view-transition-old(hero),
-::view-transition-new(hero){
+::view-transition-new(hero) {
   height: 100%;
 }
 ```
@@ -142,11 +145,11 @@ function goFromDetailToList() {
 
 ## ベストプラクティス
 
--   **DO NOT** トランジションを多用しすぎないでください。ユーザーがアクティブに追跡している主要コンテンツ（例: ヒーロー画像、見出し）にのみ共有要素を使ってください。
--   **DO** 一時的な`view-transition-name`値はトランジション終了後に削除し、今後のトランジションへの副作用を避けてください。
--   **DO NOT** アクティブなアニメーションを持つ要素を遷移させないでください。view transitionはスナップショットを使うので、ビュートランジション中はアニメーションが停止して見えます。
--   **DO** `prefers-reduced-motion`メディアクエリで、動きを減らすユーザーの設定を尊重してください。
--   **MANDATORY アクセシビリティルーティング**: View transitionはページレイアウトを動的にモーフィングしますが、プログラムによるフォーカスは管理しません。トランジション中に隠されたり削除されたりした要素にフォーカスが残ると、フォーカスが放置され、キーボードユーザーや支援技術ユーザーは文脈を失います。DOM更新の直後やview transitionの`finished`プロミスが解決したときに、更新されたページ見出しまたはビューコンテナ（`tabindex="-1"`を使用）にプログラム的にフォーカスを移動してください。
+- **DO NOT** トランジションを多用しすぎないでください。ユーザーがアクティブに追跡している主要コンテンツ（例: ヒーロー画像、見出し）にのみ共有要素を使ってください。
+- **DO** 一時的な`view-transition-name`値はトランジション終了後に削除し、今後のトランジションへの副作用を避けてください。
+- **DO NOT** アクティブなアニメーションを持つ要素を遷移させないでください。view transitionはスナップショットを使うので、ビュートランジション中はアニメーションが停止して見えます。
+- **DO** `prefers-reduced-motion`メディアクエリで、動きを減らすユーザーの設定を尊重してください。
+- **MANDATORY アクセシビリティルーティング**: View transitionはページレイアウトを動的にモーフィングしますが、プログラムによるフォーカスは管理しません。トランジション中に隠されたり削除されたりした要素にフォーカスが残ると、フォーカスが放置され、キーボードユーザーや支援技術ユーザーは文脈を失います。DOM更新の直後やview transitionの`finished`プロミスが解決したときに、更新されたページ見出しまたはビューコンテナ（`tabindex="-1"`を使用）にプログラム的にフォーカスを移動してください。
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -166,7 +169,7 @@ Supported by: Chrome 111 (Mar 2023), Edge 111 (Mar 2023), Firefox 144 (Oct 2025)
 View Transitions APIはプログレッシブエンハンスメント向けに設計されています。サポートしないブラウザは、アニメーションなしで単にDOM更新を即座に実行します。
 
 ```javascript
-function navigate(){
+function navigate() {
   if (!document.startViewTransition) {
     // Fallback: Just update the DOM
     updateDOM();

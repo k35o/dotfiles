@@ -1,9 +1,11 @@
 # :has() で親要素をスタイリングする
 
 ## 課題
-エラー状態では、入力要素自身ではなく *外側* の要素にスタイルを当てる必要があることがよくあります。例えば、親 `fieldset` のボーダーの色を変えたり、`<label>` をハイライトしたり、カードのヘッダーに全体的なエラーアイコンを表示したりするケースです。従来これには、親要素のクラスを切り替えるJavaScriptが必要でした。
+
+エラー状態では、入力要素自身ではなく _外側_ の要素にスタイルを当てる必要があることがよくあります。例えば、親 `fieldset` のボーダーの色を変えたり、`<label>` をハイライトしたり、カードのヘッダーに全体的なエラーアイコンを表示したりするケースです。従来これには、親要素のクラスを切り替えるJavaScriptが必要でした。
 
 ## 解決策
+
 `:has()` と `:user-invalid` を組み合わせることで、特定の子孫の有効性に基づいて任意の祖先要素を宣言的にスタイリングできます。これにより、プレゼンテーションロジックをすべてCSSに保てます。
 
 ### 実装戦略
@@ -15,6 +17,7 @@
 ## 実装ガイド
 
 ### 1. HTML構造
+
 ```html
 <form>
   <div class="card-section">
@@ -25,13 +28,14 @@
 
     <div class="field">
       <label for="username">Username</label>
-      <input type="text" id="username" required>
+      <input type="text" id="username" required />
     </div>
   </div>
 </form>
 ```
 
 ### 2. CSS
+
 ```css
 /* Default State */
 .card-section {
@@ -50,7 +54,7 @@
 
 /* Change the icon too */
 .card-section:has(:user-invalid) .status-icon::after {
-  content: "⚠️";
+  content: '⚠️';
 }
 ```
 
@@ -59,6 +63,7 @@
 `:user-invalid` 擬似クラスは広くサポートされています(Baseline 2023)が、古いブラウザをサポートする必要がある場合は、実装の一貫性を確保する必要があります。
 
 ### フォールバック用のCSS
+
 親に `.has-error` クラスを使って `:has()` の挙動を模倣します。
 
 ```css
@@ -112,14 +117,20 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -152,17 +163,21 @@ UserInvalidFallback.init(form);
 
 // 2. Add specialized "parent styling" logic (Separate from fallback)
 // Listen for changes to form validity after interaction
-form.addEventListener('blur', (e) => {
-  if (!e.target.matches('input, select, textarea')) return;
+form.addEventListener(
+  'blur',
+  (e) => {
+    if (!e.target.matches('input, select, textarea')) return;
 
-  // Find the container we want to style (sync with CSS)
-  const container = e.target.closest('.card-section');
-  if (!container) return;
+    // Find the container we want to style (sync with CSS)
+    const container = e.target.closest('.card-section');
+    if (!container) return;
 
-  // Check if ANY fallbacked input in this container is invalid
-  const hasError = container.querySelector('.user-invalid-fallback');
-  container.classList.toggle('has-error-fallback', !!hasError);
-}, true); // Capture phase to ensure we run after the fallback's blur listener
+    // Check if ANY fallbacked input in this container is invalid
+    const hasError = container.querySelector('.user-invalid-fallback');
+    container.classList.toggle('has-error-fallback', !!hasError);
+  },
+  true,
+); // Capture phase to ensure we run after the fallback's blur listener
 
 // Also handle input events for immediate cleanup
 form.addEventListener('input', (e) => {
@@ -175,7 +190,7 @@ form.addEventListener('input', (e) => {
 
 // Handle form resets
 form.addEventListener('reset', () => {
-  form.querySelectorAll('.has-error-fallback').forEach(el => {
+  form.querySelectorAll('.has-error-fallback').forEach((el) => {
     el.classList.remove('has-error-fallback');
   });
 });
@@ -188,7 +203,10 @@ form.addEventListener('reset', () => {
 ```javascript
 // Sync aria-invalid with the CSS :user-invalid state
 const syncAria = (el) => {
-  el.setAttribute?.('aria-invalid', el.matches(':user-invalid') ? 'true' : 'false');
+  el.setAttribute?.(
+    'aria-invalid',
+    el.matches(':user-invalid') ? 'true' : 'false',
+  );
 };
 
 // Update on blur (to show error) and input (to clear it)

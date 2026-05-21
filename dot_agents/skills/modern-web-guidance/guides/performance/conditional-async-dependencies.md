@@ -15,7 +15,7 @@
 // MANDATORY: Prefer checking HTMLElement.prototype over window or document
 // when checking for a global DOM attribute or property like popover.
 if (!('popover' in HTMLElement.prototype)) {
-  // Use top-level await to pause the execution of any module that imports this file 
+  // Use top-level await to pause the execution of any module that imports this file
   // until the polyfill finishes downloading and executing.
   await import('/path/to/popover-polyfill.js');
 }
@@ -27,7 +27,7 @@ export const polyfillLoaded = true;
 ```javascript
 // main.js
 
-// MANDATORY: Because conditionally-load-polyfill.js uses top-level await, 
+// MANDATORY: Because conditionally-load-polyfill.js uses top-level await,
 // this import will block execution of main.js until the polyfill is ready.
 import './conditionally-load-polyfill.js';
 
@@ -40,12 +40,12 @@ if (myPopover) {
 
 ### Safari のトップレベル `await` バグを回避する
 
-**MANDATORY:** Webkit においてトップレベル await が期待どおりに動作しないバグを回避するため、インポートの構造を注意深く設計する必要があります。このバグは、複数のモジュールがトップレベル `await` を含むモジュールを *同時に* インポートした場合に発生します。
+**MANDATORY:** Webkit においてトップレベル await が期待どおりに動作しないバグを回避するため、インポートの構造を注意深く設計する必要があります。このバグは、複数のモジュールがトップレベル `await` を含むモジュールを _同時に_ インポートした場合に発生します。
 
 ```javascript
 // DO NOT do this: importing the top-level await module from multiple sibling modules
 // simultaneously will crash in Safari.
-// 
+//
 // a.js: import './conditionally-load-polyfill.js';
 // b.js: import './conditionally-load-polyfill.js';
 // main.js: import './a.js'; import './b.js'; // CRASH!

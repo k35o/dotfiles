@@ -14,7 +14,7 @@
 
 ### ガイドライン
 
-- 標準のHTML5 doctype `<!DOCTYPE html>` を使用して、クォークレンダリングモードを防いで**ください**。 
+- 標準のHTML5 doctype `<!DOCTYPE html>` を使用して、クォークレンダリングモードを防いで**ください**。
 - スクリーンリーダーの発音と翻訳ツールのために、`<html>` 要素に `lang` 属性を設定して**ください**。
 - ページのレスポンシブ性を確保するため、`content` 属性を `"width=device-width, initial-scale=1.0"` に設定した `<meta name="viewport">` 要素を使用して**ください**。
 - 主要トピックを表す `<h1>` をページ/ビューごとに1つだけ使用して**ください**。モーダルダイアログは例外として、1つの `<h1>` を使うことができます。
@@ -30,8 +30,8 @@
 - セマンティック要素が存在する場合、汎用の `<div>` や `<span>` を使**わない**でください。例えばインタラクティブ要素、見出し、独立して再利用可能な自己完結型コンテンツなどです。
 - 冗長な値を持つ真偽属性を使**わない**でください（例: `disabled="disabled"` ではなく `disabled` を使う）。
 - 組み込みのセマンティクスと挙動を持つネイティブ要素が存在するときに、ARIAロールや状態を追加した汎用要素を使**わない**でください。
-- それが重要な要件でない限り、ARIAで要素のネイティブセマンティクスを変更し**ない**でください。 
-- フォーカス可能な要素やその親、祖先で `role="presentation"` や `aria-hidden="true"` を使**わない**でください。 
+- それが重要な要件でない限り、ARIAで要素のネイティブセマンティクスを変更し**ない**でください。
+- フォーカス可能な要素やその親、祖先で `role="presentation"` や `aria-hidden="true"` を使**わない**でください。
 - ページのズーム機能を無効化し**ない**でください。
 
 ### コード例
@@ -39,34 +39,34 @@
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard | Platform</title>
-</head>
-<body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-  <main>
-     <h1>Analytics</h1>
-    <search>
-      <form action="/filter" method="GET">
-        <label for="search-input">Scan items:</label>
-        <input type="search" id="search-input" name="q">
-        <button type="submit">Search</button>
-      </form>
-    </search>
-    <article>
-      <h2>First post</h2>
-    </article>
-  </main>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Platform</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1>Analytics</h1>
+      <search>
+        <form action="/filter" method="GET">
+          <label for="search-input">Scan items:</label>
+          <input type="search" id="search-input" name="q" />
+          <button type="submit">Search</button>
+        </form>
+      </search>
+      <article>
+        <h2>First post</h2>
+      </article>
+    </main>
+  </body>
 </html>
 ```
 
@@ -92,22 +92,27 @@
 <!-- Quote with attribution using Figure -->
 <figure>
   <blockquote cite="https://html.spec.whatwg.org/">
-    <p>The figure element represents some flow content, optionally with a caption, that is self-contained and is typically referenced as a single unit from the main flow of the document.</p>
+    <p>
+      The figure element represents some flow content, optionally with a
+      caption, that is self-contained and is typically referenced as a single
+      unit from the main flow of the document.
+    </p>
   </blockquote>
   <figcaption>
-    Definition of the &lt;figure&gt; element from the <cite>HTML Living Standard</cite>
+    Definition of the &lt;figure&gt; element from the
+    <cite>HTML Living Standard</cite>
   </figcaption>
 </figure>
 
 <!-- Image with caption -->
 <figure>
-  <img 
-    src="architecture-diagram.webp" 
+  <img
+    src="architecture-diagram.webp"
     alt="Diagram showing the flow between Client, API Gateway, and Microservices"
     width="800"
     height="450"
     loading="lazy"
-  >
+  />
   <figcaption>Figure 1: High-level system architecture overview.</figcaption>
 </figure>
 
@@ -145,54 +150,48 @@
 
 ```html
 <!-- High-priority hero image with responsive sizes -->
-<img 
-  src="hero-large.webp" 
+<img
+  src="hero-large.webp"
   srcset="hero-small.webp 480w, hero-medium.webp 800w, hero-large.webp 1200w"
   sizes="(max-width: 600px) 100vw, (max-width: 1200px) 80vw, 70vw"
-  alt="Main product view" 
-  fetchpriority="high" 
-  width="1200" 
+  alt="Main product view"
+  fetchpriority="high"
+  width="1200"
   height="600"
->
+/>
 
 <!-- Art direction and format switching with <picture> -->
 <picture>
   <!-- Mobile Art Direction: Different aspect ratio (square) and format (AVIF) -->
-  <source 
-    media="(max-width: 600px)" 
-    srcset="hero-mobile.avif 1x, hero-mobile-2x.avif 2x" 
+  <source
+    media="(max-width: 600px)"
+    srcset="hero-mobile.avif 1x, hero-mobile-2x.avif 2x"
     type="image/avif"
-    width="600" 
+    width="600"
     height="600"
-  >
-  <source 
-    media="(max-width: 600px)" 
+  />
+  <source
+    media="(max-width: 600px)"
     srcset="hero-mobile.webp 1x, hero-mobile-2x.webp 2x"
-    width="600" 
+    width="600"
     height="600"
-  >
-  
+  />
+
   <!-- Desktop: Modern format for primary layout -->
-  <source srcset="hero-desktop.avif" type="image/avif">
+  <source srcset="hero-desktop.avif" type="image/avif" />
 
   <!-- Fallback img defines the default aspect ratio (2:1) -->
-  <img 
-    src="hero-desktop.webp" 
-    alt="Platform dashboard overview" 
-    width="1200" 
+  <img
+    src="hero-desktop.webp"
+    alt="Platform dashboard overview"
+    width="1200"
     height="600"
     loading="lazy"
-  >
+  />
 </picture>
 
 <!-- Low-priority decorative footer image -->
-<img 
-  src="footer-art.png" 
-  alt="" 
-  loading="lazy" 
-  width="200" 
-  height="100"
->
+<img src="footer-art.png" alt="" loading="lazy" width="200" height="100" />
 ```
 
 ## 4. ネイティブオーバーレイ: ダイアログとポップオーバー
@@ -200,6 +199,7 @@
 ### ガイドライン
 
 クロスブラウザでPopover APIを使うためのフォールバック戦略の詳細は、[`declarative-dialog-popover-control`](user-experience/declarative-dialog-popover-control.md)を参照してください。
+
 - モーダルオーバーレイには `<dialog>` を使用して**ください**（JSの `.showModal()` が必要）。これにより、フォーカスのトラップ、背景の暗転、`Esc` での閉じることを自動的にサポートします。`closedby="any"` 属性を使うと、カスタムJavaScriptなしでネイティブの「ライトディスミス」（バックドロップクリックで閉じる）を有効化できます。
 - フォーカストラップを必要としない非モーダルUI（メニュー、ツールチップ）には、Popover API（`popover` 属性）を活用して**ください**。
 - モーダル背景のスタイリングには `::backdrop` を使用して**ください**。
@@ -229,12 +229,12 @@
 </dialog>
 
 <script>
-  const dialog = document.getElementById("fav-modal");
-  const openModal = document.getElementById("show-dialog");
-  
+  const dialog = document.getElementById('fav-modal');
+  const openModal = document.getElementById('show-dialog');
+
   // Show modal dialog
   openModal.addEventListener('click', () => dialog.showModal());
-  
+
   // Listen for the 'close' event to retrieve the user's choice (returnValue)
   dialog.addEventListener('close', () => {
     console.log(dialog.returnValue); // "confirm" or "cancel"
@@ -244,11 +244,11 @@
 
 ### ネイティブUIのオーバーレイ&ディスクロージャマトリクス
 
-| 機能 | モダリティ | フォーカス | 閉じる仕組み | ユースケース |
-| :--- | :--- | :--- | :--- | :--- |
-| **`<dialog>`** | モーダル / 非モーダル | 自動トラップ（モーダル） | Esc / フォーム / `closedby` | クリティカルなアクション、設定 |
-| **`[popover]`** | 非モーダル | 標準的なタブフロー | ライトディスミス（外側クリック） | メニュー、ツールチップ、トースト |
-| **`<details>`** | インラインディスクロージャ | 標準的なタブフロー | サマリーのトグル | アコーディオン、FAQ |
+| 機能            | モダリティ                 | フォーカス               | 閉じる仕組み                     | ユースケース                     |
+| :-------------- | :------------------------- | :----------------------- | :------------------------------- | :------------------------------- |
+| **`<dialog>`**  | モーダル / 非モーダル      | 自動トラップ（モーダル） | Esc / フォーム / `closedby`      | クリティカルなアクション、設定   |
+| **`[popover]`** | 非モーダル                 | 標準的なタブフロー       | ライトディスミス（外側クリック） | メニュー、ツールチップ、トースト |
+| **`<details>`** | インラインディスクロージャ | 標準的なタブフロー       | サマリーのトグル                 | アコーディオン、FAQ              |
 
 **ヒューリスティックルール**: ユーザーアクションを必要とする割り込みには `<dialog>`、一時的な情報には `popover`、インラインコンテンツの展開には `<details>` を使います。
 
@@ -306,7 +306,8 @@
 ```
 
 ```css
-[inert], [inert] * {
+[inert],
+[inert] * {
   opacity: 0.5;
   cursor: default;
   user-select: none;
@@ -333,10 +334,10 @@
   <fieldset>
     <legend>Address Information</legend>
     <label for="city">City:</label>
-    <input type="text" id="city" list="cities" autocomplete="address-level2">
+    <input type="text" id="city" list="cities" autocomplete="address-level2" />
     <datalist id="cities">
-      <option value="New York">
-      <option value="London">
+      <option value="New York"></option>
+      <option value="London"></option>
     </datalist>
   </fieldset>
 </form>
@@ -357,21 +358,17 @@
 ### コード例
 
 ```html
-<video 
-  controls 
-  width="800" 
-  height="450" 
-  poster="poster.webp"
->
-  <source src="intro.webm" type="video/webm">
-  <source src="intro.mp4" type="video/mp4">
-  <track src="caps.vtt" kind="captions" srclang="en" label="English">
+<video controls width="800" height="450" poster="poster.webp">
+  <source src="intro.webm" type="video/webm" />
+  <source src="intro.mp4" type="video/mp4" />
+  <track src="caps.vtt" kind="captions" srclang="en" label="English" />
 </video>
 ```
 
 ## 9. 動的スタイルとインタラクティビティ
 
 ### ガイドライン
+
 - **カスタムプロパティ**経由でCSSに状態を渡すために `style` 属性を使用して**ください**。これにより、視覚ロジックをスタイルシート内に保ち、JavaScriptは生データを提供するだけになります。
 
 - スタイルシートに属する静的なデザイン（色、パディング、マージン）にインラインスタイルを使**わない**でください。
@@ -383,14 +380,20 @@
 <body>
   <!-- Progress with style-driven color data -->
   <label for="upload-progress">Upload status:</label>
-  <progress id="upload-progress" class="loading-bar" value="0" max="100" style="--brand-hue: 200;"></progress>
+  <progress
+    id="upload-progress"
+    class="loading-bar"
+    value="0"
+    max="100"
+    style="--brand-hue: 200;"
+  ></progress>
 
   <script>
     const updateProgress = (percent, hue) => {
       const bar = document.querySelector('.loading-bar');
       bar.value = percent;
-      
-      // Update dynamic style variable 
+
+      // Update dynamic style variable
       if (hue) bar.style.setProperty('--brand-hue', hue);
     };
 
@@ -399,6 +402,7 @@
   </script>
 </body>
 ```
+
 ```css
 .loading-bar {
   accent-color: hsl(var(--brand-hue, 200) 80% 50%);

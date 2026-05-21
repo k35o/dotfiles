@@ -11,9 +11,9 @@
 
 具体的な手順は次のとおりです。
 
--   まず、プログレスバーとして機能するHTML要素を作成します。この要素は好みに合わせてスタイル付けできます。
--   次に、CSSでプログレスバーをスケールする `@keyframes` アニメーションを定義します。一般的な手法としては、要素を `scaleX(0)` から `scaleX(1)` までスケールします。
--   最後に、このアニメーションをプログレスバー要素に適用し、`animation-timeline` を scroll-timeline に設定します。これにより、ブラウザは最も近い祖先のスクローラーのスクロール位置に基づいてアニメーションの進行を駆動します。
+- まず、プログレスバーとして機能するHTML要素を作成します。この要素は好みに合わせてスタイル付けできます。
+- 次に、CSSでプログレスバーをスケールする `@keyframes` アニメーションを定義します。一般的な手法としては、要素を `scaleX(0)` から `scaleX(1)` までスケールします。
+- 最後に、このアニメーションをプログレスバー要素に適用し、`animation-timeline` を scroll-timeline に設定します。これにより、ブラウザは最も近い祖先のスクローラーのスクロール位置に基づいてアニメーションの進行を駆動します。
 
 ## サンプルコード
 
@@ -23,14 +23,20 @@
 @media (prefers-reduced-motion: no-preference) {
   @supports ((animation-timeline: scroll())) {
     @keyframes grow-progress {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
     }
 
     #progress {
       position: fixed;
-      left: 0; top: 0;
-      width: 100%; height: 1em;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 1em;
       background: red;
 
       transform-origin: 0 50%;
@@ -56,8 +62,12 @@ DOM内の配置により、`scroll()` 関数は `block` 方向で最も近い祖
 @media (prefers-reduced-motion: no-preference) {
   @supports ((animation-timeline: scroll())) {
     @keyframes grow-progress {
-      from { transform: scaleX(0); }
-      to { transform: scaleX(1); }
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
     }
 
     :root {
@@ -66,8 +76,10 @@ DOM内の配置により、`scroll()` 関数は `block` 方向で最も近い祖
 
     #progress {
       position: fixed;
-      left: 0; top: 0;
-      width: 100%; height: 1em;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 1em;
       background: red;
 
       transform-origin: 0 50%;
@@ -88,7 +100,7 @@ DOM内の配置により、`scroll()` 関数は `block` 方向で最も近い祖
 - **DO** 純粋に装飾的な要素を支援技術の読み上げフローから取り除くこと: 純粋に視覚的なスクロールインジケーターには `aria-hidden="true"` を付与し、スクリーンリーダーが空の名前のないノードに遭遇しないようにしてください。
 - **DO** ユーザー設定を尊重すること: 一部のユーザーはモーションを抑えた表示を好みます。`prefers-reduced-motion` メディアクエリを使ってこれらのユーザー向けにアニメーションを無効化または抑制してください。
 - **DO** パフォーマンスの良いCSSプロパティのみをアニメーションさせること: 最もスムーズなアニメーションのためには、`transform` や `opacity` のようにブラウザのコンポジタースレッドで処理できるプロパティに絞ってアニメーションさせてください。`width` や `height` のような他のプロパティをアニメーションするとパフォーマンス問題を引き起こす可能性があります。
-- **DO** 正しい宣言順序を使用すること: `animation` ショートハンドプロパティを使用する際は、ショートハンドがタイムラインをリセットしないように、その *後* に `animation-timeline` を宣言してください。
+- **DO** 正しい宣言順序を使用すること: `animation` ショートハンドプロパティを使用する際は、ショートハンドがタイムラインをリセットしないように、その _後_ に `animation-timeline` を宣言してください。
 
 `scroll()` 関数を使ってスクロール駆動アニメーションを作成する場合:
 
@@ -122,9 +134,10 @@ DOM内の配置により、`scroll()` 関数は `block` 方向で最も近い祖
     const progress = document.querySelector('#progress');
 
     window.addEventListener('scroll', () => {
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollable =
+        document.documentElement.scrollHeight - window.innerHeight;
       const scrolled = window.scrollY;
-      const progressPercentage = (scrolled / scrollable);
+      const progressPercentage = scrolled / scrollable;
 
       progress.style.transform = `scaleX(${progressPercentage})`;
     });

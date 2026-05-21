@@ -37,7 +37,7 @@ MANDATORY: まずブラウザに、どの要素を測定対象のコンテナと
     flex-direction: row;
     align-items: center;
   }
-  
+
   .card-image {
     width: 150px;
     height: 150px;
@@ -92,7 +92,7 @@ MANDATORY: まずブラウザに、どの要素を測定対象のコンテナと
       flex-direction: column;
     }
   }
-  
+
   @container (min-width: 400px) {
     .card {
       flex-direction: row;

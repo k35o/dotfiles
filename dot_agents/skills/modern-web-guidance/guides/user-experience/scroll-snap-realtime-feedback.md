@@ -1,9 +1,11 @@
 ## 概要
-ユーザーは、カルーセルやギャラリーなどのUI要素を操作したときに即座の視覚的フィードバックを期待します。従来のスクロールスナップは、スクロールジェスチャーが完了して要素が落ち着いた *あと* にしかフィードバックを提供しませんでした。スクロールスナップイベント、特に `scrollsnapchanging` を使えば、スクロールジェスチャー中にリアルタイムなフィードバックを提供でき、ユーザーがタッチやマウスを離す前に、これからスナップする対象をハイライト表示できます。
+
+ユーザーは、カルーセルやギャラリーなどのUI要素を操作したときに即座の視覚的フィードバックを期待します。従来のスクロールスナップは、スクロールジェスチャーが完了して要素が落ち着いた _あと_ にしかフィードバックを提供しませんでした。スクロールスナップイベント、特に `scrollsnapchanging` を使えば、スクロールジェスチャー中にリアルタイムなフィードバックを提供でき、ユーザーがタッチやマウスを離す前に、これからスナップする対象をハイライト表示できます。
 
 ## 実装
 
 ### 1. `scrollsnapchanging` をリッスンする
+
 スクロールコンテナに `scrollsnapchanging` のイベントリスナーを取り付けます。このイベントは、ブラウザが新しいスナップ対象が選ばれそうだと判断したときに発火します。
 
 ```javascript
@@ -29,6 +31,7 @@ container.addEventListener('scrollsnapchanging', (event) => {
 この例ではギャラリーが横方向にスクロールするため `snapTargetInline` を使っています。スクロールコンテナが縦方向にスクロールする場合は代わりに `snapTargetBlock` を使ってください。
 
 ### 2. `scrollsnapchange` をリッスンする
+
 スクロールジェスチャーが完了して要素が実際にスナップしたタイミングで最終的な状態を確定するために、`scrollsnapchange` イベントをリッスンします。これは最終的なアクティブ状態を確立するために必須です。
 
 ```javascript
@@ -50,10 +53,11 @@ container.addEventListener('scrollsnapchange', (event) => {
 ```
 
 ### 3. 初期状態を同期する
+
 ページロード時、ブラウザがスクロール位置を復元する場合があります(履歴の遷移やアンカーリンクなど)。このとき、`scrollsnapchange` も `scroll` イベントも自動的には発火しません。初期スクロール位置とUIを同期するために、一度きりの幾何学的チェックを実行します。
 
 ```javascript
-// Note: For item.offsetLeft to be relative to the container, 
+// Note: For item.offsetLeft to be relative to the container,
 // the container MUST be the offsetParent (e.g., `position: relative`).
 const findClosestItemIndex = () => {
   // Center-distance assumes scroll-snap-align: center on items.
@@ -93,6 +97,7 @@ if (document.readyState === 'complete') {
 ```
 
 ### フォールバック戦略
+
 スクロールスナップイベントは限定的に利用可能です。
 対応ブラウザ: Chrome 129 (2024年9月)、Edge 129 (2024年9月)。
 未対応: Firefox、Safari。
@@ -125,22 +130,26 @@ if ('onscrollsnapchanging' in Element.prototype) {
     thumbnails[closestIndex].setAttribute('aria-current', 'true');
   };
 
-  container.addEventListener('scroll', () => {
-    if (rafId) return;
-    rafId = requestAnimationFrame(() => {
-      rafId = null;
-      const closestIndex = findClosestItemIndex();
-      if (!thumbnails[closestIndex]) return;
+  container.addEventListener(
+    'scroll',
+    () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        const closestIndex = findClosestItemIndex();
+        if (!thumbnails[closestIndex]) return;
 
-      // DO NOT forget to clean up stale pending classes
-      thumbnails.forEach((thumb) => thumb.classList.remove('pending'));
-      thumbnails[closestIndex].classList.add('pending');
-    });
+        // DO NOT forget to clean up stale pending classes
+        thumbnails.forEach((thumb) => thumb.classList.remove('pending'));
+        thumbnails[closestIndex].classList.add('pending');
+      });
 
-    // Debounce fallback for browsers that don't support scrollend
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(promotePendingToActive, 100);
-  }, { passive: true });
+      // Debounce fallback for browsers that don't support scrollend
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(promotePendingToActive, 100);
+    },
+    { passive: true },
+  );
 
   // Fallback: use Baseline `scrollend` event to promote pending to active cleanly where supported
   container.addEventListener('scrollend', () => {

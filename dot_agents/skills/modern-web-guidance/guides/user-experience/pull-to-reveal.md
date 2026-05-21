@@ -69,9 +69,9 @@ Unsupported in: Firefox and Safari.
 /**
  * Progressive Enhancement Fallback
  */
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   // Check for native CSS support
-  if (!CSS.supports("scroll-initial-target", "nearest")) {
+  if (!CSS.supports('scroll-initial-target', 'nearest')) {
     const targetContent = document.querySelector('.main-content.target');
     if (targetContent) {
       // Use behavior: "instant" to mimic the native CSS behavior

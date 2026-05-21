@@ -9,13 +9,15 @@ CSSの`@function`アットルールを使えば、こうしたロジックを再
 カスタム関数は`@function`ルールに続けてダッシュ付きの名前とパラメーターのリストを指定して定義します。関数は`result`プロパティで値を返します。
 
 ```css
-@function --my-function(--input1 <length>, --input2: default-value) returns <length> {
+@function --my-function(--input1 <length>, --input2: default-value) returns
+  <length> {
   /* Logic goes here */
   result: var(--input1);
 }
 ```
 
 ### 主な概念
+
 - **パラメーター:** 必ずダブルダッシュ（`--`）から始める必要があります。
 - **デフォルト:** コロン（`:`）でデフォルト値を指定できます。
 - **戻り値:** `result`プロパティが関数の返す値を決定します。関数本体で最後に宣言された`result`が採用されます。
@@ -25,11 +27,21 @@ CSSの`@function`アットルールを使えば、こうしたロジックを再
 ## 実践例
 
 ### 1. デザインシステムトークン（グラデーション）
+
 グラデーションのロジックをカプセル化することで、アプリ全体で一貫した色のグラデーションを保証します。`--angle`にはデフォルト値があり、一貫性を提供しつつ上書きも可能です。
 
 ```css
-@function --fancy-gradient(--start-color <color>, --end-color <color>, --angle: 98deg) returns <image>{
-  result: linear-gradient(in oklab var(--angle), var(--start-color), var(--end-color) );
+@function --fancy-gradient(
+    --start-color <color>,
+    --end-color <color>,
+    --angle: 98deg
+  )
+  returns <image> {
+  result: linear-gradient(
+    in oklab var(--angle),
+    var(--start-color),
+    var(--end-color)
+  );
 }
 
 .card {
@@ -38,10 +50,11 @@ CSSの`@function`アットルールを使えば、こうしたロジックを再
 ```
 
 ### 2. 条件付きレイアウトロジック
+
 関数の中で`@media`や他のクエリを直接使い、環境に応じて異なる値を返せます。関数で条件付きロジックを使うとき、`@function`は最初の`result`の値で「returnする」のではなく、CSSのカスケードに従い、画面サイズ・コンテナサイズ・その他のクエリにマッチした最後の値に解決される点に注意してください。
 
 ```css
-@function --grid-template(--count <number>){
+@function --grid-template(--count <number>) {
   /* MANDATORY: Put default value first. */
   result: 1fr; /* Default: stack */
   @media (min-width: 800px) {
@@ -56,6 +69,7 @@ main {
 ```
 
 ## ベストプラクティス
+
 - **ダッシュ付きの名前を使う:** 関数名とパラメーターは必ず`--`で始めてください。
 - **デフォルトを提供する:** 妥当なデフォルト値を用意して関数を堅牢にしましょう。
 - **シンプルに保つ:** 実際に繰り返されているか複雑なロジックにのみ関数を使ってください。単純なプロパティと値のペアを過剰にエンジニアリングしないでください。

@@ -13,7 +13,7 @@
 1. **デフォルトのスタイリングを定義する**: コンテナにCSS変数を設定し、ベース状態を定義します。
 2. **状態ベースのオーバーライドを適用する**: `:has([child-selector]:[state])` でコンテナをターゲットし、アクティブまたは代替状態のCSS変数を再定義します。
 
-*例: 子のトグルに基づいてテーマが変わるコンポーネント。*
+_例: 子のトグルに基づいてテーマが変わるコンポーネント。_
 
 ```css
 /* 1. Define the default state on the component container */
@@ -28,7 +28,9 @@
   border: 1px solid var(--card-border);
 
   /* Use a transition for smooth state changes */
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 /* 2. Apply styles when the child enters the specific state */
@@ -51,7 +53,7 @@
 <div class="theme-card">
   <!-- The child element whose state controls the parent -->
   <label>
-    <input type="checkbox" class="theme-toggle">
+    <input type="checkbox" class="theme-toggle" />
     Enable Dark Mode
   </label>
 

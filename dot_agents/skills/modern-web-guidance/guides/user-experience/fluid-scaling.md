@@ -15,7 +15,7 @@
   /* Define the container type. Use 'inline-size' for width-based scaling. */
   /* You can also use 'size' for both width and height, but it requires explicit sizing. */
   container-type: inline-size;
-  
+
   /* Optional: Name the container for specific targeting */
   container-name: fluid-card;
 }
@@ -25,8 +25,8 @@
 
 コンテナのサイズに対する相対値で大きさを設定するには、コンテナクエリユニット（`cqi`、`cqb` など）を使います。
 
-*   `cqi`: コンテナのインラインサイズの 1%（横書きモードでは幅）。
-*   `cqb`: コンテナのブロックサイズの 1%（横書きモードでは高さ）。
+- `cqi`: コンテナのインラインサイズの 1%（横書きモードでは幅）。
+- `cqb`: コンテナのブロックサイズの 1%（横書きモードでは高さ）。
 
 **注意**: コンテナユニットは `@container` クエリルールを使わなくても、どのプロパティでも直接使用できます。`container-type` が定義されているもっとも近い祖先に基づいて自動的に解決されます。
 

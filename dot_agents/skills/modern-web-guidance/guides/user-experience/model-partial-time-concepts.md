@@ -7,12 +7,17 @@
 ## 実装例
 
 ### 月単位の有効期限（クレジットカード、請求サイクル）
+
 年と月を表すには`Temporal.PlainYearMonth`を使います。
 
 ```javascript
 // Create a PlainYearMonth from values
 // Use explicit calendar to avoid mismatch issues in polyfill environments
-const expiry = Temporal.PlainYearMonth.from({ year: 2027, month: 12, calendar: 'iso8601' });
+const expiry = Temporal.PlainYearMonth.from({
+  year: 2027,
+  month: 12,
+  calendar: 'iso8601',
+});
 
 // Get the current year/month
 const currentMonth = Temporal.Now.plainDateISO().toPlainYearMonth();
@@ -22,21 +27,28 @@ const currentMonth = Temporal.Now.plainDateISO().toPlainYearMonth();
 const duration = currentMonth.until(expiry, { largestUnit: 'years' });
 
 if (duration.sign < 0) {
-  console.log("Expired");
+  console.log('Expired');
 } else if (duration.sign === 0) {
-  console.log("Expires this month");
+  console.log('Expires this month');
 } else {
-  console.log(`Expires in ${duration.years} years and ${duration.months} months`);
+  console.log(
+    `Expires in ${duration.years} years and ${duration.months} months`,
+  );
 }
 ```
 
 ### 毎年繰り返す日付（誕生日、更新日）
+
 年を持たない月と日を表すには`Temporal.PlainMonthDay`を使います。
 
 ```javascript
 // Create a PlainMonthDay for an annual event
 // Include explicit calendar for polyfill safety
-const birthday = Temporal.PlainMonthDay.from({ month: 10, day: 31, calendar: 'iso8601' });
+const birthday = Temporal.PlainMonthDay.from({
+  month: 10,
+  day: 31,
+  calendar: 'iso8601',
+});
 
 // Check if it matches today's date components
 const today = Temporal.Now.plainDateISO();
@@ -48,11 +60,12 @@ const birthdayThisYear = birthday.toPlainDate({ year: today.year });
 ```
 
 ### 時刻のみの表現（アラーム、店舗の営業時間）
+
 日付を持たない時刻を表すには`Temporal.PlainTime`を使います。
 
 ```javascript
 // Create a PlainTime from a string
-const alarmTime = Temporal.PlainTime.from("08:00:00");
+const alarmTime = Temporal.PlainTime.from('08:00:00');
 
 // Add a duration to a PlainTime
 const snoozedTime = alarmTime.add({ minutes: 10 });
@@ -86,7 +99,7 @@ Unsupported in: Safari.
 (async () => {
   if (typeof Temporal === 'undefined') {
     // Load the polyfill conditionally
-    const module = await import("https://esm.sh/@js-temporal/polyfill");
+    const module = await import('https://esm.sh/@js-temporal/polyfill');
     globalThis.Temporal = module.Temporal;
     // Extend Date.prototype if needed
     Date.prototype.toTemporalInstant = module.toTemporalInstant;

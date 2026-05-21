@@ -1,10 +1,13 @@
 # 必須フィールドのフィードバック
 
 ## 問題
+
 ページ読み込み直後に必須フィールドをエラー状態としてマークすると、混乱を招く可能性があります。理想的には、必須フィールドは、ユーザーが入力を試みて失敗した場合にのみ「無効」に見えるべきです。
 
 ## 解決策
+
 `:user-invalid`疑似クラスは、これを完全に解決します。必須フィールドの場合、ページ読み込み時にはマッチしません。次の場合にのみマッチします:
+
 1.  ユーザーがフィールドとやり取りし(例: 文字を入力して削除する)、空の状態で離れた(blur)場合。
 2.  ユーザーが空の状態でフォームを送信しようとした場合。
 
@@ -17,6 +20,7 @@
 ## 実装ガイド
 
 ### 1. HTML構造
+
 ```html
 <form id="feedback-form">
   <div class="field">
@@ -27,7 +31,7 @@
       name="full-name"
       required
       aria-errormessage="name-error"
-    >
+    />
     <!-- MANDATORY: Include an icon or distinct non-color indicator alongside error text -->
     <div id="name-error" class="error-msg">
       <span aria-hidden="true">❌</span> This field is required.
@@ -37,6 +41,7 @@
 ```
 
 ### 2. CSS
+
 ```css
 .error-msg {
   display: none;
@@ -81,11 +86,15 @@ const syncAriaInvalid = (input) => {
 };
 
 // Sync on blur when a user finishes interacting
-form.addEventListener('blur', (e) => {
-  if (e.target.matches('input[required]')) {
-    syncAriaInvalid(e.target);
-  }
-}, true);
+form.addEventListener(
+  'blur',
+  (e) => {
+    if (e.target.matches('input[required]')) {
+      syncAriaInvalid(e.target);
+    }
+  },
+  true,
+);
 
 // Sync all required fields when submission is attempted
 form.addEventListener('submit', () => {
@@ -161,14 +170,20 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -203,7 +218,10 @@ UserInvalidFallback.init(form);
 ```javascript
 // Sync aria-invalid with the CSS :user-invalid state
 const syncAria = (el) => {
-  el.setAttribute?.('aria-invalid', el.matches(':user-invalid') ? 'true' : 'false');
+  el.setAttribute?.(
+    'aria-invalid',
+    el.matches(':user-invalid') ? 'true' : 'false',
+  );
 };
 
 // Update on blur (to show error) and input (to clear it)

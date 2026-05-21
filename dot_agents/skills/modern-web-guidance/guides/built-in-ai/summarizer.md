@@ -6,7 +6,6 @@
 
 Summarizer APIは**Chromeおよび Edge 138**から利用可能です。Gemini NanoまたはPhi（それぞれ）の一度限りのモデルダウンロードが必要です。
 
-
 ### ハードウェアおよびソフトウェア要件
 
 - **OS**: Windows 10/11、macOS 13以降、Linux、または ChromeOS（Chromebook Plus）。
@@ -28,7 +27,7 @@ Summarizer APIは**Chromeおよび Edge 138**から利用可能です。Gemini N
 const options = {
   type: 'key-points',
   format: 'plain-text',
-  length: 'medium'
+  length: 'medium',
 };
 
 const availability = await Summarizer.availability(options);
@@ -38,16 +37,20 @@ if (availability === 'available') {
   // Ready to use immediately
 } else if (availability === 'downloadable') {
   // A user gesture is strictly required to start the download
-  document.getElementById('start-download-btn').addEventListener('click', async () => {
-    const summarizer = await Summarizer.create({
-      ...options,
-      monitor(m) {
-        m.addEventListener('downloadprogress', (e) => {
-          console.log(`Downloaded ${Math.round((e.loaded / e.total) * 100)}%`);
-        });
-      },
+  document
+    .getElementById('start-download-btn')
+    .addEventListener('click', async () => {
+      const summarizer = await Summarizer.create({
+        ...options,
+        monitor(m) {
+          m.addEventListener('downloadprogress', (e) => {
+            console.log(
+              `Downloaded ${Math.round((e.loaded / e.total) * 100)}%`,
+            );
+          });
+        },
+      });
     });
-  });
 }
 ```
 
@@ -55,12 +58,12 @@ if (availability === 'available') {
 
 `Summarizer.create(options)` でサマライザーを作成する際、出力をカスタマイズできます。
 
-| パラメータ    | オプション                                    | 説明                             |
-| :----------- | :----------------------------------------- | :-------------------------------------- |
-| `type`       | `key-points`、`tldr`、`teaser`、`headline` | 要約の戦略を定義します。           |
-| `format`     | `markdown`、`plain-text`                   | 出力構文のスタイル。                    |
+| パラメータ   | オプション                                 | 説明                           |
+| :----------- | :----------------------------------------- | :----------------------------- |
+| `type`       | `key-points`、`tldr`、`teaser`、`headline` | 要約の戦略を定義します。       |
+| `format`     | `markdown`、`plain-text`                   | 出力構文のスタイル。           |
 | `length`     | `short`、`medium`、`long`                  | 目標の長さ（例: 1文 vs 5文）。 |
-| `preference` | `auto`、`speed`、`capability`              | レイテンシと品質のバランス。           |
+| `preference` | `auto`、`speed`、`capability`              | レイテンシと品質のバランス。   |
 
 ### 設定例
 
@@ -142,6 +145,7 @@ if ('Summarizer' in self) {
 `Summarizer` APIがサポートされていない、または可用性チェックが `'unavailable'` を返した場合、グレースフルなフォールバックが必要です。
 
 推奨オプション:
+
 1. **リモートAPIフォールバック**: 要約リクエストをサーバーエンドポイントやリモートAPI（Vertex AI Gemini APIなど）にリダイレクトし、ユーザーが引き続き要約を取得できるようにします。
 2. **グレースフルデグラデーション**: UI上で要約コントロールを視覚的に無効化するか、ボタンを隠したうえでフレンドリーなメッセージ（例: `"Local summarization is currently unsupported in this browser"`）を表示します。汎用的な未処理のランタイム例外をトリガーするようなインタラクションを許可しないでください。
 3. **ポリフィルフォールバック**: コミュニティが保守する `built-in-ai-task-apis-polyfills` や `prompt-api-polyfill` などのポリフィルを使って、クラウドのモデルを使うリモートサービスやローカルモデルを使うデバイス内推論でAPI面をエミュレートできます。

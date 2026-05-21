@@ -13,13 +13,30 @@
 
 ```html
 <!-- Elevate priority for a video poster image that acts as the LCP candidate -->
-<link rel="preload" href="/images/video-poster.jpg" as="image" fetchpriority="high">
+<link
+  rel="preload"
+  href="/images/video-poster.jpg"
+  as="image"
+  fetchpriority="high"
+/>
 
 <!-- Elevate priority for a critical LCP image that is hidden in CSS -->
-<link rel="preload" href="/images/hero-background.jpg" as="image" fetchpriority="high">
+<link
+  rel="preload"
+  href="/images/hero-background.jpg"
+  as="image"
+  fetchpriority="high"
+/>
 
 <!-- Deprioritize a secondary font to avoid network contention -->
-<link rel="preload" href="/fonts/secondary-font.woff2" as="font" type="font/woff2" fetchpriority="low" crossorigin>
+<link
+  rel="preload"
+  href="/fonts/secondary-font.woff2"
+  as="font"
+  type="font/woff2"
+  fetchpriority="low"
+  crossorigin
+/>
 ```
 
 ## ベストプラクティス

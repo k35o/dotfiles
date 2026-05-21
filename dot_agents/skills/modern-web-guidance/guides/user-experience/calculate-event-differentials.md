@@ -21,10 +21,10 @@ const now = Temporal.Now.zonedDateTimeISO();
 const tz = now.timeZoneId;
 
 // 2. Parse inputs (assuming ISO strings from form inputs)
-const startDateStr = "2025-01-01";
-const startTimeStr = "12:00:00";
-const endDateStr = "2025-01-31";
-const endTimeStr = "12:00:00";
+const startDateStr = '2025-01-01';
+const startTimeStr = '12:00:00';
+const endDateStr = '2025-01-31';
+const endTimeStr = '12:00:00';
 
 const startDate = Temporal.PlainDate.from(startDateStr);
 const startTime = Temporal.PlainTime.from(startTimeStr);
@@ -41,22 +41,24 @@ const timeActive = now.since(start, { largestUnit: 'year' });
 const timeRemaining = now.until(end, { largestUnit: 'year' });
 
 console.log(`Active: ${timeActive.days} days, ${timeActive.hours} hours`);
-console.log(`Remaining: ${timeRemaining.days} days, ${timeRemaining.hours} hours`);
+console.log(
+  `Remaining: ${timeRemaining.days} days, ${timeRemaining.hours} hours`,
+);
 
 // 4. Compare dates
 const isExpired = Temporal.ZonedDateTime.compare(now, end) > 0;
 if (isExpired) {
-  console.log("Subscription is expired.");
+  console.log('Subscription is expired.');
 }
 ```
 
 ## 戦略的実装とベストプラクティス
 
--   **DO**: 特定のタイムゾーンで発生する現実世界のイベント（サブスクリプションの更新、イベントスケジューリングなど）の計算には `Temporal.ZonedDateTime` を使用してください。
--   **DO**: `largestUnit` を使って、結果に含めたい最大単位（例: `'year'` や `'month'`）を指定してください。省略するとデフォルトは `'auto'` となり、人間に読みやすい期間として年や月にまとまらないことがあります。
--   **DO**: 過去のイベント*からの*経過時間（例: `now.since(start)`）には `.since()` を、将来のイベント*までの*残り時間（例: `now.until(end)`）には `.until()` を使ってください。
--   **DO NOT**: インスタンスを直接変更しないでください。`Temporal` オブジェクトは**イミュータブル**です。`add()`、`subtract()`、`with()` などの操作は*新しい*インスタンスを返します。
--   **DO**: ある時点が別の時点より後かを判定するには `Temporal.ZonedDateTime.compare` を使ってください。1つ目が後ならば `1`、前ならば `-1`、等しければ `0` を返します。
+- **DO**: 特定のタイムゾーンで発生する現実世界のイベント（サブスクリプションの更新、イベントスケジューリングなど）の計算には `Temporal.ZonedDateTime` を使用してください。
+- **DO**: `largestUnit` を使って、結果に含めたい最大単位（例: `'year'` や `'month'`）を指定してください。省略するとデフォルトは `'auto'` となり、人間に読みやすい期間として年や月にまとまらないことがあります。
+- **DO**: 過去のイベント*からの*経過時間（例: `now.since(start)`）には `.since()` を、将来のイベント*までの*残り時間（例: `now.until(end)`）には `.until()` を使ってください。
+- **DO NOT**: インスタンスを直接変更しないでください。`Temporal` オブジェクトは**イミュータブル**です。`add()`、`subtract()`、`with()` などの操作は*新しい*インスタンスを返します。
+- **DO**: ある時点が別の時点より後かを判定するには `Temporal.ZonedDateTime.compare` を使ってください。1つ目が後ならば `1`、前ならば `-1`、等しければ `0` を返します。
 
 ## フォールバック戦略
 
@@ -75,7 +77,7 @@ Temporal は limited availability。
 (async () => {
   if (typeof Temporal === 'undefined') {
     // Load the polyfill conditionally
-    const module = await import("https://esm.sh/@js-temporal/polyfill");
+    const module = await import('https://esm.sh/@js-temporal/polyfill');
     globalThis.Temporal = module.Temporal;
     // Extend Date.prototype if needed
     Date.prototype.toTemporalInstant = module.toTemporalInstant;

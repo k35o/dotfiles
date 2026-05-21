@@ -1,4 +1,5 @@
 # 宣言的なボタンアクション
+
 Invoker Commands API を使用すると、HTML 属性によってボタンが宣言的にターゲット要素のアクションを呼び出せます。このアプローチによって、手動でイベントリスナーを設定する必要が減り、HTML がパースされた直後からインタラクションを利用できるようになります。
 
 カスタムなアプリケーション固有のアクションを実装したい場合は、独自のコマンド名を定義できます。カスタムコマンドは将来追加されるブラウザの組み込みコマンドと衝突しないよう、ダブルダッシュ（`--`）をプレフィックスとして付ける必要があります。
@@ -13,49 +14,43 @@ Invoker Commands API を使用すると、HTML 属性によってボタンが宣
 
 ```html
 <!-- The target element that will respond to custom commands -->
-<div id="action-target" class="target">
-  Action Target
-</div>
+<div id="action-target" class="target">Action Target</div>
 
 <!-- Buttons declaratively linked to the target element -->
 <!-- Each button sends a unique custom command starting with '--' -->
-<button commandfor="action-target" command="--spin">
-  Spin
-</button>
+<button commandfor="action-target" command="--spin">Spin</button>
 
-<button commandfor="action-target" command="--grow">
-  Grow
-</button>
+<button commandfor="action-target" command="--grow">Grow</button>
 
-<button commandfor="action-target" command="--reset">
-  Reset All
-</button>
+<button commandfor="action-target" command="--reset">Reset All</button>
 
 <script>
   // Listen for the 'command' event directly on the target element
   // (This is necessary because the native 'command' event does not bubble)
-  document.getElementById('action-target').addEventListener('command', (event) => {
-    // Robustly handle both native API and manual/polyfill fallbacks
-    const command = event.command || event.detail?.command;
-    const target = event.currentTarget;
+  document
+    .getElementById('action-target')
+    .addEventListener('command', (event) => {
+      // Robustly handle both native API and manual/polyfill fallbacks
+      const command = event.command || event.detail?.command;
+      const target = event.currentTarget;
 
-    // Custom commands are checked to identify the requested action
-    if (command === '--spin') {
-      target.classList.toggle('is-spun');
-    } else if (command === '--grow') {
-      target.classList.toggle('is-grown');
-    } else if (command === '--reset') {
-      // Clear all custom classes to return to initial state
-      target.classList.remove('is-spun', 'is-grown');
-    }
-  });
+      // Custom commands are checked to identify the requested action
+      if (command === '--spin') {
+        target.classList.toggle('is-spun');
+      } else if (command === '--grow') {
+        target.classList.toggle('is-grown');
+      } else if (command === '--reset') {
+        // Clear all custom classes to return to initial state
+        target.classList.remove('is-spun', 'is-grown');
+      }
+    });
 </script>
 ```
 
 ## 重要な制約
 
-*   **カスタムコマンドにはプレフィックスを付ける**: 必須: すべてのカスタムコマンド名は `--` で始める必要があります（例: `command="--my-action"`）。
-*   **ターゲット指定**: `commandfor` 属性は、同じドキュメントツリー内にある要素の `id` と一致させなければなりません。
+- **カスタムコマンドにはプレフィックスを付ける**: 必須: すべてのカスタムコマンド名は `--` で始める必要があります（例: `command="--my-action"`）。
+- **ターゲット指定**: `commandfor` 属性は、同じドキュメントツリー内にある要素の `id` と一致させなければなりません。
 
 ## フォールバック戦略
 
@@ -109,22 +104,26 @@ if (!supportsInvokers) {
     const command = button.getAttribute('command');
 
     if (target && command) {
-      target.dispatchEvent(new CustomEvent('command', {
-        bubbles: true,
-        detail: { command }
-      }));
+      target.dispatchEvent(
+        new CustomEvent('command', {
+          bubbles: true,
+          detail: { command },
+        }),
+      );
     }
   });
 }
 
 // 3. The unified listener: Registered directly on the target element
-document.getElementById('action-target').addEventListener('command', (event) => {
-  const command = event.command || event.detail?.command;
-  const target = event.currentTarget;
-  const action = commandRegistry[command];
+document
+  .getElementById('action-target')
+  .addEventListener('command', (event) => {
+    const command = event.command || event.detail?.command;
+    const target = event.currentTarget;
+    const action = commandRegistry[command];
 
-  if (action) {
-    action(target);
-  }
-});
+    if (action) {
+      action(target);
+    }
+  });
 ```

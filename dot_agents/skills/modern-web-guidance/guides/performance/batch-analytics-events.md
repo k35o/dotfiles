@@ -12,7 +12,7 @@
 
 3. **タイムアウトが切れたらイベントキューをリセットする:** スケジュール済みのビーコンが正常に送信された後（つまり `fetchLater()` の結果の `activated` 値が `true` になった後）に新しいアナリティクスイベントが発生した場合は、イベントキューをリセットします。
 
-3. **残りはブラウザに任せる:** `activateAfter` のタイムアウトが切れる前にユーザーがページから離脱したりタブを閉じたりした場合でも、ブラウザは直近の `fetchLater()` 呼び出しのペイロードを確実に送信します。
+4. **残りはブラウザに任せる:** `activateAfter` のタイムアウトが切れる前にユーザーがページから離脱したりタブを閉じたりした場合でも、ブラウザは直近の `fetchLater()` 呼び出しのペイロードを確実に送信します。
 
 ## サンプルコード
 
@@ -56,7 +56,7 @@ function trackEvent(eventData) {
   try {
     fetchLaterResult = fetchLater(ANALYTICS_ENDPOINT, {
       method: 'POST',
-      headers: {'content-type': 'application/json'},
+      headers: { 'content-type': 'application/json' },
       body: JSON.stringify(eventQueue),
       signal: fetchLaterController.signal,
       activateAfter: BATCH_WINDOW,
@@ -68,12 +68,12 @@ function trackEvent(eventData) {
 
 // Track page loads.
 window.addEventListener('load', () => {
-  trackEvent({type: 'page_load'});
+  trackEvent({ type: 'page_load' });
 });
 
 // Track click events.
 window.addEventListener('click', (event) => {
-  trackEvent({type: 'click', target: serializeElement(event.target)});
+  trackEvent({ type: 'click', target: serializeElement(event.target) });
 });
 ```
 
@@ -115,7 +115,7 @@ globalThis.fetchLater ??= function fetchLater(url, init = {}) {
         init.method !== 'POST' ||
         init.headers
       ) {
-        fetch(url, Object.assign({}, init, {keepalive: true}));
+        fetch(url, Object.assign({}, init, { keepalive: true }));
         activated = true;
       } else {
         activated = navigator.sendBeacon(url, init.body);

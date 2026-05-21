@@ -37,10 +37,10 @@ const observer = new ResizeObserver(([entry]) => {
 });
 
 const supportsDevicePixelContentBox =
-  typeof ResizeObserverEntry !== "undefined" &&
-  "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
+  typeof ResizeObserverEntry !== 'undefined' &&
+  'devicePixelContentBoxSize' in ResizeObserverEntry.prototype;
 const options = supportsDevicePixelContentBox
-  ? { box: "device-pixel-content-box" }
+  ? { box: 'device-pixel-content-box' }
   : {};
 observer.observe(canvas, options);
 ```
@@ -62,69 +62,70 @@ canvas.onpaint = () => {
 };
 ```
 
-  シーンのレンダリングに `requestAnimationFrame` ループを使用する場合、ループ内で `canvas.requestPaint()` を呼び出してHTMLコンテンツがキャンバスにレンダリングされるようにしてください。子孫HTML要素が更新された場合にのみキャンバスを再レンダリングするようにしてください:
+シーンのレンダリングに `requestAnimationFrame` ループを使用する場合、ループ内で `canvas.requestPaint()` を呼び出してHTMLコンテンツがキャンバスにレンダリングされるようにしてください。子孫HTML要素が更新された場合にのみキャンバスを再レンダリングするようにしてください:
 
-  ```js
-  function render() {
-    // Request to update the canvas
-    canvas.requestPaint();
-    requestAnimationFrame(render);
-  }
+```js
+function render() {
+  // Request to update the canvas
+  canvas.requestPaint();
   requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
 
-  canvas.onpaint = (event) => {
-    if (event.changedElements && event.changedElements.length > 0) {
-      // Update the texture with texElementImage2D, and update the CSS transform as shown in step 6
-    }
-  };
-  ```
+canvas.onpaint = (event) => {
+  if (event.changedElements && event.changedElements.length > 0) {
+    // Update the texture with texElementImage2D, and update the CSS transform as shown in step 6
+  }
+};
+```
 
 6. CSSトランスフォームを更新します。
 
 ブラウザは3D座標空間からCSS座標空間へのマッピングをビューポートトランスフォームで行う必要があります。これを容易にするため、次の処理を行います:
-  - WebGLのMVP行列をDOM行列に変換する。
-  - HTML要素を正規化する。HTML要素はピクセル単位（例: 200px幅）でサイズ指定されます。一方WebGLでは通常、オブジェクトを「単位正方形」（例: 0から1の範囲）として扱います。正規化しないと、200pxのボタンが200倍の大きさに見えます。
-  - キャンバスのビューポートにマップする。これは「再スケーリング」フェーズで、その単位空間の数学を画面上の `<canvas>` 要素の実際のピクセル寸法に合わせて引き伸ばします。また、WebGLでは上向きが正、CSSでは下向きが正なので、Y軸を反転します。
-  - 最終的なトランスフォームを計算する。行列を順に乗算します: Viewport * MVP * Normalization。これらを1つの最終トランスフォームに結合することで、HTML要素レイヤーが3D描画と整合する正確な位置をブラウザに示す「マップ」が生まれます。
-  - そのトランスフォームをHTML要素に適用する。これによりHTML要素レイヤーが、描画されたピクセルの真上に重なります。ユーザーがボタンをクリックしたりテキストを選択したりするとき、実際のHTML要素にヒットすることが保証されます。
 
-  ```js
-  if (canvas.getElementTransform) {
-    // 1. Convert WebGL MVP Matrix to DOM Matrix
-    const mvpDOM = new DOMMatrix(Array.from(htmlElementMVP));
+- WebGLのMVP行列をDOM行列に変換する。
+- HTML要素を正規化する。HTML要素はピクセル単位（例: 200px幅）でサイズ指定されます。一方WebGLでは通常、オブジェクトを「単位正方形」（例: 0から1の範囲）として扱います。正規化しないと、200pxのボタンが200倍の大きさに見えます。
+- キャンバスのビューポートにマップする。これは「再スケーリング」フェーズで、その単位空間の数学を画面上の `<canvas>` 要素の実際のピクセル寸法に合わせて引き伸ばします。また、WebGLでは上向きが正、CSSでは下向きが正なので、Y軸を反転します。
+- 最終的なトランスフォームを計算する。行列を順に乗算します: Viewport _ MVP _ Normalization。これらを1つの最終トランスフォームに結合することで、HTML要素レイヤーが3D描画と整合する正確な位置をブラウザに示す「マップ」が生まれます。
+- そのトランスフォームをHTML要素に適用する。これによりHTML要素レイヤーが、描画されたピクセルの真上に重なります。ユーザーがボタンをクリックしたりテキストを選択したりするとき、実際のHTML要素にヒットすることが保証されます。
 
-    // 2. Normalize the HTML element (Canvas Grid pixels -> WebGL Model Space)
-    const dprX = canvas.width / canvas.clientWidth;
-    const dprY = canvas.height / canvas.clientHeight;
-    const gridWidth = targetHTMLElement.offsetWidth * dprX;
-    const gridHeight = targetHTMLElement.offsetHeight * dprY;
+```js
+if (canvas.getElementTransform) {
+  // 1. Convert WebGL MVP Matrix to DOM Matrix
+  const mvpDOM = new DOMMatrix(Array.from(htmlElementMVP));
 
-    const toGLModel = new DOMMatrix()
-      // Scale pixels to 1 unit, flip Y (as in CSS it points down, and in WebGL it points up)
-      .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
-      // Center the origin: (0,0) becomes (-width/2, -height/2) before scaling
-      .translate(-gridWidth / 2, -gridHeight / 2);
+  // 2. Normalize the HTML element (Canvas Grid pixels -> WebGL Model Space)
+  const dprX = canvas.width / canvas.clientWidth;
+  const dprY = canvas.height / canvas.clientHeight;
+  const gridWidth = targetHTMLElement.offsetWidth * dprX;
+  const gridHeight = targetHTMLElement.offsetHeight * dprY;
 
-    // 3. Map to the canvas viewport
-    const clipToCanvasViewport = new DOMMatrix()
-      // Move center (0,0) to center of canvas
-      .translate(canvas.width / 2, canvas.height / 2)
-      // Scale normalized clip (-1..1) to viewport size
-      .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
+  const toGLModel = new DOMMatrix()
+    // Scale pixels to 1 unit, flip Y (as in CSS it points down, and in WebGL it points up)
+    .scale(1 / gridWidth, -1 / gridHeight, 1 / gridHeight)
+    // Center the origin: (0,0) becomes (-width/2, -height/2) before scaling
+    .translate(-gridWidth / 2, -gridHeight / 2);
 
-    // 4. Multiply: (Clip -> Pixels) * (MVP) * (pixels -> unit square)
-    const screenSpaceTransform = clipToCanvasViewport
-      .multiply(mvpDOM)
-      .multiply(toGLModel);
+  // 3. Map to the canvas viewport
+  const clipToCanvasViewport = new DOMMatrix()
+    // Move center (0,0) to center of canvas
+    .translate(canvas.width / 2, canvas.height / 2)
+    // Scale normalized clip (-1..1) to viewport size
+    .scale(canvas.width / 2, -canvas.height / 2, canvas.height / 2);
 
-    // 5. Apply to the transform
-    const computedTransform = canvas.getElementTransform(
-      targetHTMLElement,
-      screenSpaceTransform,
-    );
-    targetHTMLElement.style.transform = computedTransform.toString();
-  }
-  ```
+  // 4. Multiply: (Clip -> Pixels) * (MVP) * (pixels -> unit square)
+  const screenSpaceTransform = clipToCanvasViewport
+    .multiply(mvpDOM)
+    .multiply(toGLModel);
+
+  // 5. Apply to the transform
+  const computedTransform = canvas.getElementTransform(
+    targetHTMLElement,
+    screenSpaceTransform,
+  );
+  targetHTMLElement.style.transform = computedTransform.toString();
+}
+```
 
 7. [トラブルシューティング] CSSトランスフォームを手順5から適用した後でも、3D内のDOM論理レイアウトのミスマッチが発生している場合、Chromium 148以前で発生していないか確認してください。その場合は、3D DOMMatrixに対して `transform.is2D` が正しくfalseになっているかを確認してください。そうでない場合は、DOMMatrixを再初期化して `is2D` をfalseに修正してから、対象のHTML要素にトランスフォームを適用してください。この問題はChromium 149以降で修正されており、新しいChromiumバージョンで発生する場合はis2D値が原因ではありません:
 
@@ -150,9 +151,9 @@ targetHTMLElement.style.transform = computedTransform.toString();
 </canvas>
 
 <script>
-  const canvas = document.getElementById("canvas");
-  const gl = canvas.getContext("webgl");
-  const uiElement = document.getElementById("ui-element");
+  const canvas = document.getElementById('canvas');
+  const gl = canvas.getContext('webgl');
+  const uiElement = document.getElementById('ui-element');
 
   // Setup WebGL texture...
   const texture = gl.createTexture();

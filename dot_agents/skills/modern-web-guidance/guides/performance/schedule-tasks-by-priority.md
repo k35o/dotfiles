@@ -3,16 +3,20 @@
 ### 優先度別にタスクをスケジュールする
 
 `scheduler.postTask()` を使い、3つの優先度のいずれかでタスクをスケジュールします。
+
 - `user-blocking`: ユーザーのインタラクションをブロックするタスク（例: 入力処理、重要なレンダリング）。
 - `user-visible`: ユーザーに見えるがブロックしないタスク（デフォルト）。
 - `background`: 時間に余裕のあるタスク（例: アナリティクス、プリフェッチ）。
 
 ```javascript
 // Schedule a high-priority task that blocks user interaction
-scheduler.postTask(() => {
-  // DO: Handle critical updates that impact user interaction
-  handleCriticalUpdate();
-}, { priority: 'user-blocking' });
+scheduler.postTask(
+  () => {
+    // DO: Handle critical updates that impact user interaction
+    handleCriticalUpdate();
+  },
+  { priority: 'user-blocking' },
+);
 
 // Schedule a default priority task
 scheduler.postTask(() => {
@@ -21,10 +25,13 @@ scheduler.postTask(() => {
 }); // Defaults to 'user-visible'
 
 // Schedule a low-priority background task
-scheduler.postTask(() => {
-  // DO: Perform heavy background work that is not time-critical
-  sendAnalytics();
-}, { priority: 'background' });
+scheduler.postTask(
+  () => {
+    // DO: Perform heavy background work that is not time-critical
+    sendAnalytics();
+  },
+  { priority: 'background' },
+);
 ```
 
 ### フォールバック戦略
@@ -52,8 +59,11 @@ if (!('scheduler' in window && 'postTask' in window.scheduler)) {
 
 function runScheduledTasks() {
   // Now safe to use scheduler.postTask in all browsers
-  scheduler.postTask(() => {
-    console.log('Task with priority support');
-  }, { priority: 'background' });
+  scheduler.postTask(
+    () => {
+      console.log('Task with priority support');
+    },
+    { priority: 'background' },
+  );
 }
 ```

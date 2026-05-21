@@ -58,6 +58,7 @@ Supported by: Chrome 133 (Feb 2025) and Edge 133 (Feb 2025).
 Unsupported in: Firefox and Safari.
 
 ### 基本のフォールバック
+
 `container-scroll-state-queries`がサポートされていない場合、デフォルトの`visibility: hidden`によりフローティング要素は不可視のままになります。機能を確保するため、非対応ブラウザでは要素を常に表示するという選択もできます。
 
 ```css
@@ -73,7 +74,7 @@ Unsupported in: Firefox and Safari.
     visibility: hidden;
     opacity: 0;
   }
-  
+
   @container scroll-state(scrollable: top) {
     .back-to-top {
       visibility: visible;
@@ -85,6 +86,7 @@ Unsupported in: Firefox and Safari.
 ```
 
 ### 高度なフォールバック（Intersection Observer）
+
 動的な可視性が必要な場合は、スクローラーの上部に置いたセンチネル要素が見えなくなったときにクラスを切り替える`IntersectionObserver`を使ってください。
 
 ```html
@@ -112,16 +114,19 @@ if (!CSS.supports('container-type', 'scroll-state')) {
   const sentinel = document.querySelector('.scroll-sentinel');
   const scroller = document.querySelector('.scroller');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      // If the sentinel is NOT intersecting, it means the user has scrolled down
-      if (!entry.isIntersecting) {
-        scroller.classList.add('scrolled');
-      } else {
-        scroller.classList.remove('scrolled');
-      }
-    });
-  }, { root: scroller });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        // If the sentinel is NOT intersecting, it means the user has scrolled down
+        if (!entry.isIntersecting) {
+          scroller.classList.add('scrolled');
+        } else {
+          scroller.classList.remove('scrolled');
+        }
+      });
+    },
+    { root: scroller },
+  );
 
   observer.observe(sentinel);
 }

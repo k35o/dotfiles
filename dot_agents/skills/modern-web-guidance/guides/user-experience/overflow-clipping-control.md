@@ -22,12 +22,12 @@
 
 ### ブロックコンテナ: 入れ子になった角丸カーブ
 
-* 角丸とカスタムなパディングを持つ親コンテナに`overflow-clip-margin: content-box`を適用します。
-* 内側の子メディアやフッターコンポーネントにも、同心円状の内側コンテンツボックス境界に沿うような角丸を適用すれば、カスタム`calc()`ロジックなしでぎこちない入れ子カーブを解消できます。
+- 角丸とカスタムなパディングを持つ親コンテナに`overflow-clip-margin: content-box`を適用します。
+- 内側の子メディアやフッターコンポーネントにも、同心円状の内側コンテンツボックス境界に沿うような角丸を適用すれば、カスタム`calc()`ロジックなしでぎこちない入れ子カーブを解消できます。
 
 ```html
 <div class="nested-curve-parent">
-  <img src="avatar.jpg" alt="Nested Curve Demo">
+  <img src="avatar.jpg" alt="Nested Curve Demo" />
   <div class="nested-curve-footer">Card Footer</div>
 </div>
 ```
@@ -60,7 +60,7 @@
 
 ### ブロックコンテナ: 子要素のシャドウブリード
 
-* `overflow: clip`を適用し、`overflow-clip-margin`に長さオフセットを定義して、子のシャドウが親コンテナの外側にクリップされずにレンダリングできるよう、レイアウトジオメトリを変えずに視覚的なセーフティーゾーンを作ります。これを行わないと、子のシャドウは親の境界でクリップされてしまいます。
+- `overflow: clip`を適用し、`overflow-clip-margin`に長さオフセットを定義して、子のシャドウが親コンテナの外側にクリップされずにレンダリングできるよう、レイアウトジオメトリを変えずに視覚的なセーフティーゾーンを作ります。これを行わないと、子のシャドウは親の境界でクリップされてしまいます。
 
 ```html
 <div class="safety-zone-parent">
@@ -112,6 +112,7 @@ Supported by: Firefox 148 (Feb 2026).
 Unsupported in: Chrome, Edge, and Safari.
 
 `overflow: clip`や`overflow-clip-margin`のネイティブサポートがない環境では、プログレッシブエンハンスメントのフォールバック戦略を視覚的な意図に応じて使い分けます:
+
 - 基本の体験を保証するため、コア境界を維持するフォールバックとして`overflow: hidden`を使う。
 - ドロップシャドウや外側のコーナーバッジが切り落とされてはいけない要素では、フォールバックとして`overflow: visible`を使う。
 
@@ -120,7 +121,7 @@ Unsupported in: Chrome, Edge, and Safari.
 ```html
 <!-- 1. Nested rounded edges fallback -->
 <div class="demo-container-fallback">
-  <img src="example.jpg" alt="Nested Curve Fallback">
+  <img src="example.jpg" alt="Nested Curve Fallback" />
   <div class="demo-footer-fallback">Footer</div>
 </div>
 
@@ -137,7 +138,7 @@ Unsupported in: Chrome, Edge, and Safari.
  * 1. Block Container Nested Curves Fallback
  * Keeps base level 1 fallback clipping roughly at the inner padding box.
  */
-.demo-container-fallback {  
+.demo-container-fallback {
   /* Level 1 Fallback: clip child roughly at padding box */
   overflow: hidden;
 }
@@ -158,7 +159,7 @@ Unsupported in: Chrome, Edge, and Safari.
  * 2. Child Element Shadow Bleed Fallback
  * Base fallback clips content using overflow: hidden, abruptly truncating child element shadows.
  */
-.demo-safety-parent {  
+.demo-safety-parent {
   /* Level 1 Fallback */
   overflow: hidden;
 }

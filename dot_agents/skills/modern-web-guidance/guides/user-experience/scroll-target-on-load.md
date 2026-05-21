@@ -43,13 +43,13 @@ scroll-initial-target は限定的に利用可能です。
 /**
  * Progressive Enhancement Fallback
  */
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   // Check for native CSS support
-  if (!CSS.supports("scroll-initial-target", "nearest")) {
-    const feedTarget = document.querySelector(".item.target");
+  if (!CSS.supports('scroll-initial-target', 'nearest')) {
+    const feedTarget = document.querySelector('.item.target');
     if (feedTarget) {
       // 'block: center' ensures the featured media is centered in view
-      feedTarget.scrollIntoView({ behavior: "instant", block: "center" });
+      feedTarget.scrollIntoView({ behavior: 'instant', block: 'center' });
     }
   }
 });

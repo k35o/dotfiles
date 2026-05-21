@@ -18,14 +18,14 @@ fetch('/api/analytics', {
   method: 'POST',
   body: JSON.stringify(eventData),
   // Lower the priority to prevent network contention
-  priority: 'low'
+  priority: 'low',
 });
 ```
 
 ## ベストプラクティス
 
 - **DO** 現在のビューで必要のないアナリティクス、ビーコン、テレメトリのデータには `priority: 'low'` を使ってください。
-- **DO** 後にユーザーが必要にする *かもしれない* データを「プリフェッチ」するときは、現在必要なものを遅らせないよう `priority: 'low'` を使ってください。
+- **DO** 後にユーザーが必要にする _かもしれない_ データを「プリフェッチ」するときは、現在必要なものを遅らせないよう `priority: 'low'` を使ってください。
 - **DO NOT** ユーザー体験に重要なフェッチに対して `priority: 'low'` を使わないでください。
 - **DO NOT** フェッチオプションオブジェクトで非推奨の `importance` キーを使わないでください。正しいキーは `priority` です。
 

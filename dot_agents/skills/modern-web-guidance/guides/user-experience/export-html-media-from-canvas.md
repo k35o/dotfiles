@@ -36,10 +36,10 @@ const observer = new ResizeObserver(([entry]) => {
 });
 
 const supportsDevicePixelContentBox =
-  typeof ResizeObserverEntry !== "undefined" &&
-  "devicePixelContentBoxSize" in ResizeObserverEntry.prototype;
+  typeof ResizeObserverEntry !== 'undefined' &&
+  'devicePixelContentBoxSize' in ResizeObserverEntry.prototype;
 const options = supportsDevicePixelContentBox
-  ? { box: "device-pixel-content-box" }
+  ? { box: 'device-pixel-content-box' }
   : {};
 observer.observe(canvas, options);
 ```
@@ -83,23 +83,22 @@ canvas.onpaint = () => {
 };
 ```
 
-
 シーンをレンダリングするのに `requestAnimationFrame` ループを使う場合は、HTML コンテンツが canvas にレンダリングされるよう、ループ内で `canvas.requestPaint()` を呼び出します。子孫の HTML 要素に更新があった場合のみ canvas を再描画するようにしてください。
 
-  ```js
-  function render() {
-    // Request to update the canvas
-    canvas.requestPaint();
-    requestAnimationFrame(render);
-  }
+```js
+function render() {
+  // Request to update the canvas
+  canvas.requestPaint();
   requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
 
-  canvas.onpaint = (event) => {
-    if (event.changedElements && event.changedElements.length > 0) {
-      // Update the texture with drawElementImage, texElementImage2D, or copyElementImageToTexture, and update the CSS transform as shown in step 5
-    }
-  };
-  ```
+canvas.onpaint = (event) => {
+  if (event.changedElements && event.changedElements.length > 0) {
+    // Update the texture with drawElementImage, texElementImage2D, or copyElementImageToTexture, and update the CSS transform as shown in step 5
+  }
+};
+```
 
 5. CSS の transform を更新します。
 
@@ -120,7 +119,7 @@ canvas.onpaint = () => {
   - WebGL の MVP 行列を DOM 行列に変換します。
   - HTML 要素を正規化します。HTML 要素はピクセル単位（例: 200px 幅）でサイズが指定されますが、WebGL では通常オブジェクトを「単位正方形」（例: 0 から 1 の範囲）として扱います。正規化しないと、200px のボタンが 200 倍のサイズに見えてしまいます。
   - canvas のビューポートにマッピングします。このステップは「リスケーリング」のフェーズで、単位空間の計算結果を、画面上の `<canvas>` 要素の実際のピクセル寸法に合わせて引き伸ばします。また、WebGL では上方向が正、CSS では下方向が正なので、Y 軸を反転します。
-  - 最終の transform を計算します。行列を順に掛け算します: Viewport * MVP * Normalization。これらをひとつの最終的な transform にまとめると、その HTML 要素レイヤを 3D 描画に揃えるためにどこに配置すべきかをブラウザに伝える「マップ」が得られます。
+  - 最終の transform を計算します。行列を順に掛け算します: Viewport _ MVP _ Normalization。これらをひとつの最終的な transform にまとめると、その HTML 要素レイヤを 3D 描画に揃えるためにどこに配置すべきかをブラウザに伝える「マップ」が得られます。
   - その transform を HTML 要素に適用します。これによって HTML 要素レイヤがレンダリングされたピクセルの真上に配置されます。これにより、ユーザーがボタンをクリックしたりテキストを選択したりするとき、実際の HTML 要素に対する操作になります。
 
   ```js
@@ -180,48 +179,54 @@ targetHTMLElement.style.transform = computedTransform.toString();
 
 ```html
 <body>
-    <canvas id="canvas" style="width: 400px; height: 200px;" layoutsubtree>
-        <input id="element">
-    </canvas>
-    
-    <button id="download">Download Image</button>
+  <canvas id="canvas" style="width: 400px; height: 200px;" layoutsubtree>
+    <input id="element" />
+  </canvas>
 
-    <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        const element = document.getElementById('element');
-        const download = document.getElementById('download');
+  <button id="download">Download Image</button>
 
-        canvas.onpaint = (event) => {
-            ctx.reset();
-            // Draw the element into the canvas
-            const transform = ctx.drawElementImage(element, 10, 10);
-            // Synchronize DOM position for hit testing (typing)
-            element.style.transform = transform.toString();
-        };
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const element = document.getElementById('element');
+    const download = document.getElementById('download');
 
-        download.onclick = () => {
-            // Export the canvas content as an image
-            const dataURL = canvas.toDataURL('image/png');
-            const link = document.createElement('a');
-            link.download = 'exported-canvas.png';
-            link.href = dataURL;
-            link.click();
-        };
+    canvas.onpaint = (event) => {
+      ctx.reset();
+      // Draw the element into the canvas
+      const transform = ctx.drawElementImage(element, 10, 10);
+      // Synchronize DOM position for hit testing (typing)
+      element.style.transform = transform.toString();
+    };
 
-        // Re-initialize canvas size on screen resize
-        const observer = new ResizeObserver(([entry]) => {
-            const dpc = entry.devicePixelContentBoxSize;
-            canvas.width = dpc ? dpc[0].inlineSize : Math.round(entry.contentRect.width * window.devicePixelRatio);
-            canvas.height = dpc ? dpc[0].blockSize : Math.round(entry.contentRect.height * window.devicePixelRatio);
-            canvas.requestPaint();
-        });
-        const supportsDevicePixelContentBox = 
-            typeof ResizeObserverEntry !== 'undefined' && 
-            'devicePixelContentBoxSize' in ResizeObserverEntry.prototype;
-        const options = supportsDevicePixelContentBox ? { box: 'device-pixel-content-box' } : {};
-        observer.observe(canvas, options);
-    </script>
+    download.onclick = () => {
+      // Export the canvas content as an image
+      const dataURL = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = 'exported-canvas.png';
+      link.href = dataURL;
+      link.click();
+    };
+
+    // Re-initialize canvas size on screen resize
+    const observer = new ResizeObserver(([entry]) => {
+      const dpc = entry.devicePixelContentBoxSize;
+      canvas.width = dpc
+        ? dpc[0].inlineSize
+        : Math.round(entry.contentRect.width * window.devicePixelRatio);
+      canvas.height = dpc
+        ? dpc[0].blockSize
+        : Math.round(entry.contentRect.height * window.devicePixelRatio);
+      canvas.requestPaint();
+    });
+    const supportsDevicePixelContentBox =
+      typeof ResizeObserverEntry !== 'undefined' &&
+      'devicePixelContentBoxSize' in ResizeObserverEntry.prototype;
+    const options = supportsDevicePixelContentBox
+      ? { box: 'device-pixel-content-box' }
+      : {};
+    observer.observe(canvas, options);
+  </script>
 </body>
 ```
 

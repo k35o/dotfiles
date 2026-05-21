@@ -16,22 +16,30 @@
 /* Slide an element out to the left */
 @keyframes slide-to-left {
   /* Mandatory: animate `transform` instead of inset properties for better performance. */
-  to { transform: translateX(-100%); }
+  to {
+    transform: translateX(-100%);
+  }
 }
 
 /* Slide an element in from the right */
 @keyframes slide-from-right {
-  from { transform: translateX(100%); }
+  from {
+    transform: translateX(100%);
+  }
 }
 
 /* Slide an element out to the right */
 @keyframes slide-to-right {
-  to { transform: translateX(100%); }
+  to {
+    transform: translateX(100%);
+  }
 }
 
 /* Slide an element in from the left */
 @keyframes slide-from-left {
-  from { transform: translateX(-100%); }
+  from {
+    transform: translateX(-100%);
+  }
 }
 ```
 
@@ -40,7 +48,7 @@
 すべてのトランジションで共有するアニメーション設定を適用するには、`::view-transition-group(root)` セレクタを使用します。
 
 ```css
-::view-transition-group(root){
+::view-transition-group(root) {
   animation: 0.4s ease-in-out both;
 }
 ```
@@ -77,10 +85,9 @@ const updateDOM = yourUpdateDOMLogic();
 
 document.startViewTransition({
   update: updateDOM,
-  types: [transitionType] // Matches the CSS :active-view-transition-type() selectors
+  types: [transitionType], // Matches the CSS :active-view-transition-type() selectors
 });
 ```
-
 
 ### アクセシビリティ
 
@@ -119,7 +126,7 @@ function navigate(updateDOM, direction) {
   // Start transition with the specific navigation type
   document.startViewTransition({
     update: updateDOM,
-    types: [direction] // Matches the CSS :active-view-transition-type() selectors
+    types: [direction], // Matches the CSS :active-view-transition-type() selectors
   });
 }
 ```

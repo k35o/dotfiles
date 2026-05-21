@@ -10,8 +10,8 @@
 
 フォームを作るために用意された要素や属性を最大限に活用しましょう:
 
--   `<form>`、`<input>`、`<label>`、`<button>`
--   `type`、`autocomplete`、`inputmode`
+- `<form>`、`<input>`、`<label>`、`<button>`
+- `type`、`autocomplete`、`inputmode`
 
 これらは組み込みのブラウザ機能を有効にし、アクセシビリティを向上させ、マークアップに意味を加えます。
 
@@ -27,8 +27,8 @@
 
 ```html
 <!-- type="email"/"tel" gives mobile users the right keyboard and enables built-in validation -->
-<input type="email" id="email" name="email" autocomplete="email" required>
-<input type="tel" id="phone" name="phone" autocomplete="tel">
+<input type="email" id="email" name="email" autocomplete="email" required />
+<input type="tel" id="phone" name="phone" autocomplete="tel" />
 ```
 
 すべての`<input>`、`<select>`、`<textarea>`要素には、アクセシビリティを向上させ、ユーザーがデータを再入力する必要を避けるために、適切な`autocomplete`属性を付けるべきです。
@@ -53,7 +53,12 @@
 
 ```html
 <!-- textarea handles multi-line international address formats that split inputs can't accommodate -->
-<textarea id="address" name="address" autocomplete="street-address" required></textarea>
+<textarea
+  id="address"
+  name="address"
+  autocomplete="street-address"
+  required
+></textarea>
 ```
 
 これは、さまざまな国内および国際的な住所形式に対して最も柔軟な選択肢です。
@@ -63,7 +68,13 @@
 必須フィールドには`required`属性を追加してください。
 
 ```html
-<input type="text" id="city" name="city" autocomplete="address-level2" required>
+<input
+  type="text"
+  id="city"
+  name="city"
+  autocomplete="address-level2"
+  required
+/>
 ```
 
 ### フォールバック戦略

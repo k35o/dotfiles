@@ -1,9 +1,11 @@
 # セレクトメニューインタラクション
 
 ## 問題
+
 必須のドロップダウン(例: 「国を選択」)の場合、デフォルトオプションが空の値を持っていると、標準のバリデーションは即座にフィールドを無効としてフラグ付けします。これは視覚的なノイズを生む可能性があります。エラーは、ユーザーがメニューを開いてオプションを選択せずに閉じた場合、またはフォームの送信を試みた場合にのみ表示したいものです。
 
 ## 解決策
+
 `:user-invalid`疑似クラスは、`<select>`要素とシームレスに連携します。これはユーザーのインタラクションフローを尊重します。単にページを読み込んだり、フォーカス/ブラーするだけでは、インタラクションとみなされないため、ユーザーが能動的に選択を試みるまでフィールドは中立のままです。
 
 ### 実装戦略
@@ -15,6 +17,7 @@
 ## 実装ガイド
 
 ### 1. HTML構造
+
 ここでは「プレースホルダ」オプションが鍵です。
 
 ```html
@@ -32,14 +35,13 @@
       <option value="ca">Canada</option>
       <option value="uk">United Kingdom</option>
     </select>
-    <div id="country-error" class="error-msg">
-      Please select a country.
-    </div>
+    <div id="country-error" class="error-msg">Please select a country.</div>
   </div>
 </form>
 ```
 
 ### 2. CSS
+
 ```css
 .error-msg {
   display: none;
@@ -128,14 +130,20 @@ const UserInvalidFallback = (() => {
     if (!input.checkValidity) return;
 
     if (event.type === 'input' || event.type === 'change') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasInteracted = true;
       dirtyState.set(input, state);
       if (state.hasBlurred) {
         updateState(input);
       }
     } else if (event.type === 'blur') {
-      const state = dirtyState.get(input) || { hasInteracted: false, hasBlurred: false };
+      const state = dirtyState.get(input) || {
+        hasInteracted: false,
+        hasBlurred: false,
+      };
       state.hasBlurred = true;
       dirtyState.set(input, state);
       if (state.hasInteracted) {
@@ -169,7 +177,10 @@ UserInvalidFallback.init(form);
 ```javascript
 // Sync aria-invalid with the CSS :user-invalid state
 const syncAria = (el) => {
-  el.setAttribute?.('aria-invalid', el.matches(':user-invalid') ? 'true' : 'false');
+  el.setAttribute?.(
+    'aria-invalid',
+    el.matches(':user-invalid') ? 'true' : 'false',
+  );
 };
 
 // Update on blur (to show error) and input (to clear it)
