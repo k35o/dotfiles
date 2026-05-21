@@ -1,0 +1,215 @@
+# Modern Web Guidance — ガイド索引
+
+全ガイドの一覧。目的のキーワード（API名、UIパターン、課題）でこのファイルを Grep するか、各ガイドのパス（`guides/<カテゴリ>/<ID>.md`）を直接 Read する。
+
+カテゴリ一覧と対応パス：
+
+- [アクセシビリティ](#accessibility)（2件）
+- [Built-in AI](#built-in-ai)（4件）
+- [CSS](#css)（2件）
+- [CSS レイアウト](#css-layout)（1件）
+- [フォーム](#forms)（15件）
+- [HTML](#html)（1件）
+- [パスキー](#passkeys)（6件）
+- [パフォーマンス](#performance)（22件）
+- [プライバシー](#privacy)（1件）
+- [セキュリティ](#security)（1件）
+- [ユーザー体験](#user-experience)（79件）
+- [WebMCP](#webmcp)（3件）
+
+## <a id="accessibility"></a>アクセシビリティ
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`accessibility`](accessibility/accessibility.md) | アクセシビリティのコーディングガイドライン | このガイドは、AIコーディングエージェントが、支援技術を利用する人を含むすべてのユーザーにとってアクセシブルなWebアプリケーションを構築できるよう、実践的なDOとDON'Tを提供します。 |
+| [`accessible-error-announcement`](accessibility/accessible-error-announcement.md) | アクセシブルなエラーアナウンス | 標準のHTML5バリデーションは（`:invalid` や `:user-invalid` を介して）視覚的なフィードバックを提供しますが、`aria-invalid` のようなアクセシビリティ属性とは自動的に同期しません。 |
+
+## <a id="built-in-ai"></a>Built-in AI
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`language-detection`](built-in-ai/language-detection.md) | language detection | **Language Detector API** は、与えられたテキスト文字列の言語を識別するために設計されたクライアントサイドのWeb APIです。ブラウザ内でローカルに検出を行うことで、ユーザーのプライバシーを高め、重い外部ライブラリやコストの高いサーバーサイド呼び出しの必要性を減らします。 |
+| [`language-model`](built-in-ai/language-model.md) | language model | Prompt APIにより、開発者は**Gemini Nano**を使って自然言語処理タスクをブラウザ内で直接実行できます。このビルトインAIアプローチはユーザーのプライバシーを守り、サーバーコストを削減し、オフライン機能を可能にします。 |
+| [`summarizer`](built-in-ai/summarizer.md) | summarizer | **Summarizer API**を使うと、Webデベロッパーは**ChromeのGemini NanoまたはEdgeのPhi**を使って、ブラウザ内で直接ローカルなAI駆動のテキスト要約を提供できます。このAPIは、キーポイント、見出し、TL;DRなどさまざまな形式をサポートし、すべての処理をデバイス上で実行することでユーザーのプライバシーを確保します。 |
+| [`translator`](built-in-ai/translator.md) | translator | **Translator API**を使うと、開発者はChromeのビルトインAIモデルを使ってクライアントサイドのテキスト翻訳を実行できます。このアプローチにより、一時的なコンテンツに対するクラウドベースの翻訳サービスが不要になり、コストを削減しデータをユーザーのデバイス上に保持することでプライバシーを向上させます。 |
+
+## <a id="css"></a>CSS
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`css`](css/css.md) | CSS: モダンアーキテクチャとパフォーマンス | このガイドラインは、保守しやすく、パフォーマンスが高く、標準に準拠したCSSを書くための高密度なリファレンスを提供します。 |
+| [`highlight-text-ranges`](css/highlight-text-ranges.md) | highlight text ranges | CSS Custom Highlight APIを使うと、DOM構造を変更せずにページ上の任意のテキスト範囲をスタイリングできます。これにより、テキストを追加要素で包んだり `innerHTML` の操作に頼ったりせずに、検索結果のハイライト、シンタックスカラーリング、共同編集のカーソル、スペルや文法エラーマーカーなどを実現できます。 |
+
+## <a id="css-layout"></a>CSS レイアウト
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`css-layout`](css-layout/css-layout.md) | CSSレイアウトとレスポンシブデザイン | 可能であればパフォーマンス向上のためにブラウザのレイアウトエンジンに頼ってください。ハードコードされた寸法や複雑なメディアクエリに頼る前に、内在的サイジング、論理プロパティ、`aspect-ratio` を活用してください。 |
+
+## <a id="forms"></a>フォーム
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`animated-select-picker`](forms/animated-select-picker.md) | アニメーション付きセレクトピッカー | カスタマイズ可能なセレクトAPIは、`<select>`要素とそのドロップダウンピッカーをアニメーションさせるための、宣言的でCSS駆動の方法を提供します。`appearance: base-select`を`@starting-style`や`allow-discrete`のトランジション挙動などのモダンなCSSアニメーション技術と組み合わせることで、重いJavaScriptライブラリに頼ることなく、トップレイヤー要素に対して滑らかでプレミアムなUIトランジションを作成でき… |
+| [`autofill-address-form`](forms/autofill-address-form.md) | ベストプラクティスに従った住所フォームの構築 | デスクトップでもモバイルでも、ユーザーが住所データをできるだけ簡単に入力できるフォームを作成します。フォームがオートフィル、バリデーション、データ入力制約のための組み込みブラウザ機能を最大限活用するようにしてください。 |
+| [`autofill-highlight-inputs`](forms/autofill-highlight-inputs.md) | ブラウザによってオートフィルされ、ユーザーが編集していないフォームフィールドをCSSの:autofill疑似クラスでハイライトする | CSSの`:autofill`を使用して、オートフィルされた(またはされていない)フィールドをハイライトし、ユーザーのフォーム入力完了をガイドしてください。 |
+| [`autofill-payment-form`](forms/autofill-payment-form.md) | ベストプラクティスに従った支払いフォームの構築 | 支払いフォームは、チェックアウトプロセスの中で最も重要な部分です。支払いフォームのデザインが不十分だと、ショッピングカートの放棄の一般的な原因になります。 |
+| [`autofill-sign-in-form`](forms/autofill-sign-in-form.md) | ベストプラクティスに従ったサインインフォームの構築 | クロスプラットフォームのブラウザ機能を使用して、安全でアクセシブル、かつ使いやすいサインインフォームを構築します。 |
+| [`autofill-sign-up-form`](forms/autofill-sign-up-form.md) | ベストプラクティスに従ったサインアップフォームの構築 | クロスプラットフォームのブラウザ機能を使用して、安全でアクセシブル、かつ使いやすいサインアップフォームを構築します。 |
+| [`brand-consistent-forms`](forms/brand-consistent-forms.md) | ブランドに統一感のあるフォーム | チェックボックスやラジオボタンなどの標準的なHTMLフォーム要素のカスタマイズは、歴史的に難しいものでした。開発者はブラウザのデフォルトを使うか、カスタムコンポーネントをゼロから構築するかの選択を迫られることが多くありました。カスタムコントロールの構築は時間がかかり、アクセシビリティの問題や状態の欠落(チェックボックスの不定状態など)を簡単に引き起こす可能性があります。 |
+| [`branded-select-styling`](forms/branded-select-styling.md) | ブランド対応のセレクトスタイリング | カスタマイズ可能なセレクトAPIは、`<select>`要素をブランドのデザインシステムに完全に合わせてスタイル付けする、宣言的でCSS駆動の方法を提供します。`appearance: base-select`にオプトインすることで、セレクト要素の内部シャドウDOMにアクセスでき、標準のCSSプロパティを使用してボタン、オプションのピッカーリスト、矢印アイコン、チェックマークインジケータをスタイル付けできます。 |
+| [`custom-select-picker-layouts`](forms/custom-select-picker-layouts.md) | カスタムセレクトピッカーレイアウト | 「カスタムセレクトピッカーレイアウト」を使うと、開発者は`<select>`ドロップダウンの従来の縦並びオプションリストから脱却できます。`appearance: base-select`と`::picker(select)`疑似要素を使用することで、GridやFlexboxなどのモダンなCSSレイアウト手法を使ってオプションリストをスタイル付けできます。これは、ビジュアルメニューがリストより効果的なカラーピッカー、絵文字セレクタ、商品バリエーションに最適です。 |
+| [`form-fields-automatically-fit-contents`](forms/form-fields-automatically-fit-contents.md) | form fields automatically fit contents | デフォルトでは、`<input>`、`<textarea>`、`<select>`などのフォームコントロールには固定のサイズがあります。ユーザーが入力または選択するコンテンツの量に関係なく、サイズは一定のままです。 |
+| [`forms`](forms/forms.md) | forms | **一文で覚えるメンタルモデル**: 「相互排他的なオプションは、選択肢が6つ未満の場合は表示されたラジオボタンとして公開する。`<select>`はスペースが制約されているかリストが長い場合にのみ使用する。」 |
+| [`required-field-feedback`](forms/required-field-feedback.md) | 必須フィールドのフィードバック | ページ読み込み直後に必須フィールドをエラー状態としてマークすると、混乱を招く可能性があります。理想的には、必須フィールドは、ユーザーが入力を試みて失敗した場合にのみ「無効」に見えるべきです。 |
+| [`rich-media-picker`](forms/rich-media-picker.md) | リッチメディアピッカー(カスタマイズ可能なセレクト) | ネイティブの`<select>`要素は、歴史的にスタイル付けが難しく、プレーンテキストのオプションしか含めることができませんでした。`appearance: base-select`プロパティは、`<select>`要素のカスタマイズ可能な状態にオプトインするための、宣言的でCSSのみの方法を提供します。… |
+| [`select-menu-interaction`](forms/select-menu-interaction.md) | セレクトメニューインタラクション | 必須のドロップダウン(例: 「国を選択」)の場合、デフォルトオプションが空の値を持っていると、標準のバリデーションは即座にフィールドを無効としてフラグ付けします。これは視覚的なノイズを生む可能性があります。エラーは、ユーザーがメニューを開いてオプションを選択せずに閉じた場合、またはフォームの送信を試みた場合にのみ表示したいものです。 |
+| [`validate-input-after-interaction`](forms/validate-input-after-interaction.md) | インタラクション後の入力バリデーション | ユーザーがフィールドにフォーカスして入力を開始した瞬間にバリデーションエラーを表示することは、時期尚早で気が散ります。例えば、ユーザーがメールアドレス(例: "user@gm")や複雑な要件を持つパスワードを入力している間、フィールドは完了まで技術的には無効です。標準の`:invalid`スタイリングでは、エラー状態がすぐに現れ、ユーザーをいらつかせます。 |
+
+## <a id="html"></a>HTML
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`html`](html/html.md) | html | クロスブラウザでPopover APIを使うためのフォールバック戦略の詳細は、[`declarative-dialog-popover-control`](user-experience/declarative-dialog-popover-control.md)を参照してください。 |
+
+## <a id="passkeys"></a>パスキー
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`passkey-authentication`](passkeys/passkey-authentication.md) | パスキー認証ガイド | 本ガイドでは、ディスカバラブルクレデンシャル（discoverable credentials）を用いた既存ユーザーの認証を、明示的なボタン操作によるトリガーと、ブラウザのオートフィル候補によるシームレスな提案（Conditional UI）の両方で実装する方法を解説します。 |
+| [`passkey-conditional-create`](passkeys/passkey-conditional-create.md) | パスキーのConditional Create（ログイン後プロモーション） | 本ガイドでは、パスワードベースのサインイン成功直後にユーザーのパスキーを自動かつサイレントに登録し、摩擦を最小化してパスキー導入率を高める方法を解説します。 |
+| [`passkey-management`](passkeys/passkey-management.md) | パスキー管理ガイド | 本ガイドでは、ユーザーが登録済みパスキーを閲覧・リネーム・削除できるようにし、Signal APIを利用してサーバーとユーザーのパスワードマネージャーとの間で保存されたクレデンシャルを完全に同期させ続ける方法を解説します。 |
+| [`passkey-reauthentication`](passkeys/passkey-reauthentication.md) | パスキー再認証ガイド | 本ガイドは差分にフォーカスし、サインイン中のユーザーが機微なアカウント変更（例: パスワード更新、送金）を行う前に、ステップアップ認証または再検証を実装する方法を解説します。 |
+| [`passkey-registration`](passkeys/passkey-registration.md) | パスキー登録ガイド | 本ガイドでは、ユーザーが自身のアカウントにパスキーを登録できるようにし、フィッシング耐性の高いセキュアなパスワードレスサインインの代替手段を提供する方法を解説します。 |
+| [`passkeys`](passkeys/passkeys.md) | パスキー導入オリエンテーションガイド | 本ガイドは、モダンWebアプリケーションでフレームワーク非依存のセキュアなパスキー認証およびクレデンシャル管理を実装するための、高密度かつ実行指向のオリエンテーションを提供します。 |
+
+## <a id="performance"></a>パフォーマンス
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`batch-analytics-events`](performance/batch-analytics-events.md) | 複数のアナリティクスイベントをデバウンスしてバッチ送信する | ほとんどのアナリティクスおよびテレメトリデータは優先度が低く、ユーザーがページを離れるまで送信を遅らせても問題ありません。例外は、リアルタイムの更新を配信する必要がある場合であり、その場合はタイミングが重要になります。 |
+| [`break-up-long-tasks`](performance/break-up-long-tasks.md) | break up long tasks | 重い計算や長いループはメインスレッドをブロックし、ページの応答性を損なう可能性があります。これを防ぐには、定期的にブラウザに制御を返す必要があります。`scheduler.yield()` APIを使用すると、長いタスクを一時停止し、処理を継続する前にユーザー入力やレンダリングをブラウザに処理させることができます。 |
+| [`calculate-total-foreground-time`](performance/calculate-total-foreground-time.md) | フォアグラウンドの合計時間を算出する | このガイドでは、ユーザーがページを実際に閲覧していた合計時間を正確に算出する方法を解説します。time-on-page のような従来のメトリクスは、ページがバックグラウンドにある時間まで誤って含めてしまうことがよくあります。`VisibilityStateEntry` APIを利用することで、「フォアグラウンド時間」のみを計測でき、ユーザーエンゲージメントのより良い指標を提供できます。 |
+| [`conditional-async-dependencies`](performance/conditional-async-dependencies.md) | conditional async dependencies | トップレベル `await` を使用すると、モジュールを非同期関数として扱うことができ、Promise を待つためにモジュールの実行を一時停止できます。これは、ポリフィルや重い二次ライブラリのような非同期依存をブラウザが必要とするときにのみ条件付きで読み込むのに非常に有用です。 |
+| [`defer-rendering-heavy-content`](performance/defer-rendering-heavy-content.md) | レンダリングが重いコンテンツを遅延させる | 無限スクロール、複雑なダッシュボード、密度の高い記事など、コンテンツが豊富なWebページは、初期レンダリングの遅さやインタラクションの鈍さに悩まされることがあります。最新のWeb技術を活用すれば、すぐに表示されないコンテンツのレンダリング作業を遅延させることができ、アクセシビリティやユーザー体験を損なうことなくパフォーマンスを大幅に向上させられます。 |
+| [`defer-work-until-scroll-ends`](performance/defer-work-until-scroll-ends.md) | スクロール終了まで作業を遅延させる | Web 上でのスクロールは滑らかで応答性が高くあるべきです。レイアウト再計算、アナリティクスデータビーコンの追跡、動的なDOM更新といった重いタスクをスクロール中に実行すると、メインスレッドが飽和し、フレーム落ちやレイアウトスラッシングが発生します。 |
+| [`deprioritize-background-fetches`](performance/deprioritize-background-fetches.md) | バックグラウンドフェッチの優先度を下げる | ページが複数のネットワークリクエストを同時に実行すると、同じ帯域幅を奪い合うことになります。アナリティクス、ロギング、バックグラウンド同期など、重要度の低いデータは優先度を下げて、ユーザーが起点となるリクエストや重要なデータフェッチがより早く完了するようにすべきです。 |
+| [`detect-initial-visibility-state`](performance/detect-initial-visibility-state.md) | detect initial visibility state | ページが最初にバックグラウンドで読み込まれたか（例: バックグラウンドの新しいタブで開かれた）を判定することは、正確なパフォーマンス監視にとって重要です。バックグラウンドで読み込まれたページは、レンダリングが遅延し、First Contentful Paint のようなメトリクスの値が長くなることがよくあります。これらのページを特定することで、パフォーマンスアナリティクスからフィルタリングし、データの歪みを防げます。 |
+| [`efficient-background-processing`](performance/efficient-background-processing.md) | 効率的なバックグラウンド処理 | コンポーネントがブラウザによってレンダリングされていないときに重いバックグラウンドタスクを一時停止し、システムリソースとバッテリーを節約します。 |
+| [`faster-spa-view-transitions`](performance/faster-spa-view-transitions.md) | 状態キャッシュによるSPAビュー遷移の高速化 | 非アクティブなビューを破棄するのではなく、レンダリング済みの状態をキャッシュすることで、シングルページアプリケーション（SPA）におけるビュー間の即時ナビゲーションを実現します。 |
+| [`full-session-analytics`](performance/full-session-analytics.md) | セッション全体のアナリティクスとテレメトリを確実に計測する | ユーザーのWebページ訪問全体（ページロードだけでなく）をカバーするアナリティクスおよびテレメトリデータを確実に計測するには、`fetchLater()` APIを使用します。 |
+| [`identify-heavy-scripts`](performance/identify-heavy-scripts.md) | 重いJavaScriptを特定する | 重いJavaScriptは、ページのロードパフォーマンスとインタラクティブ性の両方に悪影響を与える可能性があります。最新のWebアプリケーションは、これまで以上にJavaScriptに依存しており、複数のソースを持っています。これにはアプリケーションコード自体（およびそれが依存するフレームワークコード）と、チャットウィジェットや動画プレイヤーなどの機能を追加する3rd partyスクリプトが含まれます。… |
+| [`identify-inp-causes`](performance/identify-inp-causes.md) | INPの悪化原因を特定する | インタラクションへの応答性が悪いと、ページが遅い、あるいは完全に壊れているという悪い印象を与えます。Interaction to Next Paint (INP) は Event Timing APIに基づくメトリクスで、ページの応答性の指標として、最悪のインタラクション（いくつかの外れ値を除く）を計測します。 |
+| [`improve-next-page-load-performance`](performance/improve-next-page-load-performance.md) | 次ページの読み込みパフォーマンスを改善する | サイトを移動するユーザーのページ読み込みパフォーマンスを向上させる最も効果的な方法の1つは、ユーザーが次に訪問しそうなページを *訪問する前に* 読み込みを開始することです。これはSpeculation Rules APIを使った投機的読み込みという手法で実現できます。 |
+| [`interactions-in-complex-layouts`](performance/interactions-in-complex-layouts.md) | 複雑なレイアウトでのインタラクションを最適化する | カンバンボードや大量のデータグリッドなど、複雑で多カラムのレイアウトでドラッグアンドドロップや重い変更が行われても、高フレームレート（60FPS）を維持し、インタラクションのレイテンシを排除します。 |
+| [`optimize-image-priority`](performance/optimize-image-priority.md) | 画像の優先度を最適化する | ブラウザはヒューリスティックを使って画像に読み込み優先度を割り当てますが、これらのデフォルトは必ずしもページのLargest Contentful Paint (LCP) に最適化されているとは限りません。`<img>` 要素に `fetchpriority` を使うと、画像の重要性をブラウザに明示的に伝えられ、重要な画像をより速く読み込みつつ、必須でない画像が帯域幅を奪い合わないようにできます。 |
+| [`optimize-preload-priority`](performance/optimize-preload-priority.md) | プリロードの優先度を最適化する | `<link rel="preload">` でリソースをプリロードすると、そのリソースが近いうちに必要になることをブラウザに伝えます。しかし、プリロードはリソースタイプのデフォルト優先度を引き継ぐため、特に画像の場合は低くなります。`fetchpriority` を使うとこの相対的な優先度を調整でき、特に画像のプリロードを高い優先度でプリロードできるようにすることで、より早く開始し、より多くの帯域幅リソースを取得できるようになります。 |
+| [`optimize-script-priority`](performance/optimize-script-priority.md) | スクリプトの優先度を最適化する | ブラウザは、ドキュメント内のどこに記述されているか、また `async` や `defer` のような属性があるかに基づいてスクリプトにデフォルトの優先度を割り当てます。`fetchpriority` を使うと、開発者は重要なスクリプトを最初に読み込ませ、非必須なスクリプトを邪魔にならないようにするための明示的なコントロールを得られます。 |
+| [`performance`](performance/performance.md) | performance | Critical Rendering Pathは、ブラウザがHTML、CSS、JavaScriptを描画ピクセルに変換する速さを左右します。 |
+| [`resolution-optimized-pseudo-elements`](performance/resolution-optimized-pseudo-elements.md) | resolution optimized pseudo elements | CSSの擬似要素（`::before` や `::after` など）で解像度最適化された画像を使うと、HTMLに余分なDOMノードを増やすことなく、装飾アイコンや構造グラフィックを追加できます。擬似要素を `image-set()` CSS関数と組み合わせることで、ブラウザに複数のフォーマット（AVIFやWebPなど）と解像度（`1x` や `2x` など）を提供できます。ブラウザはユーザーのデバイス性能に最適な画像を自動的に選択します。 |
+| [`schedule-tasks-by-priority`](performance/schedule-tasks-by-priority.md) | schedule tasks by priority | 複雑なWebアプリケーションを構築するとき、タスクには異なる緊急度があります。現在のビューに必要なタスクを完了させることは、アナリティクスの送信やアセットのプリフェッチよりも重要です。Prioritized Task Scheduling APIを使うと、特定の優先度で作業をスケジュールでき、ブラウザがユーザー入力に応答し続けるようにできます。 |
+| [`sequence-distributed-events`](performance/sequence-distributed-events.md) | 分散イベントを順序付ける | 分散システムにおける高頻度なトレーシングおよびイベントロギングでは、正しい因果関係の順序を保証するために精密なタイムスタンプが必要です。標準的なJavaScriptの `Date.now()` はミリ秒精度を提供しますが、複数のイベントが同じミリ秒内に発生するとタイムスタンプの衝突が発生する可能性があります。 |
+
+## <a id="privacy"></a>プライバシー
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`privacy`](privacy/privacy.md) | 開発者向けWebプライバシーガイドライン | Webアプリケーション開発者は、プライバシーを法的コンプライアンスのチェックボックスとしてではなく、基礎的なアーキテクチャ要件として扱う必要があります。Webエコシステムが受動的なトラッキングから明示的なユーザー同意のあるインタラクションへ移行する中で、プライバシーを守るアプリケーションを構築することは、ユーザーの信頼とセキュリティのために極めて重要です。 |
+
+## <a id="security"></a>セキュリティ
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`security`](security/security.md) | Webセキュリティ | 予防的セキュリティ対策をWeb上で安全かつ段階的に実装するためのガイドライン。 |
+
+## <a id="user-experience"></a>ユーザー体験
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`adapt-scrollbar-to-contrast-preferences`](user-experience/adapt-scrollbar-to-contrast-preferences.md) | スクロールバーをハイコントラスト設定に適応させる | OSやブラウザでハイコントラストモードを有効にしているユーザーは、UI要素（スクロールバーなど）が極めて読みやすいことを期待しています。微妙なグレーやテーマカラーではなく、はっきりとした前景と背景のコントラストに頼ることが多いためです。 |
+| [`anchor-positioning-tab-underline`](user-experience/anchor-positioning-tab-underline.md) | anchor positioning tab underline | タブメニューでは、ユーザーが現在どのページにいるのかを視覚的に示すヒントを提供すべきです。一つの方法は、タブに下線を引くことです。Anchor Positioningを使えば、下線の位置間でスムーズなアニメーションを作成できます。これはアクティブなタブを変更したときに新しいページを読み込む場合には機能しません。 |
+| [`animate-element-entry-exit`](user-experience/animate-element-entry-exit.md) | animate element entry exit | かつてCSSトランジションは、要素がDOMに最初に追加されたときや `display` プロパティが `none` から変化したときにアニメーションさせることができませんでした。`@starting-style` アットルールと `transition-behavior: allow-discrete` は、スムーズな入場・退場アニメーションを宣言的に作成する方法を提供します。 |
+| [`animate-to-from-top-layer`](user-experience/animate-to-from-top-layer.md) | animate to from top layer | 「トップレイヤー」に描画される要素（`<dialog>`、`popover` 属性を持つ要素、ツールチップなど）は、`display: none` と表示状態を切り替えるため、歴史的にアニメーションが難しいものでした。最新のCSSは `@starting-style`、`transition-behavior: allow-discrete`、`overlay` プロパティを提供し、これらの要素のスムーズな入場・退場トランジションを可能にします。… |
+| [`animate-to-intrinsic-sizes`](user-experience/animate-to-intrinsic-sizes.md) | 内在サイズへのアニメーション | `block-size: auto` や `inline-size: max-content` のような動的なサイズへ要素をアニメーションさせるには、これまでJavaScriptや脆い「max-height」のハックが必要でした。`interpolate-size` プロパティと `calc-size()` 関数により、ブラウザは固定長と内在サイズキーワードの間を自然に補間できるようになります。 |
+| [`apply-webgl-shaders`](user-experience/apply-webgl-shaders.md) | WebGLシェーダーをHTMLコンテンツに適用する | WebGLシェーダーは強力なGPUアクセラレーションによる視覚効果を提供し、動的なリップル歪み、ライティングモデル、カラーグレーディング、カスタムバーテックス変換などの高度な機能を可能にします。HTML-in-Canvas APIにより、開発者はWebGLテクスチャをHTMLコンテンツに適用できます。… |
+| [`calculate-event-differentials`](user-experience/calculate-event-differentials.md) | Temporalによるイベント差分の計算 | イベント間の経過時間（トライアル期限、サブスクリプション期間、日割り計算など）の算出は、タイムゾーン、サマータイム（DST）、一貫性のないパースの複雑さのため、レガシーの `Date` オブジェクトでは長らく難しい作業でした。 |
+| [`calculate-with-intrinsic-sizes`](user-experience/calculate-with-intrinsic-sizes.md) | calculate with intrinsic sizes | `calc-size()` は、`auto`、`min-content`、`fit-content` のような内在サイズキーワードに対して数値演算を行うためのCSS関数です。**MANDATORY**: 内在サイズを計算または制約で修正する必要がある場合のみ `calc-size()` を使用してください。単純なキーワードベースのアニメーション（例: `0` から `auto`）には `interpolate-size: allow-keywords` を使用してください。 |
+| [`capture-location-agnostic-data`](user-experience/capture-location-agnostic-data.md) | Temporalによる場所に依存しないデータの取得 | 閲覧者の場所に関係なく同じであるべき年代記的データ（誕生日、定期アラーム、祝日など）を記録することは、レガシーの `Date` オブジェクトではエラーが起こりやすい作業でした。`Date` オブジェクトは常に特定の瞬間を表しタイムゾーンに紐づくため、「1990-01-01」のような日付を保存すると、タイムゾーンが異なるユーザーにはオフセットのずれにより「1989-12-31」と表示されることがあります。 |
+| [`carousel-slide-effects`](user-experience/carousel-slide-effects.md) | カルーセルのスライドエフェクトを構築する | カルーセルのスライドエフェクトは、カルーセルに視覚的な面白さを加える素晴らしい方法です。ユーザーがスライドをスクロールするにつれ、各スライドはスクロールポートに入り、中央に来て、出ていく際にアニメーションできます。たとえば、スライドはフェードイン・フェードアウトしたり、回転したり、サイズが拡大・縮小したりできます。これはダイナミックで魅力的なユーザー体験を生み出します。… |
+| [`carousel-snap-highlights`](user-experience/carousel-snap-highlights.md) | carousel snap highlights | スクロール状態のコンテナクエリにより、要素の現在のスクロール状態（スティッキー配置による「stuck」やスクロールスナップによる「snapped」など）に基づいて要素をスタイルできます。これにより、JavaScriptのインターセクションオブザーバーやスクロールイベントリスナーに頼ることなく、アクティブな項目を視覚的に区別するカルーセルやギャラリー体験を可能にします。 |
+| [`child-state-based-styling`](user-experience/child-state-based-styling.md) | child state based styling | これまでCSSセレクタは下方向にしかトラバースできず、親に基づいて子をスタイルすることはできても、子に基づいて親をスタイルすることはできませんでした。`:has()` 擬似クラスはこれを変え、子孫の存在や状態に応じてコンテナ要素を条件付きでスタイルすることを可能にします。 |
+| [`complex-shapes`](user-experience/complex-shapes.md) | complex shapes | ブラシストロークや有機的なテクスチャのような複雑で自由な形状に要素をクリップするには、CSSマスキング（`mask-image`）を使用します。`clip-path` は幾何学的形状やベクターパスに優れていますが、`mask-image` は画像（透明度のあるPNGなど）やSVGを使って要素の可視領域を定義できます。このアプローチはより表現力豊かで、半透明をサポートするため、`clip-path` では困難または不可能なソフトなエッジや複雑なテクスチャを実現できます。 |
+| [`component-specific-light-dark-theme`](user-experience/component-specific-light-dark-theme.md) | コンポーネント固有のライト／ダークテーマ | `color-scheme` プロパティは通常ルートに設定されますが、個々の要素に設定して、ページの他の部分とは異なるカラースキームを強制することもできます。 これは、特定のカラースキームで常に表示されなければならないコンポーネント（例: 常にダーク／ライトモード）に有用です。 |
+| [`consistent-cross-document-transitions`](user-experience/consistent-cross-document-transitions.md) | 一貫したクロスドキュメントトランジション | クロスドキュメントView Transitionsは、同一オリジンのナビゲーション中に2つのページ間で要素をアニメーションさせます。ブラウザは古いページのスナップショットを取り、ナビゲートしてから、スナップショットから新しいページへアニメーションします。新しいページがスタイルシート、レイアウトスクリプト、または重要なDOM要素などのクリティカルリソースの読み込みを終えていない場合、トランジションは不完全またはスタイルが適用されていない状態へアニメーションします。… |
+| [`content-based-styling`](user-experience/content-based-styling.md) | content based styling | これまで、コンポーネントの内容に応じて異なるレイアウトを適用するには、JavaScriptを使うか、HTMLテンプレート言語の条件付きロジックで修飾子クラス（`.card--has-image` や `.card--text-only` など）を注入する必要がありました。 |
+| [`coordinate-global-events`](user-experience/coordinate-global-events.md) | Temporalによるグローバルイベントの調整 | 異なるタイムゾーンをまたいだイベントのスケジュール調整は、レガシーの `Date` オブジェクトでは特にサマータイム（DST）の切り替わり時に時間がスキップされたり繰り返されたりすることで悪名高く困難でした。 |
+| [`cross-document-transitions`](user-experience/cross-document-transitions.md) | cross document transitions | クロスドキュメントView Transitionsを使うと、マルチページアプリケーション（MPA）の異なるページ間でスムーズでアプリのようなトランジションを作成できます。デフォルトではブラウザはクロスフェードを行いますが、サイトの美観に合わせてカスタマイズできます。 |
+| [`customize-scrollbar-color-and-thickness`](user-experience/customize-scrollbar-color-and-thickness.md) | スクロールバーの色や太さをカスタマイズする | 標準のCSSプロパティ `scrollbar-color` と `scrollbar-width` を使って、スクロールバーの見た目をカスタマイズできます。 |
+| [`dark-mode`](user-experience/dark-mode.md) | ダークモード | `color-scheme` プロパティは、ページがサポートするカラースキーム（ライト、ダークなど）をブラウザに伝えます。これによりブラウザは、ネイティブUI要素（スクロールバー、フォームコントロール、デフォルトのキャンバス背景など）を自動的にサイトのデザインに合わせてテーマ設定でき、初期読み込み時の白いフラッシュを最小化するのに役立ちます。 |
+| [`declarative-button-actions`](user-experience/declarative-button-actions.md) | 宣言的なボタンアクション | Invoker Commands API を使用すると、HTML 属性によってボタンが宣言的にターゲット要素のアクションを呼び出せます。このアプローチによって、手動でイベントリスナーを設定する必要が減り、HTML がパースされた直後からインタラクションを利用できるようになります。 |
+| [`declarative-dialog-popover-control`](user-experience/declarative-dialog-popover-control.md) | 概要 | Invoker Commands API を使うと、HTML のボタンから直接 `<dialog>` 要素や `[popover]` 要素の表示状態をトグルできるため、独自の JavaScript イベントリスナーを書く必要がなくなります。 |
+| [`deliver-optimized-decorative-images`](user-experience/deliver-optimized-decorative-images.md) | deliver optimized decorative images | CSS で装飾用画像を最適化して配信すると、ビジュアル品質を犠牲にすることなく体感パフォーマンスを向上できます。`image-set()` CSS 関数を使うと、ひとつの背景画像やマスク画像に対して複数の選択肢をブラウザに提示できます。最新のフォーマット（AVIF や WebP など）と、複数の解像度（`1x` や `2x` など）を同時に指定でき、ブラウザはユーザーのデバイスに適したピクセル密度を提供しつつ、もっとも小さい互換画像を動的に選択します。 |
+| [`design-token-reactivity`](user-experience/design-token-reactivity.md) | design token reactivity | 開発者はコンポーネントのデザインを文脈に応じて変更する必要がある場合がよくあります。歴史的に、開発者はそのような変更を適用するためにセレクタを使う必要がありました。これは多くの場合、デザイントークンの多くをカスタムプロパティとして表現できる一方で、より上位のデザイントークンはセレクタパターン（クラス名や属性の慣習）として、あるいは JavaScript フレームワークの props/context としてのみ表現できることを意味していました。 |
+| [`directional-navigation-transitions`](user-experience/directional-navigation-transitions.md) | directional navigation transitions | シングルページアプリケーション（SPA）は、新しいページに遷移することなくページのコンテンツを置き換えることで、ナビゲーションが行われているように見せます。デフォルトではコンテンツは単に置き換わるだけで、トランジションは行われません。方向性のあるトランジションは、ビュー間の空間的な関係を視覚的に補強できます。 |
+| [`dynamic-sibling-animations`](user-experience/dynamic-sibling-animations.md) | スタガーアニメーションの作成 | スタガーアニメーションは、複数の順序づけられた要素を一斉にではなくわずかな遅延を挟んで順次アニメーションさせる興味深い演出を提供します。この手法はリストやギャラリー、ナビゲーションメニューでよく用いられ、ユーザーの視線を誘導するとともに、洗練されたリズム感のあるインタラクションを生み出します。 |
+| [`dynamic-sibling-styling`](user-experience/dynamic-sibling-styling.md) | カウントとインデックスに基づく兄弟要素のスタイリング | 歴史的に、リスト内の各兄弟要素に固有のスタイルを適用するには、複雑な `:nth-child` ループや、インラインスタイルを注入する JavaScript が必要でした。モダンな CSS では `sibling-index()` と `sibling-count()` を使ってこれらの計算をスタイルシート内で直接行えるため、要素の追加や削除に自動で適応する動的なレイアウトやカラーシステムを実現できます。 |
+| [`export-html-media-from-canvas`](user-experience/export-html-media-from-canvas.md) | canvas から HTML コンテンツをエクスポートする | Web アプリケーションでは、カスタマイズされたダッシュボード、スタイリング済みのドキュメント、インタラクティブなチャートなどのリッチな HTML コンテンツを、静止画や動画として記録・エクスポートしたいケースが頻繁にあります。歴史的にはこれを実現するため、DOM ノードと CSS プロパティを手動で解析し、視覚的なコピーを canvas に再構築するような重厚なサードパーティライブラリが必要でした。… |
+| [`expose-canvas-content-to-browser-features`](user-experience/expose-canvas-content-to-browser-features.md) | canvas のコンテンツをブラウザ機能に公開する | 通常の `<canvas>` のコンテンツは、スクリーンリーダー、インデックス作成、翻訳ツール、アクセシビリティ補助ツール、ページ内検索、印刷などのブラウザ機能には公開されません。`HTML in canvas` を使うと、実際の DOM を canvas 要素内で直接レンダリングできます。… |
+| [`flicker-free-client-side-ab-testing`](user-experience/flicker-free-client-side-ab-testing.md) | フリッカーのないクライアントサイド A/B テスト | クライアントサイドの A/B テストツールは、ブラウザがすでにページの構築を始めた後に DOM を変更するスクリプトを読み込むことで動作します。何も対策をしないと、ユーザーは一瞬だけ元のコンテンツを目にしてから、実験のバリアントへとフリッカーやフラッシュのように切り替わってしまいます。… |
+| [`fluid-scaling`](user-experience/fluid-scaling.md) | fluid scaling | フリュードスケーリングを使うと、コンポーネントは現在のサイズに応じて内部のフォントサイズや余白などの比率を調整できます。これによって、固定のブレイクポイントを飛び飛びに移るよりも、まとまりのあるデザインが実現できます。 |
+| [`format-human-readable-durations`](user-experience/format-human-readable-durations.md) | Temporal で人間に読みやすい時間表現を整形する | 経過時間や所要時間を読みやすい形式（例: "1 hour and 30 minutes"）でユーザーに表示するには、歴史的に手動の計算や外部ライブラリが必要でした。`Temporal` API の `Temporal.Duration` クラスは、構造化された duration オブジェクトと、`round()` メソッドによる強力な「balancing」（バランス調整）機能を提供することで、これを簡単にします。 |
+| [`group-element-transitions`](user-experience/group-element-transitions.md) | group element transitions | リストからアイテムが追加・削除されたり並び替えられたりするとき、トランジションはユーザーが文脈を維持するのに役立ちます。ビュートランジションは、要素にユニークな `view-transition-name` を与えることで、ある状態から別の状態へ遷移する手段を提供します。… |
+| [`improve-text-layout-and-legibility`](user-experience/improve-text-layout-and-legibility.md) | テキストレイアウトと可読性を向上させる | 特に行末や段落末でのテキストレイアウトは、ページの可読性や視覚的な美しさに影響します。CSS には、特定のユースケースを改善できるテキスト折り返しのオプションがいくつか用意されています。 |
+| [`individual-transform-properties`](user-experience/individual-transform-properties.md) | individual transform properties | `transform` プロパティでは複数の変形を指定の順序で適用できますが、ひとつの変形だけを変更したい場合でも変形チェイン全体を再指定する必要があります。これにより、単一の変形をアニメーションさせたりトランジションさせたりするのが面倒になります。 |
+| [`interactive-content-in-3d-scenes`](user-experience/interactive-content-in-3d-scenes.md) | 3D シーンでインタラクティブな HTML コンテンツを有効にする | HTML-in-Canvas API を使うと、canvas 要素の中に実際の DOM を直接レンダリングできます。WebGL、WebGPU、Three.js のような 3D レンダリングコンテキストに適用する場合、`layoutsubtree` 属性を追加すれば子孫の HTML 要素を 3D シーン内にシームレスに投影できます。重要なのは、これらの HTML 要素はアクティブな DOM レイアウトツリーの一部であり続けるため、完全なインタラクティブ性が保たれることです。… |
+| [`interactive-content-reveal`](user-experience/interactive-content-reveal.md) | interactive content reveal | CSS マスクと登録済みカスタムプロパティを使うと、パフォーマンスの良いインタラクティブなリビール効果をサイトに追加できます。マスクとして放射状グラデーションを使い、そのストップ値を登録することで、入退場をスムーズにトランジションさせつつ、最小限の JavaScript でユーザーのポインタを追跡できます。 |
+| [`interest-triggered-action-previews`](user-experience/interest-triggered-action-previews.md) | interest triggered action previews | ユーザーがアクションを確定する前にプレビューを提供することは有用な場合があります。Interest invokers は、（ボタンやリンクのような）interest source と interest target の間に interest 関係を、宣言的なベースで作成できる実験的な Web プラットフォーム機能です。一度宣言的な関係が確立されると、CSS と JavaScript の両方で、interest とその喪失に応じて開発者がさまざまな方法で反応できます。… |
+| [`interest-triggered-tooltips`](user-experience/interest-triggered-tooltips.md) | ホバーでツールチップを表示する | ユーザーは、コンテキストを完全に切り替えずに関連する追加情報を確認したいと考えるものです。ツールチップは、ユーザーがより詳しい情報に関心を示したときに表示するのに便利で、用語の定義、アイコンのみのボタンが行うアクションの明確化、フォームフィールドの追加ガイダンスなどに利用できます。 |
+| [`light-dismiss-a-dialog`](user-experience/light-dismiss-a-dialog.md) | light dismiss a dialog | モダンなモーダルダイアログはしばしば「ライトディスミス」をサポートし、ユーザーがバックドロップ（ダイアログの外側の領域）をクリックまたはタップすることでダイアログを閉じられるようにします。`closedby` 属性は、独自の JavaScript を書かずにこの挙動を有効にするための宣言的な方法を提供します。 |
+| [`manage-recurring-intervals`](user-experience/manage-recurring-intervals.md) | Temporalで繰り返し間隔を管理する | サブスクリプションの請求サイクルや給与計算期間といった繰り返し間隔の算出は、レガシーな`Date`オブジェクトでは長らくエラーが起きやすい処理でした。1月31日のような日付に1か月を足すのは曖昧です（2月28日／29日とすべきか、それとも3月3日にすべきか？）。 |
+| [`model-partial-time-concepts`](user-experience/model-partial-time-concepts.md) | Temporalで部分的な時間概念をモデル化する | クレジットカードの有効期限、年次更新、毎日のアラームなど、完全なカレンダー日付を持たない日付概念のモデリングは、レガシーな`Date`オブジェクトでは長らくエラーが起きやすい処理でした。開発者はしばしば任意の日（その月の1日など）を使ったり、文字列を解析したりせざるを得ず、「日のリーク」やうるう年・月の長さの違いによる誤った計算につながっていました。 |
+| [`move-dom-element-without-losing-state`](user-experience/move-dom-element-without-losing-state.md) | move dom element without losing state | `appendChild()`や`insertBefore()`といった従来のメソッドでDOM要素の親を付け替えると、ブラウザは暗黙のうちにその要素をDOMから削除し、新しい場所に挿入し直します。この「削除と挿入」の操作は多くの内部状態をリセットしてしまい、`<iframe>`要素は再読み込みされ、CSSアニメーションは最初からやり直され、入力フィールドはフォーカスを失います。 |
+| [`navigation-drawer`](user-experience/navigation-drawer.md) | navigation drawer | ナビゲーションドロワーは、ビューポートの端からページコンテンツの上にスライドインしてくるパネルで、背後のすべてを薄暗くします。トリガーボタンから開かれ、パネルを画面外にスワイプする、薄暗くなった背景をタップする、Escapeキーを押すといった操作で閉じられます。 |
+| [`overflow-clipping-control`](user-experience/overflow-clipping-control.md) | オーバーフロークリッピングの制御 | `overflow: hidden`はほぼ常にpadding-boxで厳密にコンテンツをクリップする「粗い道具」ですが、`overflow: clip`と`overflow-clip-margin`を組み合わせれば、ブロックコンテナ間のレイアウトを細かく制御するための「メス」として使えます。 |
+| [`parallax-scroll-effects`](user-experience/parallax-scroll-effects.md) | スクロール時のパララックス効果を構築する | スクロール時のパララックス効果とは、ユーザーがページをスクロールするにつれてコンテンツの異なるレイヤーがそれぞれ異なる速度で動く視覚表現です。これにより奥行きの錯覚が生まれ、前景の要素が背景の要素より速く動いて見えるため、魅力的で没入感のあるブラウジング体験になります。この効果はCSSスクロール駆動アニメーションを使って実現するのが最適で、コンテナのスクロール位置にアニメーションを連動させられます。 |
+| [`persistent-app-tours`](user-experience/persistent-app-tours.md) | 永続的なアプリツアーを作成する | オンボーディングツアーでは、ユーザーがハイライト対象の機能を操作している間も表示し続けるオーバーレイが必要です。自動ポップオーバーとは異なり、手動ポップオーバーはユーザーがページの他の場所をクリックしても閉じません。`popover="manual"`とCSSアンカーポジショニングを組み合わせれば、非モーダルでテザリングされたツアーステップを作成できます。 |
+| [`persistent-toast-notifications`](user-experience/persistent-toast-notifications.md) | トースト通知を作成する | トースト通知は一時的なステータスメッセージです。メニューと違い、ユーザーがページの他の部分を操作しても閉じてはいけません。popover="manual"の状態は「ライトディスミス」の挙動を持たず、複数の通知を共存させられるため理想的です。 |
+| [`persistent-top-layer-ui`](user-experience/persistent-top-layer-ui.md) | persistent top layer ui | 開いている`<dialog>`、ポップオーバー、フルスクリーン要素を`appendChild()`や`insertBefore()`といった従来のメソッドでDOM内で動かすと、ブラウザは暗黙のうちにその要素を削除して再挿入します。この削除によって状態がリセットされ、開いていたモーダル、ポップオーバー、フルスクリーン要素が突然閉じてしまいます。 |
+| [`physics-based-easing`](user-experience/physics-based-easing.md) | physics based easing | `ease-in`や`cubic-bezier()`といった従来のCSSイージング関数は単純なカーブに限定されており、バウンスやスプリングのような複雑な物理ベースの効果を作ることはできません。`linear()`タイミング関数はこれを解決し、複雑なカーブを近似する一連のストップを指定できます。トランジションやアニメーションはストップ間を直線で補間しますが、十分な数のストップがあれば滑らかに見せられます。 |
+| [`platform-controls-dismiss-dialog`](user-experience/platform-controls-dismiss-dialog.md) | platform controls dismiss dialog | モーダルダイアログが開いているとき、ユーザーは慣れ親しんだコントロールでそれを閉じることを期待します。キーボードの<kbd>Esc</kbd>キーを押す、モバイルプラットフォームの戻るボタンやジェスチャーを使う、支援技術の閉じるジェスチャーを使うなどです。 |
+| [`position-aware-tooltips`](user-experience/position-aware-tooltips.md) | position aware tooltips | CSSアンカーポジショニングでツールチップやポップオーバーを構築すると、ブラウザは要素がビューポートからはみ出る場合に自動的にフォールバック位置へ「フリップ」できます。これが発生したときに、位置決めされたコンテンツのスタイルを調整したくなることがあります。例えば、ポジショニングされたコンテンツからアンカーを指す矢印の位置を変えるためです。 |
+| [`precise-text-alignment`](user-experience/precise-text-alignment.md) | 精密なテキスト配置 | ブラウザはline-heightや、アセンダー・ディセンダーといったフォント固有のメトリクスを考慮するため、テキスト文字の上下に追加の余白を自動で加えます。この「ゴーストスペース」のせいで、標準のCSSではピクセルパーフェクトな垂直配置が不可能になります。 |
+| [`prevent-text-wrapping`](user-experience/prevent-text-wrapping.md) | テキストの折り返しを防ぐ | モダンCSSはコンテナ内のテキスト折り返しを制御するための`text-wrap`プロパティを提供します。テキストを1行に維持し、コンテナの境界を無視するには、`text-wrap: nowrap`を使ってください。これは`white-space: nowrap`をよりセマンティックに置き換えるモダンな方法です。 |
+| [`pull-to-reveal`](user-experience/pull-to-reveal.md) | プルトゥリビール | 「プルトゥリビール」は、初回読み込み時にスクロール可能領域の上端より上にコンテンツ（検索バーやリフレッシュコントロールなど）を隠しておき、ユーザーが下に引っ張る（上方向にスクロールする）ことでそれを表示できるUIパターンです。このパターンはモバイルアプリやWebアプリでよく見られ、検索バーやフィルターなどアクセスできるべきだが最初は見せたくない補助的なコントロールに使われます。 |
+| [`reduce-style-repetition`](user-experience/reduce-style-repetition.md) | CSS関数でスタイルの重複を減らす | 大きなスタイルシートを保守していると、特にグラデーションのようなデザインシステムトークンやレスポンシブレイアウトのパターンを扱う際に、ロジックの重複に悩まされがちです。 |
+| [`resilient-context-menus-and-nested-dropdowns`](user-experience/resilient-context-menus-and-nested-dropdowns.md) | resilient context menus and nested dropdowns | 表示されるアクションパネルやポップオーバーボタングループは、最小のスペースで追加機能にアクセスさせるための便利なパターンです。このオーバーレイパターンには、パネルをトリガー要素にテザリングしつつビューポートの制約に適応させるというレイアウトの複雑さがあります。従来は、複雑なJavaScriptライブラリ（Popper.jsやFloating UIなど）で位置を計算し衝突を扱う必要がありました。 |
+| [`same-document-transitions`](user-experience/same-document-transitions.md) | 同一ドキュメント内のトランジション | Webサイトでは、商品一覧と各商品の詳細ページのように、同じオブジェクトの複数のビューを提供することがよくあります。2つのビュー間の遷移はしばしば不連続に感じられます。ユーザーが商品サムネイルをクリックして詳細を表示すると、サムネイルが消えて、画面の別の場所に新しい大きな画像が瞬時に現れます。この連続性の欠如は、ユーザーが要素間の関係を追うのを難しくします。 |
+| [`scroll-entry-exit-effects`](user-experience/scroll-entry-exit-effects.md) | 要素がスクロールポートに出入りする際のエントリー／エグジット効果を追加する | エントリーとエグジットの効果は、要素がビューポートに入る、または出るときに発火するアニメーションです。これは魅力的でダイナミックなユーザー体験を作るのに使えます。例えば、エントリー効果でスクロール時に要素をフェードインさせたり、エグジット効果でスクロールアウト時に要素を縮小させたりできます。 |
+| [`scroll-position-aware-elements`](user-experience/scroll-position-aware-elements.md) | scroll position aware elements | 「ページ最上部に戻る」リンクのようなフローティングボタンを、役に立つときだけ表示するようにして、ユーザー体験を改善します。このガイドでは、JavaScriptのスクロールリスナーやオブザーバに頼らず、コンテナのスクロール位置に基づいて要素をスタイルできるCSSの`container-scroll-state-queries`を使ってこれらの要素を構築する方法を示します。 |
+| [`scroll-progress-indicator`](user-experience/scroll-progress-indicator.md) | スクロールプログレスインジケーターの構築 | スクロールプログレスインジケーターは、スクロール可能なドキュメントやコンテナ内でのユーザーの進捗状況を視覚的に伝える一般的なUIパターンです。ユーザーがスクロールするにつれて視覚的要素が現在位置を反映して更新され、どれだけのコンテンツを閲覧したか、あとどれだけ残っているかを明確かつ直感的に伝えます。 |
+| [`scroll-snap-realtime-feedback`](user-experience/scroll-snap-realtime-feedback.md) | scroll snap realtime feedback | ユーザーは、カルーセルやギャラリーなどのUI要素を操作したときに即座の視覚的フィードバックを期待します。従来のスクロールスナップは、スクロールジェスチャーが完了して要素が落ち着いた *あと* にしかフィードバックを提供しませんでした。スクロールスナップイベント、特に `scrollsnapchanging` を使えば、スクロールジェスチャー中にリアルタイムなフィードバックを提供でき、ユーザーがタッチやマウスを離す前に、これからスナップする対象をハイライト表示できます。 |
+| [`scroll-snap-state-sync`](user-experience/scroll-snap-state-sync.md) | scroll snap state sync | スクロール可能なコンテナのスナップ位置とUIの状態を同期するには、従来は複雑なスクロールイベントリスナー、スクロールオフセットの手動計算、Intersection Observer が必要でした。`scrollsnapchange` イベントは、スクローラーが新しいスナップ対象に落ち着いたことを検出するためのネイティブで効率的な方法を提供し、サイドバーの同期や目次内のアクティブセクションのハイライトに有用です。 |
+| [`scroll-target-on-load`](user-experience/scroll-target-on-load.md) | 初期描画時のスクロールターゲットを設定する | CSSプロパティ `scroll-initial-target` は、スクロールコンテナがレンダリングされた直後に、その子孫要素の特定のものを表示領域に表示させる、宣言的でCSSのみの方法を提供します。これまで開発者は JavaScript(`Element.scrollIntoView()`)やURLのフラグメント識別子(`#item-id`)に頼っていましたが、どちらにも制約があり実装も難しいものでした。 |
+| [`scrollability-affordance-hints`](user-experience/scrollability-affordance-hints.md) | scrollability affordance hints | シャドウやグラデーションなどの視覚的なヒントは、ユーザーがスクロールしてさらにコンテンツを見られることを理解する助けになります。本ガイドでは、JavaScriptのスクロールリスナーやオブザーバーに頼らず、コンテナのスクロール状態に基づいて要素をスタイリングできるCSSの `container-scroll-state-queries` を使ってこれらのヒントを構築する方法を示します。 |
+| [`scrollytelling`](user-experience/scrollytelling.md) | スクロリテリング | スクロリテリングは、魅力的で没入感のあるWeb体験を作るために用いられる人気の技法です。ユーザーがスクロールするのに合わせてページの要素をアニメーションさせ、ストーリーを伝えたりナラティブを通してユーザーを導いたりします。CSSスクロール駆動アニメーションを使えば、JavaScriptに頼らずCSSだけでこれらの効果を作成できます。アニメーションは時間ベースのクロックではなくスクロール位置によって制御されるため、常にユーザーのスクロールと同期します。 |
+| [`search-hidden-content`](user-experience/search-hidden-content.md) | 非表示コンテンツを検索可能にする | Webインターフェースでは、ユーザー体験の向上、画面領域の節約、ページパフォーマンスの改善のためにコンテンツを画面から隠すことがよくあります。`display: none` や `visibility: hidden` といった従来の方法はコンテンツを視覚的に隠せますが、それらの方法はスクリーンリーダーやブラウザの「ページ内検索」機能からも完全にアクセス不可能にしてしまいます。 |
+| [`shaped-cutouts`](user-experience/shaped-cutouts.md) | shaped cutouts | CSSマスキングを使うと、カードにノッチを加えたり成形されたボーダーを作ったりと、要素をカスタム形状にクリッピングできます。複雑なレイアウト向けに形を組み合わせる場合、要素が含むコンテンツの種類に応じてマスキング戦略を選びましょう。 |
+| [`shrinking-header-on-scroll`](user-experience/shrinking-header-on-scroll.md) | スクロールで縮小するヘッダー | スクロールで縮小するヘッダーは、ページ上部に固定されたヘッダー要素が、ユーザーが下にスクロールするにつれて滑らかに小さなサイズへ遷移する、よく使われるUIパターンです。この効果はメインコンテンツのために画面領域を最大化しつつ、重要なナビゲーションやブランディング要素にアクセス可能な状態を保つためによく使われます。CSSスクロール駆動アニメーションを使えば、アニメーションをドキュメントのスクロール位置に紐づけることで、この効果を宣言的かつパフォーマンスよく実現できます。 |
+| [`size-aware-styling`](user-experience/size-aware-styling.md) | size aware styling | サイズに応じたスタイリングを行うと、画面全体ではなく、コンポーネントに割り当てられたスペースに応じてレイアウトや見た目を変えられます。これは、狭いサイドバーや広いメインエリアなど、レイアウト内の異なる場所に配置されうるカードやナビゲーションバーのようなコンポーネントに有用です。 |
+| [`soft-edge-content-fade`](user-experience/soft-edge-content-fade.md) | soft edge content fade | コンテナの端に透明度のグラデーションを適用する場合(スクロール可能な領域でさらにコンテンツがあることを示したり、テキストをフェードアウトさせたりする場合など)は、CSSマスキングとリニアグラデーションを使います。この手法は半透明のオーバーレイを使うよりも優れています。なぜなら、実際にコンテンツ自体がフェードし、背景が自然に透けて見え、テキスト選択やポインターイベントを妨げないためです。 |
+| [`stabilize-reactive-state`](user-experience/stabilize-reactive-state.md) | Temporal でリアクティブな状態を安定化する | リアクティブシステムの中には、状態の変化を厳格に参照の等価性で検出するもの([React](https://react.dev/) など)もあれば、プレーンオブジェクトのミューテーションを追跡できるもの([Vue](https://vuejs.org/) や [Svelte](https://svelte.dev/) など)もあります。… |
+| [`stack-drill-down`](user-experience/stack-drill-down.md) | スタック型ドリルダウン | スタック型ドリルダウンは階層的なナビゲーションパターンで、モバイルアプリでよく見られます。リンクをアクティブ化すると新しい全画面ビューが直前のビューの上にプッシュされます。ビューの内容はアプリケーション側で定義され、設定のサブページ、フィード内のスレッド、ファイルブラウザ内のフォルダ、ギャラリー内の詳細ページなど多様です。ユーザーは現在のビューを右にスワイプして画面外に出すか、戻るボタンをタップして戻ります。… |
+| [`style-parent-with-has`](user-experience/style-parent-with-has.md) | :has() で親要素をスタイリングする | エラー状態では、入力要素自身ではなく *外側* の要素にスタイルを当てる必要があることがよくあります。例えば、親 `fieldset` のボーダーの色を変えたり、`<label>` をハイライトしたり、カードのヘッダーに全体的なエラーアイコンを表示したりするケースです。従来これには、親要素のクラスを切り替えるJavaScriptが必要でした。 |
+| [`support-global-calendar-systems`](user-experience/support-global-calendar-systems.md) | Temporal でグローバルなカレンダーシステムをサポートする | 従来のJavaScriptの `Date` オブジェクトは先発グレゴリオ暦に基づいているため、イスラム暦(太陰暦)、ヘブライ暦(太陰太陽暦)、中国暦(太陰太陽暦)など他のカレンダーシステムに依拠するユーザー向けのアプリケーションを構築するのは困難でした。開発者はこれらのシステムをサポートするために、複雑なサードパーティライブラリや手動計算に頼らざるを得ませんでした。 |
+| [`swipe-to-remove`](user-experience/swipe-to-remove.md) | スワイプで削除 | スワイプで削除するパターンはモバイルアプリで一般的ですが、Webできれいに実装するのは難しい場合があります。CSSスクロールスナップを使えば、ブラウザのスクロールエンジンに直接フックするスムーズでネイティブのような感触のスワイプインタラクションを作成できます。これにより、複雑なJavaScriptジェスチャーライブラリを使わずとも高いパフォーマンスと物理ベースの慣性が得られます。 |
+| [`visually-stable-font-fallbacks`](user-experience/visually-stable-font-fallbacks.md) | visually stable font fallbacks | Webフォントがロードされると、フォールバックフォントを置き換えますが、両方を同じ `font-size` に設定していてもしばしば寸法が異なります。これは「レイアウトシフト」(累積レイアウトシフト)を引き起こし、フォールバックの小文字のサイズ(x-height)が優先フォントと大きく異なる場合、テキストが読みにくくなる可能性があります。 |
+| [`visually-stable-mixed-fonts`](user-experience/visually-stable-mixed-fonts.md) | visually stable mixed fonts | 異なるフォントファミリーを混在させる場合、例えばインラインコードスニペットを挿入する場合や、テーマごとにフォントファミリーを切り替える場合に、「x-height」(小文字の高さ)の違いから、一方のフォントがもう一方よりはるかに小さくまたは大きく見えることがあります。これは可読性の悪化やレイアウトシフトの原因となります。 |
+| [`visually-texture-content`](user-experience/visually-texture-content.md) | visually texture content | グランジ、ノイズ、紙のテクスチャといったリアルな風化やテクスチャパターンを要素に適用するには、繰り返しのテクスチャ画像を使ったCSSマスキング(`mask-image`)を使います。これにより、テクスチャを単に上に重ねるのではなく、要素の一部を半透明にすることでコンテンツ自体にテクスチャを与えられます。これによって、より現実的な物質感を表現できます。 |
+
+## <a id="webmcp"></a>WebMCP
+
+| ID | タイトル | 概要 |
+| --- | --- | --- |
+| [`agentic-forms`](webmcp/agentic-forms.md) | agentic forms | Declarative APIは、属性を用いて標準的なHTMLの`<form>`要素をWebMCPツールに変換します。ブラウザはフォーム入力からJSONスキーマを合成し、エージェントとのやり取りを処理します。 |
+| [`agentic-javascript-tools`](webmcp/agentic-javascript-tools.md) | agentic javascript tools | Imperative APIは`navigator.modelContext.registerTool()`を使い、JavaScriptツールをプログラム的に定義します。現在のルートやユーザー状態に応じてツールを追加・削除する必要があるシングルページアプリケーション（SPA）に最適です。 |
+| [`webmcp`](webmcp/webmcp.md) | WebMCP（Web Model Context Protocol） | WebMCPはブラウザネイティブのJavaScript APIであり、Webページが自身のクライアントサイド機能を構造化された「ツール」として、AIエージェント、ブラウザアシスタント、支援技術に公開できるようにします。 |
