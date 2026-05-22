@@ -28,10 +28,6 @@
       "Bash(sudo:*)",
       "Bash(brew install:*)",
       "Bash(brew uninstall:*)",
-      "Bash(git push --no-verify:*)",
-      "Bash(git commit --no-verify:*)",
-      "Bash(git commit -n:*)",
-      "Bash(git reset --hard:*)",
       "Bash(git clean -fd:*)",
       "Bash(git clean -fdx:*)",
       "Read(**/.env)",
@@ -47,7 +43,13 @@
       "Read(**/.aws/**)",
       "Read(**/.ssh/**)"
     ],
-    "ask": ["Bash(git push:*)"]
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git push --no-verify:*)",
+      "Bash(git commit --no-verify:*)",
+      "Bash(git commit -n:*)"
+    ]
   },
   "sandbox": {
     "excludedCommands": ["git commit", "chezmoi", "pnpm install"]
