@@ -198,7 +198,7 @@
 
 ### ガイドライン
 
-クロスブラウザでPopover APIを使うためのフォールバック戦略の詳細は、[`declarative-dialog-popover-control`](user-experience/declarative-dialog-popover-control.md)を参照してください。
+クロスブラウザでPopover APIを使うためのフォールバック戦略の詳細は、[`declarative-dialog-popover-control`](../user-experience/declarative-dialog-popover-control.md)を参照してください。
 
 - モーダルオーバーレイには `<dialog>` を使用して**ください**（JSの `.showModal()` が必要）。これにより、フォーカスのトラップ、背景の暗転、`Esc` での閉じることを自動的にサポートします。`closedby="any"` 属性を使うと、カスタムJavaScriptなしでネイティブの「ライトディスミス」（バックドロップクリックで閉じる）を有効化できます。
 - フォーカストラップを必要としない非モーダルUI（メニュー、ツールチップ）には、Popover API（`popover` 属性）を活用して**ください**。
@@ -318,7 +318,7 @@
 
 ### ガイドライン
 
-最新のWebフォームの作成に関する詳細は、[`forms`](forms/forms.md)を参照してください。
+最新のWebフォームの作成に関する詳細は、[`forms`](../forms/forms.md)を参照してください。
 
 - 入力を物理的な `<form>` ツリーから切り離すには、`form="form-id"` 属性を活用して**ください**。
 - 軽量なオートサジェストには `<datalist>` を `<input list="id">` と組み合わせて使用して**ください**（注: 視覚的にスタイル不可で、スクリーンリーダーのクセがあります）。

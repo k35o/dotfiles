@@ -176,7 +176,7 @@ code {
 }
 ```
 
-コンポーネント固有のオーバーライドとその落とし穴の詳細については、[`component-specific-light-dark-theme`](user-experience/component-specific-light-dark-theme.md)を参照してください。
+コンポーネント固有のオーバーライドとその落とし穴の詳細については、[`component-specific-light-dark-theme`](component-specific-light-dark-theme.md)を参照してください。
 
 ## 注意すべき既知の問題
 
