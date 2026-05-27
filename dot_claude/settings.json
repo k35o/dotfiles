@@ -53,5 +53,41 @@
   },
   "sandbox": {
     "excludedCommands": ["git commit", "chezmoi", "pnpm install"]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/prompt_submit.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/pattern_check.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/stop_review.py",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
   }
 }

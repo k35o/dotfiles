@@ -1,0 +1,154 @@
+{
+  "$comment": "Per-edit パターンマッチ用。pyyaml 不要のため JSON 形式を採用。各ルール最大 1 件/ファイル/セッションで発火する想定。",
+  "patterns": [
+    {
+      "rule_name": "dangerously_set_inner_html",
+      "substrings": ["dangerouslySetInnerHTML"],
+      "paths": ["**/*.tsx", "**/*.jsx"],
+      "reminder": "dangerouslySetInnerHTML を検出。DOMPurify で明示的に sanitize するか、JSX で組み立て直す。詳細は ~/.claude/claude-security-guidance.md の DOM/React セクション。"
+    },
+    {
+      "rule_name": "inner_html_assign",
+      "regex": "\\.innerHTML\\s*=",
+      "paths": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
+      "reminder": "innerHTML への直接代入は XSS の温床。textContent か sanitize ライブラリを使う。"
+    },
+    {
+      "rule_name": "document_write",
+      "substrings": ["document.write"],
+      "reminder": "document.write はパースをブロックし XSS にも弱い。DOM API で書き換える。"
+    },
+    {
+      "rule_name": "eval_call",
+      "regex": "\\beval\\s*\\(",
+      "reminder": "eval は任意コード実行。JSON.parse か構造化パーサーに置き換える。"
+    },
+    {
+      "rule_name": "new_function",
+      "regex": "new\\s+Function\\s*\\(",
+      "reminder": "new Function() は任意コードのコンパイル。静的な実装に置き換える。"
+    },
+    {
+      "rule_name": "child_process_exec",
+      "regex": "child_process\\.(exec|execSync)\\s*\\(|require\\(\\s*[\"']child_process[\"']\\s*\\)\\.(exec|execSync)\\s*\\(",
+      "paths": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs", "**/*.cjs"],
+      "exclude_paths": ["**/*.test.*", "**/*.spec.*"],
+      "reminder": "exec/execSync はシェル経由で動くためインジェクションリスクがある。execFile か spawn を引数配列で使う。"
+    },
+    {
+      "rule_name": "child_process_unsafe_import",
+      "regex": "import\\s*\\{[^}]*\\b(exec|execSync)\\b[^}]*\\}\\s*from\\s*[\"']child_process[\"']|import\\s*\\{[^}]*\\b(exec|execSync)\\b[^}]*\\}\\s*from\\s*[\"']node:child_process[\"']",
+      "paths": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs", "**/*.cjs"],
+      "exclude_paths": ["**/*.test.*", "**/*.spec.*"],
+      "reminder": "exec/execSync を destructured import している。ユーザー入力をシェルに渡すリスク。execFile/spawn + 引数配列に切り替える。"
+    },
+    {
+      "rule_name": "math_random_security_path",
+      "regex": "Math\\.random\\s*\\(",
+      "paths": [
+        "**/auth/**",
+        "**/crypto/**",
+        "**/security/**",
+        "**/token*",
+        "**/session*"
+      ],
+      "reminder": "セキュリティ目的の Math.random は不可。crypto.randomUUID() / crypto.getRandomValues() を使う。"
+    },
+    {
+      "rule_name": "loose_token_compare",
+      "regex": "\\b(?:token|secret|signature|hmac|password|apiKey|api_key|apiSecret)\\b[\\w.\\[\\]\"']*\\s*===|===\\s*[\\w.\\[\\]\"']*\\b(?:token|secret|signature|hmac|password|apiKey|api_key|apiSecret)\\b",
+      "paths": ["**/*.ts", "**/*.tsx"],
+      "exclude_paths": ["**/*.test.*", "**/*.spec.*"],
+      "reminder": "シークレット系の === 比較はタイミング攻撃に弱い。crypto.timingSafeEqual を使う。"
+    },
+    {
+      "rule_name": "next_public_secret_smell",
+      "regex": "NEXT_PUBLIC_\\w*(SECRET|TOKEN|KEY|PASSWORD|PRIVATE)",
+      "reminder": "NEXT_PUBLIC_* はクライアントバンドルに含まれる。秘密値ならプレフィックスを外してサーバー側のみで参照する。"
+    },
+    {
+      "rule_name": "localstorage_auth_token",
+      "regex": "localStorage\\.setItem\\(\\s*[\"'][^\"']*(token|jwt|secret|password|session|credential)",
+      "reminder": "認証トークンを localStorage に置くと XSS で奪われる。httpOnly Cookie か短期セッションに切り替える。"
+    },
+    {
+      "rule_name": "javascript_url_scheme",
+      "regex": "href\\s*=\\s*[\"{`]\\s*javascript:",
+      "reminder": "javascript: URL は任意コード実行。button + onClick に置き換える。"
+    },
+    {
+      "rule_name": "hardcoded_api_key_prefix",
+      "substrings": [
+        "sk_live_",
+        "sk_test_",
+        "AKIA",
+        "AIza",
+        "ghp_",
+        "github_pat_",
+        "xoxb-",
+        "xoxp-"
+      ],
+      "exclude_paths": [
+        "**/*.test.*",
+        "**/*.spec.*",
+        "**/fixtures/**",
+        "**/.env.example"
+      ],
+      "reminder": "ハードコードされた API キーらしき文字列。シークレットマネージャから読み込む形にする。"
+    },
+    {
+      "rule_name": "github_workflow_edit",
+      "regex": "^(jobs|permissions|on):",
+      "paths": ["**/.github/workflows/**"],
+      "reminder": "GitHub Actions ワークフローの変更。確認: (1) permissions が最小権限、(2) pull_request_target で PR head を checkout していない、(3) ${{ github.event.* }} をシェルに直接埋め込んでいない。"
+    },
+    {
+      "rule_name": "github_pull_request_target",
+      "substrings": ["pull_request_target"],
+      "paths": ["**/.github/workflows/**"],
+      "reminder": "pull_request_target は信頼境界をまたぐ高リスクトリガー。PR の head を checkout して実行コードに触れさせないこと。secret を渡す前に actor の権限を必ず確認する。"
+    },
+    {
+      "rule_name": "ts_expect_error_on_security_path",
+      "regex": "@ts-(expect-error|ignore)",
+      "paths": [
+        "**/actions/**",
+        "**/api/**",
+        "**/middleware.ts",
+        "**/middleware.tsx",
+        "**/auth/**"
+      ],
+      "reminder": "セキュリティ境界で型チェックをバイパスしている。理由のコメントを添えるか修正する。"
+    },
+    {
+      "rule_name": "raw_sql_concat",
+      "regex": "(SELECT|INSERT|UPDATE|DELETE|DROP)\\s+[^;]*\\$\\{",
+      "paths": ["**/*.ts", "**/*.tsx", "**/*.js"],
+      "reminder": "SQL 文字列にテンプレートリテラルで値を埋めている。SQL インジェクションのリスクがあるためパラメタライズドクエリに置き換える。"
+    },
+    {
+      "rule_name": "env_file_write",
+      "regex": "(write|append)File(Sync)?\\(\\s*[\"'`][^\"'`]*\\.env|fs\\.writeFile(Sync)?\\(\\s*[\"'`][^\"'`]*\\.env",
+      "paths": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs", "**/*.cjs"],
+      "reminder": ".env ファイルへの書き込みを検出。シークレットの永続化先として .env を使うのは原則 NG。シークレットマネージャか CI の secret store に置く。"
+    },
+    {
+      "rule_name": "redirect_user_input",
+      "regex": "\\bredirect\\(\\s*[\"'`][^\"'`]*\\$\\{|\\bredirect\\(\\s*(?:request\\.|searchParams\\.|params\\.|new URL\\()",
+      "paths": ["**/*.ts", "**/*.tsx"],
+      "reminder": "ユーザー入力を redirect() に渡している。open redirect の温床になるので、リダイレクト先は許可リストで検証する。"
+    },
+    {
+      "rule_name": "server_env_in_client_component",
+      "regex": "[\"']use client[\"'][\\s\\S]{0,4000}process\\.env\\.(?!NEXT_PUBLIC_)[A-Z][A-Z0-9_]+",
+      "paths": ["**/*.tsx", "**/*.ts"],
+      "reminder": "'use client' ファイル内で NEXT_PUBLIC_ 接頭辞のない process.env を参照している。クライアントバンドルに環境変数名と値の関係が漏れるおそれがある。"
+    },
+    {
+      "rule_name": "cookies_set_without_httponly",
+      "regex": "cookies\\(\\)\\.set\\((?![^)]*httpOnly)[^)]*\\)",
+      "paths": ["**/*.ts", "**/*.tsx"],
+      "reminder": "cookies().set に httpOnly が明示されていない。認証・セッション系の Cookie は { httpOnly: true, secure: true, sameSite: 'lax'|'strict' } を必ず付ける。"
+    }
+  ]
+}
