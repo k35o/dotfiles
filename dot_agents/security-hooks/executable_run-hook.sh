@@ -1,16 +1,16 @@
 #!/bin/bash
-# Wrapper that hooks invoke to run the actual Python script.
+# Wrapper that hooks invoke to run the actual Bun script.
 #
 # Why: Claude Code and Codex CLI may spawn hooks from environments where
 # Homebrew's /opt/homebrew/bin and mise's shim dir are NOT on PATH (GUI launch,
-# daemon mode, login-less subprocess). Resolving mise / python via a fixed,
+# daemon mode, login-less subprocess). Resolving mise / bun via a fixed,
 # wrapper-controlled PATH is more robust than relying on the bare `mise`
 # command resolving correctly.
 #
 # Usage:
 #   run-hook.sh <runtime> <script> [extra args...]
 # where <runtime> is "claude" or "codex" — exported as SECURITY_HOOK_RUNTIME
-# so detect_runtime() picks it up deterministically.
+# so detectRuntime() picks it up deterministically.
 
 set -u
 
@@ -29,7 +29,7 @@ shift 2
 # already has things set up.
 export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH:-/usr/bin:/bin}"
 
-# Hint to common.detect_runtime which originating tool we're under.
+# Hint to common.detectRuntime which originating tool we're under.
 export SECURITY_HOOK_RUNTIME="$RUNTIME"
 
 # Find mise. Fall back gracefully so a missing mise doesn't break the hook.
@@ -41,13 +41,14 @@ elif command -v mise >/dev/null 2>&1; then
 fi
 
 if [[ -n "$MISE_BIN" ]]; then
-  exec "$MISE_BIN" exec python@3.13 -- python3 "$SCRIPT" "$@"
+  exec "$MISE_BIN" exec bun -- bun "$SCRIPT" "$@"
 fi
 
-# Last resort: system python3. Scripts use only standard library so this works.
-if command -v python3 >/dev/null 2>&1; then
-  exec python3 "$SCRIPT" "$@"
+# Last resort: any bun on PATH. Scripts only need a working bun.
+if command -v bun >/dev/null 2>&1; then
+  exec bun "$SCRIPT" "$@"
 fi
 
-# Nothing available — silently exit 0 to keep the originating tool unblocked.
+# Bun is required for TS execution — no fallback available.
+# Silently exit 0 to keep the originating tool unblocked.
 exit 0
