@@ -26,6 +26,8 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
+import process from 'node:process';
+
 import {
   MAX_FILE_BYTES,
   STATE_DIR,
@@ -51,7 +53,11 @@ function untrackedSnapshotDir(sessionId: string): string {
   return join(STATE_DIR, 'baseline', `${safeSessionKey(sessionId)}.untracked`);
 }
 
-function runGit(cwd: string, args: string[], timeoutMs: number): {
+function runGit(
+  cwd: string,
+  args: string[],
+  timeoutMs: number,
+): {
   ok: boolean;
   stdout: string;
   stderr: string;
@@ -96,7 +102,7 @@ function snapshotUntrackedFiles(
       mkdirSync(dirname(dst), { recursive: true });
       writeFileSync(dst, readFileSync(src));
     } catch (e) {
-      log('prompt_submit', `snapshot ${rel} failed: ${stringifyError(e)}`);
+      log('prompt-submit', `snapshot ${rel} failed: ${stringifyError(e)}`);
     }
   }
 }
@@ -105,23 +111,26 @@ function capture(cwd: string): Baseline | null {
   const check = runGit(cwd, ['rev-parse', '--is-inside-work-tree'], 5000);
   if (!check.ok || check.stdout.trim() !== 'true') {
     if (!check.ok && check.stderr)
-      log('prompt_submit', `git check failed: ${check.stderr.slice(0, 200)}`);
+      log('prompt-submit', `git check failed: ${check.stderr.slice(0, 200)}`);
     return null;
   }
 
   let sha = '';
-  const stash = runGit(cwd, ['stash', 'create', '-u'], 15000);
+  const stash = runGit(cwd, ['stash', 'create', '-u'], 15_000);
   if (stash.ok) {
     sha = stash.stdout.trim();
   } else if (stash.stderr) {
-    log('prompt_submit', `stash create failed: ${stash.stderr.slice(0, 200)}`);
+    log('prompt-submit', `stash create failed: ${stash.stderr.slice(0, 200)}`);
   }
 
   if (!sha) {
     const head = runGit(cwd, ['rev-parse', 'HEAD'], 5000);
     if (head.ok) sha = head.stdout.trim();
     else if (head.stderr)
-      log('prompt_submit', `rev-parse HEAD failed: ${head.stderr.slice(0, 200)}`);
+      log(
+        'prompt-submit',
+        `rev-parse HEAD failed: ${head.stderr.slice(0, 200)}`,
+      );
   }
 
   if (!sha) return null;
@@ -129,13 +138,13 @@ function capture(cwd: string): Baseline | null {
   const ls = runGit(
     cwd,
     ['ls-files', '--others', '--exclude-standard'],
-    10000,
+    10_000,
   );
   const untracked = ls.ok
     ? ls.stdout.split('\n').filter((ln) => ln.length > 0)
     : [];
   if (!ls.ok && ls.stderr)
-    log('prompt_submit', `ls-files failed: ${ls.stderr.slice(0, 200)}`);
+    log('prompt-submit', `ls-files failed: ${ls.stderr.slice(0, 200)}`);
 
   return { sha, untracked, cwd };
 }
@@ -160,6 +169,6 @@ async function main(): Promise<number> {
 try {
   process.exit(await main());
 } catch (e) {
-  log('prompt_submit', `unhandled: ${stringifyError(e)}`);
+  log('prompt-submit', `unhandled: ${stringifyError(e)}`);
   process.exit(0);
 }

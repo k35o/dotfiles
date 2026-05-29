@@ -1,4 +1,6 @@
 import { describe, expect, test } from 'bun:test';
+import process from 'node:process';
+
 import {
   detectRuntime,
   extractEditedPaths,
@@ -67,7 +69,7 @@ describe('safeSessionKey', () => {
   test('deterministic 16-hex-char digest', () => {
     const k = safeSessionKey('abc');
     expect(k).toHaveLength(16);
-    expect(k).toMatch(/^[0-9a-f]{16}$/);
+    expect(k).toMatch(/^[\da-f]{16}$/u);
     expect(safeSessionKey('abc')).toBe(k);
   });
 
@@ -109,7 +111,8 @@ describe('extractEditedPaths', () => {
   });
 
   test('apply_patch delegates to parseCodexPatch', () => {
-    const patch = '*** Add File: a.ts\n+hello\n*** Update File: b.ts\n@@\n-old\n+new\n';
+    const patch =
+      '*** Add File: a.ts\n+hello\n*** Update File: b.ts\n@@\n-old\n+new\n';
     const paths = extractEditedPaths({
       tool_name: 'apply_patch',
       tool_input: { input: patch },
@@ -119,7 +122,9 @@ describe('extractEditedPaths', () => {
   });
 
   test('unknown tool returns empty', () => {
-    expect(extractEditedPaths({ tool_name: 'Bash', tool_input: {} })).toEqual([]);
+    expect(extractEditedPaths({ tool_name: 'Bash', tool_input: {} })).toEqual(
+      [],
+    );
   });
 });
 
@@ -145,19 +150,21 @@ describe('parseCodexPatch', () => {
   });
 });
 
+function resetRuntimeEnv() {
+  for (const k of [
+    'SECURITY_HOOK_RUNTIME',
+    'CLAUDECODE',
+    'CLAUDE_PROJECT_DIR',
+    'CODEX_HOME',
+    'CODEX_SANDBOX_ENV_VAR',
+  ]) {
+    delete process.env[k];
+  }
+}
+
 describe('detectRuntime', () => {
   const orig = { ...process.env };
-  function reset() {
-    for (const k of [
-      'SECURITY_HOOK_RUNTIME',
-      'CLAUDECODE',
-      'CLAUDE_PROJECT_DIR',
-      'CODEX_HOME',
-      'CODEX_SANDBOX_ENV_VAR',
-    ]) {
-      delete process.env[k];
-    }
-  }
+  const reset = resetRuntimeEnv;
 
   test('explicit env wins', () => {
     reset();
@@ -183,7 +190,9 @@ describe('detectRuntime', () => {
 
   test('transcript_path heuristic', () => {
     reset();
-    expect(detectRuntime({ transcript_path: '/x/.codex/sessions/y' })).toBe('codex');
+    expect(detectRuntime({ transcript_path: '/x/.codex/sessions/y' })).toBe(
+      'codex',
+    );
     Object.assign(process.env, orig);
   });
 
