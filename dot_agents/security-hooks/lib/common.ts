@@ -8,22 +8,34 @@
  * - 個人情報や秘密値をログに出さない
  */
 
+import { Buffer } from 'node:buffer';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, renameSync, statSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdirSync,
+  renameSync,
+  statSync,
+  writeFileSync,
+} from 'node:fs';
 import { appendFile, readFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
+import process from 'node:process';
 
 export const HOME = homedir();
 export const LOG_FILE = join(HOME, '.cache', 'security-hooks', 'log.txt');
 export const STATE_DIR = join(HOME, '.cache', 'security-hooks');
-export const GUIDANCE_FILE = join(HOME, '.claude', 'claude-security-guidance.md');
+export const GUIDANCE_FILE = join(
+  HOME,
+  '.claude',
+  'claude-security-guidance.md',
+);
 export const PATTERNS_FILE = join(HOME, '.claude', 'security-patterns.json');
 
 export const MAX_FILE_BYTES = 512 * 1024;
 
-const RISKY_NESTED = /\([^)]*[+*][^)]*\)[+*]/;
-const GREEDY_WILDCARD = /\.[*+]/g;
+const RISKY_NESTED = /\([^)]*[+*][^)]*\)[+*]/u;
+const GREEDY_WILDCARD = /\.[*+]/gu;
 
 export type HookEvent =
   | 'PreToolUse'
@@ -148,16 +160,16 @@ function globToRegex(pattern: string): RegExp {
         i++;
       } else {
         let cls = pattern.slice(i + 1, close);
-        if (cls.startsWith('!')) cls = '^' + cls.slice(1);
-        re += '[' + cls + ']';
+        if (cls.startsWith('!')) cls = `^${cls.slice(1)}`;
+        re += `[${cls}]`;
         i = close + 1;
       }
     } else {
-      re += c!.replace(/[.+^${}()|\\]/g, '\\$&');
+      re += c!.replaceAll(/[$()*+.?[\\\]^{|}]/gu, '\\$&');
       i++;
     }
   }
-  return new RegExp('^' + re + '$', 's');
+  return new RegExp(`^${re}$`, 'su');
 }
 
 export function isRiskyRegex(pattern: string): boolean {
@@ -187,7 +199,10 @@ export async function loadPatterns(): Promise<PatternRule[]> {
   const safe: PatternRule[] = [];
   for (const rule of list) {
     if (rule.regex && isRiskyRegex(rule.regex)) {
-      log('common', `skipping risky regex rule: ${rule.rule_name ?? 'unnamed'}`);
+      log(
+        'common',
+        `skipping risky regex rule: ${rule.rule_name ?? 'unnamed'}`,
+      );
       continue;
     }
     safe.push(rule);
@@ -212,7 +227,7 @@ export async function loadGuidance(): Promise<string> {
 export function atomicWriteText(path: string, text: string): boolean {
   try {
     mkdirSync(dirname(path), { recursive: true });
-    const tmp = path + '.tmp';
+    const tmp = `${path}.tmp`;
     writeFileSync(tmp, text);
     renameSync(tmp, path);
     return true;
@@ -251,8 +266,8 @@ function absPath(p: string, cwd: string): string {
   return isAbsolute(p) ? p : join(cwd, p);
 }
 
-const CODEX_FILE_HEADER = /^\*\*\*\s+(?:Update|Add)\s+File:\s+(.+?)\s*$/;
-const CODEX_MOVE_HEADER = /^\*\*\*\s+Move\s+to:\s+(.+?)\s*$/;
+const CODEX_FILE_HEADER = /^\*\*\*\s+(?:Update|Add)\s+File:\s+(.+?)\s*$/u;
+const CODEX_MOVE_HEADER = /^\*\*\*\s+Move\s+to:\s+(.+?)\s*$/u;
 
 export function parseCodexPatch(patch: string, cwd: string): string[] {
   const paths: string[] = [];

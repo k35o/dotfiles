@@ -23,6 +23,8 @@
 
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import process from 'node:process';
+
 import {
   STATE_DIR,
   atomicWriteText,
@@ -53,29 +55,30 @@ async function loadSeen(sessionId: string): Promise<Set<string>> {
     return new Set(Array.isArray(arr) ? (arr as string[]) : []);
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ENOENT') return new Set();
-    log('pattern_check', `load_seen failed: ${stringifyError(e)}`);
+    log('pattern-check', `load_seen failed: ${stringifyError(e)}`);
     return new Set();
   }
 }
 
 function saveSeen(sessionId: string, seen: Set<string>): void {
-  const sorted = [...seen].sort();
+  const sorted = [...seen].toSorted();
   atomicWriteText(sessionStatePath(sessionId), JSON.stringify(sorted));
 }
 
 function matchRule(content: string, path: string, rule: PatternRule): boolean {
   const pathsFilter = rule.paths ?? [];
-  if (pathsFilter.length > 0 && !matchesAnyGlob(pathsFilter, path)) return false;
+  if (pathsFilter.length > 0 && !matchesAnyGlob(pathsFilter, path))
+    return false;
   const exclude = rule.exclude_paths ?? [];
   if (exclude.length > 0 && matchesAnyGlob(exclude, path)) return false;
 
   if (rule.regex) {
     try {
-      const re = new RegExp(rule.regex, 'm');
+      const re = new RegExp(rule.regex, 'mu');
       if (re.test(content)) return true;
     } catch (e) {
       log(
-        'pattern_check',
+        'pattern-check',
         `bad regex in ${rule.rule_name ?? 'unnamed'}: ${stringifyError(e)}`,
       );
     }
@@ -107,9 +110,13 @@ async function main(): Promise<number> {
   const seen = await loadSeen(sessionId);
   const findings: string[] = [];
 
-  for (const path of paths) {
-    const content = await readFileCapped(path);
+  // Read every edited file in parallel, then walk them in input order so
+  // `seen` updates and `findings` ordering stay deterministic.
+  const contents = await Promise.all(paths.map((p) => readFileCapped(p)));
+
+  for (const [i, content] of contents.entries()) {
     if (content === null) continue;
+    const path = paths[i]!;
 
     for (const rule of rules) {
       const name = String(rule.rule_name ?? 'unnamed');
@@ -127,10 +134,10 @@ async function main(): Promise<number> {
   saveSeen(sessionId, seen);
 
   const text =
-    'Security pattern(s) matched in just-edited file(s). ' +
-    'Review and remediate before continuing this turn:\n\n' +
-    findings.join('\n') +
-    '\n\nReference: ~/.claude/claude-security-guidance.md';
+    `Security pattern(s) matched in just-edited file(s). ` +
+    `Review and remediate before continuing this turn:\n\n${findings.join(
+      '\n',
+    )}\n\nReference: ~/.claude/claude-security-guidance.md`;
   emitInject(text, 'PostToolUse');
   return 0;
 }
@@ -138,6 +145,6 @@ async function main(): Promise<number> {
 try {
   process.exit(await main());
 } catch (e) {
-  log('pattern_check', `unhandled: ${stringifyError(e)}`);
+  log('pattern-check', `unhandled: ${stringifyError(e)}`);
   process.exit(0);
 }

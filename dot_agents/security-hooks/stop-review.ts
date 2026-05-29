@@ -35,9 +35,12 @@
  * - SECURITY_REVIEW_MISE_PATH: absolute path to mise (default: /opt/homebrew/bin/mise)
  */
 
+import { Buffer } from 'node:buffer';
 import { spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import process from 'node:process';
+
 import {
   STATE_DIR,
   atomicWriteText,
@@ -65,7 +68,10 @@ function safeIntEnv(name: string, fallback: number): number {
   if (!raw) return fallback;
   const n = Number.parseInt(raw, 10);
   if (Number.isNaN(n)) {
-    log('stop_review', `bad ${name}=${JSON.stringify(raw)}, using default ${fallback}`);
+    log(
+      'stop-review',
+      `bad ${name}=${JSON.stringify(raw)}, using default ${fallback}`,
+    );
     return fallback;
   }
   return n;
@@ -85,7 +91,12 @@ function untrackedSnapshotRoot(sessionId: string): string {
 
 function getRunCount(sessionId: string): number {
   try {
-    return Number.parseInt(readFileSync(runsStatePath(sessionId), 'utf8').trim(), 10) || 0;
+    return (
+      Number.parseInt(
+        readFileSync(runsStatePath(sessionId), 'utf8').trim(),
+        10,
+      ) || 0
+    );
   } catch {
     return 0;
   }
@@ -97,10 +108,12 @@ function bumpRunCount(sessionId: string): void {
 
 function loadBaseline(sessionId: string): Baseline | null {
   try {
-    return JSON.parse(readFileSync(baselineStatePath(sessionId), 'utf8')) as Baseline;
+    return JSON.parse(
+      readFileSync(baselineStatePath(sessionId), 'utf8'),
+    ) as Baseline;
   } catch (e) {
     if ((e as NodeJS.ErrnoException).code === 'ENOENT') return null;
-    log('stop_review', `baseline load failed: ${stringifyError(e)}`);
+    log('stop-review', `baseline load failed: ${stringifyError(e)}`);
     return null;
   }
 }
@@ -110,18 +123,18 @@ function gitDiff(cwd: string, baseRef: string): string | null {
     const r = spawnSync(
       'git',
       ['-C', cwd, 'diff', baseRef, '--no-color', '--unified=3'],
-      { encoding: 'utf8', timeout: 15000, maxBuffer: 16 * 1024 * 1024 },
+      { encoding: 'utf8', timeout: 15_000, maxBuffer: 16 * 1024 * 1024 },
     );
     if (r.status !== 0) {
       log(
-        'stop_review',
+        'stop-review',
         `git diff ${baseRef} failed: ${(r.stderr ?? '').trim().slice(0, 200)}`,
       );
       return null;
     }
     return r.stdout ?? '';
   } catch (e) {
-    log('stop_review', `git diff error: ${stringifyError(e)}`);
+    log('stop-review', `git diff error: ${stringifyError(e)}`);
     return null;
   }
 }
@@ -131,12 +144,12 @@ function listUntracked(cwd: string): string[] {
     const r = spawnSync(
       'git',
       ['-C', cwd, 'ls-files', '--others', '--exclude-standard'],
-      { encoding: 'utf8', timeout: 10000 },
+      { encoding: 'utf8', timeout: 10_000 },
     );
     if (r.status !== 0) return [];
     return (r.stdout ?? '').split('\n').filter((ln) => ln.length > 0);
   } catch (e) {
-    log('stop_review', `ls-files failed: ${stringifyError(e)}`);
+    log('stop-review', `ls-files failed: ${stringifyError(e)}`);
     return [];
   }
 }
@@ -152,9 +165,7 @@ function synthesizeNewFileDiff(cwd: string, relPath: string): string {
   if (st.size > NEW_FILE_MAX_BYTES) {
     return (
       `\ndiff --git a/${relPath} b/${relPath}\n` +
-      'new file mode 100644\n--- /dev/null\n+++ b/' +
-      relPath +
-      '\n' +
+      `new file mode 100644\n--- /dev/null\n+++ b/${relPath}\n` +
       `@@ NEW FILE TOO LARGE TO INCLUDE (${st.size} bytes) @@\n`
     );
   }
@@ -166,13 +177,11 @@ function synthesizeNewFileDiff(cwd: string, relPath: string): string {
   }
   const lines = content.split('\n');
   // split keeps the trailing empty after final newline; drop it for accurate count.
-  if (lines.length > 0 && lines[lines.length - 1] === '') lines.pop();
+  if (lines.length > 0 && lines.at(-1) === '') lines.pop();
   const body = lines.map((ln) => `+${ln}\n`).join('');
   const header =
     `\ndiff --git a/${relPath} b/${relPath}\n` +
-    'new file mode 100644\n--- /dev/null\n+++ b/' +
-    relPath +
-    '\n' +
+    `new file mode 100644\n--- /dev/null\n+++ b/${relPath}\n` +
     `@@ -0,0 +1,${lines.length} @@\n`;
   return header + body;
 }
@@ -214,22 +223,22 @@ function synthesizeUntrackedModifiedDiff(
         absSnap,
         absNow,
       ],
-      { encoding: 'utf8', timeout: 10000, maxBuffer: 8 * 1024 * 1024 },
+      { encoding: 'utf8', timeout: 10_000, maxBuffer: 8 * 1024 * 1024 },
     );
     // diff exit codes: 0 = identical, 1 = differ, >1 = error.
     if (r.status === 0) return '';
     if (r.status !== 1) {
       log(
-        'stop_review',
+        'stop-review',
         `diff ${relPath} failed: ${(r.stderr ?? '').trim().slice(0, 200)}`,
       );
       return '';
     }
     const body = r.stdout ?? '';
     if (!body) return '';
-    return `\ndiff --git a/${relPath} b/${relPath}\n` + body;
+    return `\ndiff --git a/${relPath} b/${relPath}\n${body}`;
   } catch (e) {
-    log('stop_review', `diff ${relPath} failed: ${stringifyError(e)}`);
+    log('stop-review', `diff ${relPath} failed: ${stringifyError(e)}`);
     return '';
   }
 }
@@ -245,7 +254,9 @@ function computeTurnDiff(
   let diff = gitDiff(cwd, baseRef) ?? '';
   const nowUntracked = new Set(listUntracked(cwd));
 
-  const newFiles = [...nowUntracked].filter((p) => !baselineUntracked.has(p)).sort();
+  const newFiles = [...nowUntracked]
+    .filter((p) => !baselineUntracked.has(p))
+    .toSorted();
   for (const rel of newFiles) {
     diff += synthesizeNewFileDiff(cwd, rel);
   }
@@ -254,7 +265,7 @@ function computeTurnDiff(
     const snapRoot = untrackedSnapshotRoot(sessionId);
     const stillUntracked = [...nowUntracked]
       .filter((p) => baselineUntracked.has(p))
-      .sort();
+      .toSorted();
     for (const rel of stillUntracked) {
       diff += synthesizeUntrackedModifiedDiff(cwd, snapRoot, rel);
     }
@@ -264,12 +275,16 @@ function computeTurnDiff(
 }
 
 function findMise(): string | null {
-  const explicit = process.env['SECURITY_REVIEW_MISE_PATH'] ?? DEFAULT_MISE_PATH;
+  const explicit =
+    process.env['SECURITY_REVIEW_MISE_PATH'] ?? DEFAULT_MISE_PATH;
   if (existsSync(explicit)) return explicit;
-  const which = spawnSync('which', ['mise'], { encoding: 'utf8', timeout: 3000 });
+  const which = spawnSync('which', ['mise'], {
+    encoding: 'utf8',
+    timeout: 3000,
+  });
   const found = which.stdout?.split('\n')[0]?.trim();
   if (which.status === 0 && found) return found;
-  log('stop_review', 'mise binary not found');
+  log('stop-review', 'mise binary not found');
   return null;
 }
 
@@ -288,7 +303,7 @@ function callCodex(
 
   const prompt =
     'You are a security reviewer. Read the GUIDANCE first, then review the DIFF.\n' +
-    'Report ONLY security issues that violate the guidance\'s hard rules or are\n' +
+    "Report ONLY security issues that violate the guidance's hard rules or are\n" +
     'clearly exploitable. Ignore style, performance, and general code quality.\n' +
     'Use the output format specified in the guidance.\n' +
     'If there are no security issues, reply with exactly:\n' +
@@ -324,22 +339,30 @@ function callCodex(
       },
     );
     if (r.error && (r.error as NodeJS.ErrnoException).code === 'ETIMEDOUT') {
-      log('stop_review', `codex timed out after ${timeoutSec}s`);
+      log('stop-review', `codex timed out after ${timeoutSec}s`);
       return null;
     }
     if (r.status !== 0) {
-      log('stop_review', `codex exit ${r.status}: ${(r.stderr ?? '').slice(0, 500)}`);
+      log(
+        'stop-review',
+        `codex exit ${r.status}: ${(r.stderr ?? '').slice(0, 500)}`,
+      );
       return null;
     }
     return (r.stdout ?? '').trim();
   } catch (e) {
-    log('stop_review', `codex call failed: ${stringifyError(e)}`);
+    log('stop-review', `codex call failed: ${stringifyError(e)}`);
     return null;
   }
 }
 
 function isCleanReview(review: string): boolean {
-  return review.trim().replace(/[.!]+$/, '').toLowerCase() === 'no issues found';
+  return (
+    review
+      .trim()
+      .replace(/[!.]+$/u, '')
+      .toLowerCase() === 'no issues found'
+  );
 }
 
 async function main(): Promise<number> {
@@ -358,7 +381,7 @@ async function main(): Promise<number> {
 
   const maxRuns = safeIntEnv('SECURITY_REVIEW_MAX_RUNS', DEFAULT_MAX_RUNS);
   if (getRunCount(sessionId) >= maxRuns) {
-    log('stop_review', `max runs (${maxRuns}) reached`);
+    log('stop-review', `max runs (${maxRuns}) reached`);
     return 0;
   }
 
@@ -366,9 +389,12 @@ async function main(): Promise<number> {
   const diff = computeTurnDiff(cwd, baseline, sessionId);
   if (!diff.trim()) return 0;
 
-  const maxBytes = safeIntEnv('SECURITY_REVIEW_MAX_DIFF_BYTES', DEFAULT_MAX_DIFF_BYTES);
+  const maxBytes = safeIntEnv(
+    'SECURITY_REVIEW_MAX_DIFF_BYTES',
+    DEFAULT_MAX_DIFF_BYTES,
+  );
   if (Buffer.byteLength(diff, 'utf8') > maxBytes) {
-    log('stop_review', `diff too large (${diff.length}B), skipping`);
+    log('stop-review', `diff too large (${diff.length}B), skipping`);
     return 0;
   }
 
@@ -385,7 +411,7 @@ async function main(): Promise<number> {
   if (isCleanReview(review)) return 0;
 
   const reason =
-    'Codex security review found issue(s) in this turn\'s changes. ' +
+    "Codex security review found issue(s) in this turn's changes. " +
     'Address each before declaring the turn complete:\n\n' +
     `${review}\n\n` +
     'Reference: ~/.claude/claude-security-guidance.md';
@@ -396,6 +422,6 @@ async function main(): Promise<number> {
 try {
   process.exit(await main());
 } catch (e) {
-  log('stop_review', `unhandled: ${stringifyError(e)}`);
+  log('stop-review', `unhandled: ${stringifyError(e)}`);
   process.exit(0);
 }

@@ -21,18 +21,18 @@ persistence = "save-all"
 [[hooks.UserPromptSubmit]]
 [[hooks.UserPromptSubmit.hooks]]
 type = "command"
-command = '$HOME/.codex/security-hooks/run-hook.sh codex $HOME/.codex/security-hooks/prompt_submit.py'
+command = '$HOME/.codex/security-hooks/run-hook.sh codex $HOME/.codex/security-hooks/prompt-submit.ts'
 timeout = 10
 
 [[hooks.PostToolUse]]
 matcher = "^apply_patch$"
 [[hooks.PostToolUse.hooks]]
 type = "command"
-command = '$HOME/.codex/security-hooks/run-hook.sh codex $HOME/.codex/security-hooks/pattern_check.py'
+command = '$HOME/.codex/security-hooks/run-hook.sh codex $HOME/.codex/security-hooks/pattern-check.ts'
 timeout = 10
 
 [[hooks.Stop]]
 [[hooks.Stop.hooks]]
 type = "command"
-command = '$HOME/.codex/security-hooks/run-hook.sh codex $HOME/.codex/security-hooks/stop_review.py'
+command = '$HOME/.codex/security-hooks/run-hook.sh codex $HOME/.codex/security-hooks/stop-review.ts'
 timeout = 120
