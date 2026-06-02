@@ -1,0 +1,7 @@
+[providers]
+age = { type = "age", recipients = [
+  "age1u6jlgt5ghkc7vlk30jzgctlakywpca7sjyjshx42239pz235g53s3z5ygu",
+] }
+
+[secrets]
+NODE_AUTH_TOKEN = { provider = "age", value = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBSbzVEeEphL0N4NkU5TDA2MFBlQ0lGa3pleG85Nlg3QUxXYjFjOU54T0dBCm1lcHlWYk0zR0xWZUYxc0Q5blRBd1Z4QVRZbnNYeVJiUTlueEZhM3lYRWMKLT4gQS1ncmVhc2UKeDRHanU1Y2Jsb2t2TVRnZVg1dE5oQ3BnVkxmNlZDUm5vaE9HWWtlZ0IvZnJ5YlVBaVlSQnhJR1NKMFZxdkMxRApFclkzMWdlTEJEQmJNbC9MTVNpc2VoSzdXMnRYYURTZTh5b212N1VEM2JiL2lQS3JkZmdKCi0tLSBUWnpTWlJnTnJqUGhmcEgwbTBrSzFQaXpWL3VkSHRFVENmOFFMQzBteXk4CvZoZ3ooXJAAa994g84ftsleaFoSeRKNGOotrUxRTs+B/7orXzR/BSvUwp5pot8zT2xyBY2qxagv3l4nX4H5Rl9LPIkD67waQw==" }
