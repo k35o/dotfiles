@@ -12,3 +12,6 @@ tsconfig.json
 mise.toml
 commitlint.config.js
 node_modules
+
+# fnox の age 秘密鍵（絶対に commit/管理しない）
+.config/fnox/age.txt
