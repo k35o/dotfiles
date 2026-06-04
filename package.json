@@ -15,7 +15,7 @@
     "check:write": "vp check --fix"
   },
   "devDependencies": {
-    "@k8o/oxc-config": "0.1.2",
+    "@k8o/oxc-config": "0.1.3",
     "@types/node": "24.12.4",
     "typescript": "6.0.3",
     "vite-plus": "0.1.22"
@@ -23,5 +23,5 @@
   "engines": {
     "node": ">=24.13.0"
   },
-  "packageManager": "pnpm@11.3.0"
+  "packageManager": "pnpm@11.4.0"
 }
