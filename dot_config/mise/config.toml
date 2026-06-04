@@ -4,27 +4,27 @@ minimum_release_age = "7d"
 # ランタイム
 [tools]
 node = "24.16.0"
-pnpm = "11.3.0"
-deno = "2.8.0"
+pnpm = "11.4.0"
+deno = "2.8.1"
 bun = "1.3.14"
 chezmoi = "2.70.4"
 
 # npm 製ツール
 "npm:agent-browser" = "0.27.0"
-"npm:@openai/codex" = "0.133.0"
+"npm:@openai/codex" = "0.134.0"
 
 # CLI ツール
 awscli = "2.34.56"
 delta = "0.19.2"
 docker-cli = "29.5.2"
-gh = "2.92.0"
+gh = "2.93.0"
 gitleaks = "8.30.1"
 jq = "1.8.1"
-opentofu = "1.12.0"
+opentofu = "1.12.1"
 starship = "1.25.1"
 turso = "1.0.26"
-vercel = "54.4.1"
-wrangler = "4.94.0"
+vercel = "54.5.1"
+wrangler = "4.95.0"
 zizmor = "1.25.2"
 
 # シークレット管理
