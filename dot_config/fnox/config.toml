@@ -1,7 +1,10 @@
 [providers]
+# age 秘密鍵そのものは macOS キーチェーン（service "fnox" / account "age-key"）で管理し、
+# それ以外の秘密はこの age キーで暗号化する。鍵はキーチェーン1項目だけ。
+keychain = { type = "keychain", service = "fnox" }
 age = { type = "age", recipients = [
   "age1u6jlgt5ghkc7vlk30jzgctlakywpca7sjyjshx42239pz235g53s3z5ygu",
-] }
+], identity = { provider = "keychain", value = "age-key" } }
 
 [mcp]
 tools = ["exec"]
