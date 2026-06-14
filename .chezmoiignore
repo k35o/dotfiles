@@ -13,5 +13,6 @@ mise.toml
 commitlint.config.js
 node_modules
 
-# fnox の age 秘密鍵（絶対に commit/管理しない）
+# fnox の age 秘密鍵は macOS キーチェーン（service "fnox" / account "age-key"）で管理する。
+# 万一 age.txt が生成されても絶対に commit/管理しないよう、防御的に ignore を残す。
 .config/fnox/age.txt
