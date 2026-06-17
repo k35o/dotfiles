@@ -4,6 +4,7 @@
 keychain = { type = "keychain", service = "fnox" }
 age = { type = "age", recipients = [
   "age1u6jlgt5ghkc7vlk30jzgctlakywpca7sjyjshx42239pz235g53s3z5ygu",
+  "age1eelp2tdzplj805m7cmhrtq77qdjp4a56j36g40cuses34dwqng5qyad8n3",
 ], identity = { provider = "keychain", value = "age-key" } }
 
 [mcp]
