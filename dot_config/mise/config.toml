@@ -11,10 +11,10 @@ chezmoi = "2.70.5"
 
 # npm 製ツール
 "npm:agent-browser" = "0.27.1"
-"npm:@openai/codex" = "0.137.0"
+"npm:@openai/codex" = "0.139.0"
 
 # CLI ツール
-awscli = "2.34.63"
+awscli = "2.35.1"
 delta = "0.19.2"
 docker-cli = "29.5.3"
 gh = "2.93.0"
@@ -23,8 +23,8 @@ jq = "1.8.1"
 opentofu = "1.12.1"
 starship = "1.25.1"
 turso = "1.0.26"
-vercel = "54.9.1"
-wrangler = "4.98.0"
+vercel = "54.10.3"
+wrangler = "4.99.0"
 zizmor = "1.25.2"
 
 # シークレット管理
