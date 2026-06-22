@@ -86,11 +86,11 @@ JSON
 
 ## 6. リリース用 secret（GitHub App token, fnox 経由）
 
-release.yml は `client-id`（`app-id` は legacy）+ private-key を使う。secret は **repo ごと**に必要。値は fnox にグローバル登録済み（`K35O_BOT_CLIENT_ID` / `K35O_BOT_PRIVATE_KEY`）。
+release.yml は `client-id`（`app-id` は legacy）+ private-key を使う。secret は **repo ごと**に必要。値は fnox の tier2 プロファイル `[profiles.bot]` に登録済み（`K35O_BOT_CLIENT_ID` / `K35O_BOT_PRIVATE_KEY`）。シェルには常駐しないので `-P bot` で取り出す。
 
 ```sh
-fnox exec -- gh secret set K35O_BOT_CLIENT_ID   -R k35o/<name> --body "$K35O_BOT_CLIENT_ID"
-fnox exec -- gh secret set K35O_BOT_PRIVATE_KEY -R k35o/<name> --body "$K35O_BOT_PRIVATE_KEY"
+fnox exec -P bot -- gh secret set K35O_BOT_CLIENT_ID   -R k35o/<name> --body "$K35O_BOT_CLIENT_ID"
+fnox exec -P bot -- gh secret set K35O_BOT_PRIVATE_KEY -R k35o/<name> --body "$K35O_BOT_PRIVATE_KEY"
 ```
 
 - ⚠️ Claude の **fnox MCP サーバは起動時スナップショット**で、後から `fnox set` した値を見えないことがある（空値が入る）。その場合は Bash の `fnox exec`(CLI は都度読込) か、非機密の値は直接 `gh secret set` で。

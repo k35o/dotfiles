@@ -1,0 +1,22 @@
+alias ds='chezmoi update --apply'
+
+if [[ -z "$CLAUDECODE" && -x "$HOME/.local/bin/dotfiles-check.sh" ]]; then
+  ("$HOME/.local/bin/dotfiles-check.sh" refresh-if-stale &>/dev/null &) 2>/dev/null
+fi
+
+mise-activate() {
+  eval "$(MISE_OFFLINE=1 mise activate zsh)"
+}
+
+fnox-activate() {
+  export FNOX_AGE_KEY="$(security find-generic-password -s fnox -a age-key -w 2>/dev/null)"
+  eval "$(fnox activate zsh)"
+}
+{{ if eq (get . "profile") "personal" }}
+# tier1 の秘密（fnox の [secrets]: SAKANA_API_KEY 等の API キー）を対話シェルに自動ロード。
+# 新しい API キーは [secrets] に足せば自動で載る。tier2（[profiles.bot]）は載らない。
+# keychain は always-allow（~50ms）。エージェント(CLAUDECODE)では常駐させず fnox exec を使う。
+if [[ -z "$CLAUDECODE" ]]; then
+  eval "$(fnox export -f env 2>/dev/null)"
+fi
+{{ end }}
