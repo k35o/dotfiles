@@ -8,6 +8,8 @@ export default defineConfig({
       ...(fmt.ignorePatterns ?? []),
       'dot_claude/skills/**',
       'pnpm-lock.yaml',
+      // fnox が自動生成・追記するため整形対象から除外（vp と書式がブレる）
+      'dot_config/fnox/config.toml',
     ],
   },
   lint: {
