@@ -37,16 +37,20 @@ gh repo create k35o/<name> --public --source=. --remote=origin --push \
   --description "..."
 ```
 
-## 4. マージ設定（merge commit のみ + マージ後ブランチ削除）
+## 4. マージ設定（merge commit のみ + マージ後ブランチ削除 + auto-merge 有効）
 
 ```sh
 gh api repos/k35o/<name> -X PATCH \
-  -F allow_squash_merge=false -F allow_rebase_merge=false -F delete_branch_on_merge=true
+  -F allow_squash_merge=false -F allow_rebase_merge=false -F delete_branch_on_merge=true \
+  -F allow_auto_merge=true
 ```
+
+- `allow_auto_merge=true` は Renovate の自動マージ（`:automergeMinor` + デフォルトの `platformAutomerge`）が GitHub ネイティブ auto-merge を使うために必須。無効だと Renovate は自前 automerge にフォールバックし、定期実行時に PR が全 green だったときしかマージされず取りこぼす。
+- ⚠️ auto-merge が**実際に完走する条件**は、ruleset の `required_approving_review_count` が `0` であること。承認必須にすると bot は自分の PR を承認できず automerge が止まる（ruleset の `bypass_actors` に Renovate を入れても、bypass はルール単位でなくセット全体に効くため CI チェックまでスキップしてしまい不可）。本テンプレは次節で `0` にしてある（CI ゲートは `required_status_checks` で別途担保）。
 
 ## 5. ブランチ保護 ruleset（main）
 
-oxc-config 流: 削除/force-push 禁止・署名必須・PR 必須(承認1 / CODEOWNERS / merge のみ)・CI green 必須・Admin は bypass。
+oxc-config 流: 削除/force-push 禁止・署名必須・PR 必須(承認0 / merge のみ)・CI green 必須・Admin は bypass。承認は `0`（CODEOWNERS 無効）— ソロ開発かつ Renovate automerge を効かせるため（承認必須だと bot PR が止まる）。レビューを強制したい repo は `required_approving_review_count` を上げる（その場合 Renovate PR は手動マージになる）。
 
 ```sh
 gh api repos/k35o/<name>/rulesets -X POST --input - <<'JSON'
@@ -60,9 +64,9 @@ gh api repos/k35o/<name>/rulesets -X POST --input - <<'JSON'
     { "type": "non_fast_forward" },
     { "type": "required_signatures" },
     { "type": "pull_request", "parameters": {
-        "required_approving_review_count": 1,
+        "required_approving_review_count": 0,
         "dismiss_stale_reviews_on_push": false,
-        "require_code_owner_review": true,
+        "require_code_owner_review": false,
         "require_last_push_approval": false,
         "required_review_thread_resolution": false,
         "allowed_merge_methods": ["merge"]
