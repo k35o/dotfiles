@@ -6,13 +6,17 @@
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 
-# 既定モデル: Sakana AI の fugu。GPT 解約のためこの PC では Sakana を標準で使う。
-# dotfiles は共有。会社 PC は managed config(/etc/codex/managed_config.toml か MDM)が
-# user config より上位で gateway を強制する想定（会社 PC で `codex doctor` で要確認）。
-# もし会社で上書きされないなら profile での出し分け(config.toml.tmpl)に切り替える。
+# 既定モデル: Sakana fugu（この PC の標準）。
 model = "fugu"
 model_provider = "sakana"
 model_reasoning_effort = "high"
+# モデルカタログ（無いと /models 取得に失敗）。
+model_catalog_json = "~/.codex/fugu.json"
+
+# fugu 非対応のツールを無効化（送ると API エラー）。
+[features]
+image_generation = false
+apps = false
 
 # 通知を有効化（Claude の agentPushNotifEnabled 相当）。
 [tui]
@@ -49,10 +53,7 @@ timeout = 120
 command = "fnox"
 args = ["mcp"]
 
-# Sakana AI プロバイダ（OpenAI 互換の /responses API）。
-# API キー(SAKANA_API_KEY)は fnox 管理。シェルで fnox-activate（fnox activate zsh）して
-# SAKANA_API_KEY を環境に載せた状態で codex を起動する。
-# 参考: https://console.sakana.ai/get-started
+# Sakana AI プロバイダ。キー(SAKANA_API_KEY)は fnox 管理。
 [model_providers.sakana]
 name = "Sakana API"
 base_url = "https://api.sakana.ai/v1"
@@ -62,13 +63,12 @@ stream_idle_timeout_ms = 7200000
 stream_max_retries = 5
 request_max_retries = 4
 
-# Sakana fugu を明示選択: `codex -p fugu`。
 [profiles.fugu]
 model = "fugu"
 model_provider = "sakana"
 model_reasoning_effort = "high"
 
-# 推論サマリ対応の上位モデル: `codex -p fugu-ultra`。
+# 上位モデル（推論サマリ対応）: codex -p fugu-ultra
 [profiles.fugu-ultra]
 model = "fugu-ultra"
 model_provider = "sakana"
