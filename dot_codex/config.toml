@@ -13,6 +13,15 @@ sandbox_mode = "workspace-write"
 model = "fugu"
 model_provider = "sakana"
 model_reasoning_effort = "high"
+# モデルカタログ（context_window=1M 等）。無いと codex が Sakana の /models を
+# 取得しようとして失敗する（公式 fugu リポジトリ configs/files/fugu.json 由来）。
+model_catalog_json = "~/.codex/fugu.json"
+
+# Sakana の fugu は image_generation / apps ツール未対応のため無効化する。
+# 有効だと API が `Invalid value: 'image_generation'` を返して起動できない。
+[features]
+image_generation = false
+apps = false
 
 # 通知を有効化（Claude の agentPushNotifEnabled 相当）。
 [tui]
