@@ -1,0 +1,11 @@
+# `codex -p fugu-ultra` 用（推論サマリ対応の上位モデル）。
+model = "fugu-ultra"
+model_provider = "sakana"
+model_reasoning_effort = "high"
+# モデルカタログ（無いと /models 取得に失敗）。
+model_catalog_json = "~/.codex/fugu.json"
+
+# fugu 非対応のツールを無効化（送ると API エラー）。
+[features]
+image_generation = false
+apps = false
