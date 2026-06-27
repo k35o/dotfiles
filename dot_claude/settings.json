@@ -7,9 +7,15 @@
   "feedbackSurveyRate": 0,
   "skipAutoPermissionPrompt": true,
   "agentPushNotifEnabled": true,
-  "defaultToAgentsView": true,
-  "leftArrowOpensAgents": true,
+  "leftArrowOpensAgents": false,
   "autoMemoryEnabled": false,
+  "enableAllProjectMcpServers": true,
+  "fileCheckpointingEnabled": true,
+  "cleanupPeriodDays": 14,
+  "tui": "fullscreen",
+  "worktree": {
+    "symlinkDirectories": ["node_modules"]
+  },
   "permissions": {
     "defaultMode": "auto",
     "deny": [
