@@ -11,10 +11,10 @@ chezmoi = "2.70.5"
 
 # npm 製ツール
 "npm:agent-browser" = "0.29.1"
-"npm:@openai/codex" = "0.141.0"
+"npm:@openai/codex" = "0.142.0"
 
 # CLI ツール
-awscli = "2.35.9"
+awscli = "2.35.10"
 delta = "0.19.2"
 docker-cli = "29.6.0"
 gh = "2.95.0"
