@@ -128,6 +128,25 @@ export function emitReprompt(reason: string, runtime: Runtime): void {
   process.stdout.write(JSON.stringify(output));
 }
 
+/**
+ * Claude Code の PreToolUse 決定出力。ツール実行の前に allow/ask/deny を返す。
+ * Codex は PreToolUse の出力契約が異なるため、呼び出し側で claude に限定する。
+ */
+export function emitPreToolDecision(
+  decision: 'deny' | 'ask',
+  reason: string,
+): void {
+  process.stdout.write(
+    JSON.stringify({
+      hookSpecificOutput: {
+        hookEventName: 'PreToolUse',
+        permissionDecision: decision,
+        permissionDecisionReason: reason,
+      },
+    }),
+  );
+}
+
 export function matchesAnyGlob(globs: Iterable<string>, path: string): boolean {
   for (const g of globs) {
     if (fnmatch(path, g)) return true;
