@@ -106,6 +106,28 @@
           }
         ]
       }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/session-start.ts",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/session-end.ts",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }
