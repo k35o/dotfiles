@@ -31,6 +31,7 @@ import {
   emitInject,
   extractEditedPaths,
   globallyDisabled,
+  loadGlobalExcludePaths,
   loadPatterns,
   log,
   matchesAnyGlob,
@@ -65,7 +66,11 @@ function saveSeen(sessionId: string, seen: Set<string>): void {
   atomicWriteText(sessionStatePath(sessionId), JSON.stringify(sorted));
 }
 
-function matchRule(content: string, path: string, rule: PatternRule): boolean {
+export function matchRule(
+  content: string,
+  path: string,
+  rule: PatternRule,
+): boolean {
   const pathsFilter = rule.paths ?? [];
   if (pathsFilter.length > 0 && !matchesAnyGlob(pathsFilter, path))
     return false;
@@ -107,6 +112,7 @@ async function main(): Promise<number> {
   const rules = await loadPatterns();
   if (rules.length === 0) return 0;
 
+  const globalExclude = await loadGlobalExcludePaths();
   const seen = await loadSeen(sessionId);
   const findings: string[] = [];
 
@@ -117,6 +123,9 @@ async function main(): Promise<number> {
   for (const [i, content] of contents.entries()) {
     if (content === null) continue;
     const path = paths[i]!;
+    if (globalExclude.length > 0 && matchesAnyGlob(globalExclude, path)) {
+      continue;
+    }
 
     for (const rule of rules) {
       const name = String(rule.rule_name ?? 'unnamed');
@@ -142,9 +151,11 @@ async function main(): Promise<number> {
   return 0;
 }
 
-try {
-  process.exit(await main());
-} catch (e) {
-  log('pattern-check', `unhandled: ${stringifyError(e)}`);
-  process.exit(0);
+if (import.meta.main) {
+  try {
+    process.exit(await main());
+  } catch (e) {
+    log('pattern-check', `unhandled: ${stringifyError(e)}`);
+    process.exit(0);
+  }
 }

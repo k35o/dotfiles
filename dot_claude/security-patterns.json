@@ -1,5 +1,11 @@
 {
   "$comment": "Per-edit パターンマッチ用。pyyaml 不要のため JSON 形式を採用。各ルール最大 1 件/ファイル/セッションで発火する想定。",
+  "global_exclude_paths": [
+    "**/*.fixtures.*",
+    "**/__fixtures__/**",
+    "**/*.snap",
+    "**/security-patterns.json"
+  ],
   "patterns": [
     {
       "rule_name": "dangerously_set_inner_html",
