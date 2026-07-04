@@ -229,6 +229,19 @@ export async function loadPatterns(): Promise<PatternRule[]> {
   return safe;
 }
 
+export async function loadGlobalExcludePaths(): Promise<string[]> {
+  try {
+    const text = await readFile(PATTERNS_FILE, 'utf8');
+    const raw = JSON.parse(text) as { global_exclude_paths?: unknown };
+    const arr = raw.global_exclude_paths;
+    return Array.isArray(arr)
+      ? arr.filter((x): x is string => typeof x === 'string')
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 export async function loadGuidance(): Promise<string> {
   try {
     const text = await readFile(GUIDANCE_FILE, 'utf8');
