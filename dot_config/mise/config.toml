@@ -11,7 +11,7 @@ chezmoi = "2.70.5"
 
 # npm 製ツール
 "npm:agent-browser" = "0.31.1"
-"npm:@openai/codex" = "0.142.2"
+"npm:@openai/codex" = "0.142.3"
 
 # CLI ツール
 awscli = "2.35.11"
@@ -23,7 +23,7 @@ jq = "1.8.2"
 opentofu = "1.12.3"
 starship = "1.25.1"
 turso = "1.0.29"
-vercel = "54.17.3"
+vercel = "54.18.0"
 wrangler = "4.105.0"
 zizmor = "1.26.1"
 
