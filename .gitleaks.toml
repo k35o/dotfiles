@@ -1,0 +1,12 @@
+title = "dotfiles gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "セキュリティパターン定義とそのテストは、検出対象のダミー秘密様文字列を意図的に含む"
+paths = [
+  '''dot_claude/security-patterns\.json''',
+  '''dot_claude/claude-security-guidance\.md''',
+  '''dot_agents/security-hooks/test/.*''',
+]
