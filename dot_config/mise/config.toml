@@ -11,7 +11,7 @@ chezmoi = "2.70.5"
 
 # npm 製ツール
 "npm:agent-browser" = "0.31.1"
-"npm:@openai/codex" = "0.142.4"
+"npm:@openai/codex" = "0.142.5"
 
 # CLI ツール
 awscli = "2.35.13"
