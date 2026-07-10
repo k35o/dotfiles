@@ -66,7 +66,7 @@ type Baseline = { sha: string; untracked: string[]; cwd: string };
 function safeIntEnv(name: string, fallback: number): number {
   const raw = process.env[name];
   if (!raw) return fallback;
-  const n = Number.parseInt(raw, 10);
+  const n = Math.trunc(Number(raw));
   if (Number.isNaN(n)) {
     log(
       'stop-review',
@@ -92,9 +92,8 @@ function untrackedSnapshotRoot(sessionId: string): string {
 function getRunCount(sessionId: string): number {
   try {
     return (
-      Number.parseInt(
-        readFileSync(runsStatePath(sessionId), 'utf8').trim(),
-        10,
+      Math.trunc(
+        Number(readFileSync(runsStatePath(sessionId), 'utf8').trim()),
       ) || 0
     );
   } catch {
