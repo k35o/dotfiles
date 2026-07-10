@@ -16,6 +16,17 @@
   "worktree": {
     "symlinkDirectories": ["node_modules"]
   },
+  "extraKnownMarketplaces": {
+    "k8o": {
+      "source": {
+        "source": "github",
+        "repo": "k35o/claude-plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "mcp@k8o": true
+  },
   "permissions": {
     "defaultMode": "auto",
     "deny": [
