@@ -8,6 +8,7 @@
   "skipAutoPermissionPrompt": true,
   "agentPushNotifEnabled": true,
   "leftArrowOpensAgents": false,
+  "disableAgentView": true,
   "autoMemoryEnabled": false,
   "enableAllProjectMcpServers": false,
   "fileCheckpointingEnabled": true,
