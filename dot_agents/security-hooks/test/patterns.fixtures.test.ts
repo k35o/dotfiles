@@ -121,6 +121,8 @@ const FIXTURES: Fixture[] = [
   {
     rule: 'raw_sql_concat',
     path: 'src/db.ts',
+    // raw_sql_concat の検出対象を再現するため、通常文字列内の ${} を意図的に使う
+    // eslint-disable-next-line no-template-curly-in-string
     fire: ['const q = "SELECT * FROM users WHERE id = ${id}";'],
     skip: ['const q = "SELECT * FROM users WHERE id = ?";'],
   },
