@@ -7,8 +7,10 @@
  * that `stop_review.ts` can compute "this turn's changes".
  *
  * Strategy:
- * - `git stash create -u` produces a commit object capturing both tracked
- *   modifications AND untracked files, without touching the working tree.
+ * - `git stash create` produces a commit object capturing tracked
+ *   modifications without touching the working tree. Untracked files are NOT
+ *   part of that tree — they are listed in the baseline and snapshotted to
+ *   STATE_DIR so stop-review.ts can diff them by content.
  * - If the working tree is clean, fall back to HEAD.
  * - If not in a git repo, write nothing — stop_review.ts falls back to HEAD.
  *
@@ -77,12 +79,11 @@ function runGit(
   }
 }
 
-function snapshotUntrackedFiles(
+export function snapshotUntrackedFiles(
   cwd: string,
-  sessionId: string,
+  snapRoot: string,
   untracked: string[],
 ): void {
-  const snapRoot = untrackedSnapshotDir(sessionId);
   try {
     rmSync(snapRoot, { recursive: true, force: true });
   } catch {
@@ -107,7 +108,7 @@ function snapshotUntrackedFiles(
   }
 }
 
-function capture(cwd: string): Baseline | null {
+export function capture(cwd: string): Baseline | null {
   const check = runGit(cwd, ['rev-parse', '--is-inside-work-tree'], 5000);
   if (!check.ok || check.stdout.trim() !== 'true') {
     if (!check.ok && check.stderr)
@@ -116,7 +117,7 @@ function capture(cwd: string): Baseline | null {
   }
 
   let sha = '';
-  const stash = runGit(cwd, ['stash', 'create', '-u'], 15_000);
+  const stash = runGit(cwd, ['stash', 'create'], 15_000);
   if (stash.ok) {
     sha = stash.stdout.trim();
   } else if (stash.stderr) {
@@ -162,13 +163,19 @@ async function main(): Promise<number> {
   if (baseline === null) return 0;
 
   atomicWriteText(baselinePath(sessionId), JSON.stringify(baseline));
-  snapshotUntrackedFiles(cwd, sessionId, baseline.untracked);
+  snapshotUntrackedFiles(
+    cwd,
+    untrackedSnapshotDir(sessionId),
+    baseline.untracked,
+  );
   return 0;
 }
 
-try {
-  process.exit(await main());
-} catch (e) {
-  log('prompt-submit', `unhandled: ${stringifyError(e)}`);
-  process.exit(0);
+if (import.meta.main) {
+  try {
+    process.exit(await main());
+  } catch (e) {
+    log('prompt-submit', `unhandled: ${stringifyError(e)}`);
+    process.exit(0);
+  }
 }
