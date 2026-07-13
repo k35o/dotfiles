@@ -153,7 +153,7 @@ function listUntracked(cwd: string): string[] {
   }
 }
 
-function synthesizeNewFileDiff(cwd: string, relPath: string): string {
+export function synthesizeNewFileDiff(cwd: string, relPath: string): string {
   const abs = join(cwd, relPath);
   let st;
   try {
@@ -189,7 +189,7 @@ function synthesizeNewFileDiff(cwd: string, relPath: string): string {
  * For a file that was already untracked at baseline time, compare current
  * content against the snapshot saved by prompt_submit.ts using `diff -u`.
  */
-function synthesizeUntrackedModifiedDiff(
+export function synthesizeUntrackedModifiedDiff(
   cwd: string,
   snapshotRoot: string,
   relPath: string,
@@ -242,10 +242,10 @@ function synthesizeUntrackedModifiedDiff(
   }
 }
 
-function computeTurnDiff(
+export function computeTurnDiff(
   cwd: string,
   baseline: Baseline | null,
-  sessionId: string,
+  snapRoot: string,
 ): string {
   const baseRef = baseline?.sha ?? 'HEAD';
   const baselineUntracked = new Set(baseline?.untracked ?? []);
@@ -261,7 +261,6 @@ function computeTurnDiff(
   }
 
   if (baseline) {
-    const snapRoot = untrackedSnapshotRoot(sessionId);
     const stillUntracked = [...nowUntracked]
       .filter((p) => baselineUntracked.has(p))
       .toSorted();
@@ -355,7 +354,7 @@ function callCodex(
   }
 }
 
-function isCleanReview(review: string): boolean {
+export function isCleanReview(review: string): boolean {
   return (
     review
       .trim()
@@ -385,7 +384,7 @@ async function main(): Promise<number> {
   }
 
   const baseline = loadBaseline(sessionId);
-  const diff = computeTurnDiff(cwd, baseline, sessionId);
+  const diff = computeTurnDiff(cwd, baseline, untrackedSnapshotRoot(sessionId));
   if (!diff.trim()) return 0;
 
   const maxBytes = safeIntEnv(
@@ -418,9 +417,11 @@ async function main(): Promise<number> {
   return 0;
 }
 
-try {
-  process.exit(await main());
-} catch (e) {
-  log('stop-review', `unhandled: ${stringifyError(e)}`);
-  process.exit(0);
+if (import.meta.main) {
+  try {
+    process.exit(await main());
+  } catch (e) {
+    log('stop-review', `unhandled: ${stringifyError(e)}`);
+    process.exit(0);
+  }
 }

@@ -14,6 +14,10 @@
   "fileCheckpointingEnabled": true,
   "cleanupPeriodDays": 14,
   "tui": "fullscreen",
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh"
+  },
   "worktree": {
     "symlinkDirectories": ["node_modules"]
   },
