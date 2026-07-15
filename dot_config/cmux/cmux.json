@@ -4,6 +4,9 @@
   "app": {
     "appearance": "dark"
   },
+  "terminal": {
+    "showTextBoxOnNewTerminals": true
+  },
   "sidebarAppearance": {
     "matchTerminalBackground": true
   },
