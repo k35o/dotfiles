@@ -16,7 +16,7 @@ chezmoi = "2.71.0"
 "npm:mdscroll" = { version = "0.4.0", minimum_release_age = "0d" }
 
 # CLI ツール
-awscli = "2.35.22"
+awscli = "2.35.23"
 delta = "0.19.2"
 docker-cli = "29.6.1"
 gh = "2.96.0"
