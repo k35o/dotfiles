@@ -106,12 +106,15 @@ jobs:
         env:
           CHEZMOI_HOME: ${{ runner.temp }}/chezmoi-home
         run: |
+          # mise 2026.7.13以降のshimは$HOME配下からツールを解決するため、
+          # HOMEを差し替える前に実体のパスを解決しておく
+          CHEZMOI_BIN="$(mise which chezmoi)"
           mkdir -p "$CHEZMOI_HOME/.config/chezmoi"
           cat > "$CHEZMOI_HOME/.config/chezmoi/chezmoi.toml" <<'EOF'
           [data]
           profile = "personal"
           EOF
-          HOME="$CHEZMOI_HOME" chezmoi apply \
+          HOME="$CHEZMOI_HOME" "$CHEZMOI_BIN" apply \
             --dry-run \
             --verbose \
             --source "$GITHUB_WORKSPACE"

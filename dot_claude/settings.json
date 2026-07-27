@@ -9,7 +9,7 @@
   "agentPushNotifEnabled": true,
   "leftArrowOpensAgents": false,
   "disableAgentView": true,
-  "autoMemoryEnabled": false,
+  "autoMemoryEnabled": true,
   "enableAllProjectMcpServers": false,
   "fileCheckpointingEnabled": true,
   "cleanupPeriodDays": 14,

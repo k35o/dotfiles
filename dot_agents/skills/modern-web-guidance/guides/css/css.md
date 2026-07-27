@@ -305,6 +305,7 @@ Forced Colors モード（WindowsのHigh Contrast）では、ブラウザは著�
 - ドロップダウンで提示された多くのオプションから1つを選択する場合: `<select>` + `appearance: base-select` + `::picker(select)` を使います。詳細は [`branded-select-styling`](../forms/branded-select-styling.md)を参照してください。
 - ページ内にインラインで配置された複数のオプションから1つまたは複数を選択する場合: 各オプションに対して `<label>` の中に `<input type=checkbox>` または `<input type=radio>` を使います。`label:has(:checked)` でスタイリングします。
 - チェックボックス、ラジオ、スイッチを `appearance: none` + 生成コンテンツ（`::before`/`::after`）または背景画像でスタイリングして、チェック状態を描画します。
+
 <!-- Customizable select listbox version currently buggy + this has much better browser support -->
 
 #### 非テキストの `<input>`（ボタン、スライダー、ファイル入力など）
