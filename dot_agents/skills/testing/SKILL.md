@@ -115,16 +115,6 @@ expect(item.taxAmount()).toBe(expected);
 expect(item.taxAmount()).toBe(9.629629629629629);
 ```
 
-### アサーションは具体的に書く
-
-```tsx
-// ❌ 情報が少ない
-expect(result === 40).toBe(true);
-
-// ✅ 失敗時に期待値と実際の値がわかる
-expect(result).toBe(40);
-```
-
 ### テストは独立させる
 
 テスト間の実行順序に依存しない。各テストが単独で実行できる状態を保つ。
@@ -135,23 +125,8 @@ expect(result).toBe(40);
 
 ## テストの構成
 
-### Arrange-Act-Assert（AAA）
-
-```tsx
-// Arrange: 準備
-const cart = createCart();
-cart.addItem({ name: 'Widget', price: 100 });
-
-// Act: 実行
-const total = cart.getTotal();
-
-// Assert: 検証
-expect(total).toBe(100);
-```
-
-### 1テスト1検証
-
-1つのテストで1つの振る舞いを検証する。複数の検証を詰め込まない。テスト名は検証する振る舞いを表現する。
+- Arrange-Act-Assert（AAA）で構成する
+- 1つのテストで1つの振る舞いを検証する。テスト名は検証する振る舞いを表現する
 
 ## テスト容易性の設計
 
