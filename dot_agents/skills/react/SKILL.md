@@ -49,96 +49,18 @@ useEffectは**外部システムとの同期**のためだけに使う。それ�
 
 ## React 19の機能を使う
 
-古いパターンを避け、React 19の機能を積極的に使う。
+学習データには古いReactが大量に含まれるため、意識して現行APIに寄せる:
 
-### Actions
-
-非同期処理の状態管理にはActionsを使う:
-
-```tsx
-const [isPending, startTransition] = useTransition();
-
-function handleSubmit() {
-  startTransition(async () => {
-    await saveData();
-  });
-}
-```
-
-### useActionState
-
-フォームのアクション管理に使う。pending状態、エラー、結果を自動管理する。
-
-### useOptimistic
-
-楽観的UIの実装に使う。リクエスト完了前にUIを即座に更新し、失敗時に自動で戻す。
-
-### use
-
-Promiseやコンテキストをレンダー中に読む。条件分岐内でも使える（useContextやuseStateと違い、条件内で呼べる）。
-
-### ref as prop
-
-`forwardRef`は不要。refは通常のpropとして受け取る:
-
-```tsx
-// ❌ 古い
-const Input = forwardRef((props, ref) => <input ref={ref} {...props} />);
-
-// ✅ React 19
-function Input({ ref, ...props }) {
-  return <input ref={ref} {...props} />;
-}
-```
-
-### Context
-
-`<Context.Provider>`ではなく`<Context>`を直接使う:
-
-```tsx
-// ❌ 古い
-<ThemeContext.Provider value={theme}>
-
-// ✅ React 19
-<ThemeContext value={theme}>
-```
-
-### refクリーンアップ
-
-refコールバックからクリーンアップ関数を返せる:
-
-```tsx
-<div
-  ref={(node) => {
-    // セットアップ
-    return () => {
-      // クリーンアップ
-    };
-  }}
-/>
-```
+- 非同期処理の状態管理はActions（`useTransition` + async関数）。フォームは`useActionState`、楽観的UIは`useOptimistic`
+- Promiseやコンテキストは`use`でレンダー中に読む（useContextと違い条件分岐内でも呼べる）
+- refは通常のpropとして受け取る（`forwardRef`不要）。refコールバックはクリーンアップ関数を返せる
+- Contextは`<Context.Provider>`ではなく`<Context>`を直接使う
 
 ## Concurrent Mode
 
-### useTransition
-
-UIをブロックせずにstate更新する。重い再レンダーをバックグラウンドで実行:
-
-```tsx
-const [isPending, startTransition] = useTransition();
-
-startTransition(() => {
-  setHeavyState(newValue); // UIをブロックしない
-});
-```
-
-### useDeferredValue
-
-高頻度で変わる値の更新を遅延させ、入力のレスポンシブさを保つ。
-
-### Suspense
-
-非同期データの読み込みを宣言的に扱う。ローディング状態の管理にuseState + useEffectを使わない。
+- 重いstate更新は`startTransition`でUIをブロックせずに行う
+- 高頻度で変わる値は`useDeferredValue`で入力のレスポンシブさを保つ
+- 非同期データの読み込みは`Suspense`で宣言的に扱う。ローディング状態の管理にuseState + useEffectを使わない
 
 ## React Server Components
 
