@@ -123,5 +123,6 @@
         ]
       }
     ]
-  }
+  },
+  "skipWorkflowUsageWarning": true
 }
