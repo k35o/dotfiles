@@ -1,6 +1,6 @@
 ---
 name: new-project
-description: 新しい k8o プロジェクト/リポジトリを立ち上げる一連の手順。@k8o/create で雛形生成 → GitHub リポジトリ作成 → ブランチ保護 ruleset とマージ設定 → リリース用 secret(fnox経由) → npm 初回 publish と Renovate 有効化まで。「新しい repo を作る」「プロジェクトを立ち上げる」「リポジトリの初期設定をする」ときに使用する。
+description: 新しい k8o プロジェクト/リポジトリを立ち上げる一連の手順。@k8o/create で雛形生成 → GitHub リポジトリ作成 → ブランチ保護 ruleset とマージ設定 → リリース用 secret(fnox経由) → npm 初回 publish と Renovate 有効化 → Pavo コードレビュー有効化まで。「新しい repo を作る」「プロジェクトを立ち上げる」「リポジトリの初期設定をする」ときに使用する。
 ---
 
 # new-project — k8o リポジトリ立ち上げ手順
@@ -116,6 +116,46 @@ fnox exec -P bot -- gh secret set K35O_BOT_PRIVATE_KEY -R k35o/<name> --body "$K
 - Renovate は **Mend のホスト GitHub App**（自前 runner なし）。新規 repo を App のアクセス対象に追加する:
   - https://github.com/settings/installations → **Renovate** → Configure → リポジトリに `k35o/<name>` を追加。
   - インストールが "All repositories" なら自動でオンボード（Dependency Dashboard issue が立つ）。
+
+## 9. Pavo コードレビュー（AI レビュー, 追加費用 $0）
+
+PR ごとに [Pavo](https://github.com/k35o/pavo)（`claude-code-action` + Claude Code Max OAuth）がレビューする。
+@k8o/create の雛形に `.github/workflows/pavo.yml`（caller）が同梱されているので、**secret を 1 つ足すだけ**で有効になる。
+
+雛形に無い（既存 repo 等）場合は caller を追加:
+
+```sh
+mkdir -p .github/workflows
+cat > .github/workflows/pavo.yml <<'YAML'
+name: Pavo
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review_comment:
+    types: [created]
+  issue_comment:
+    types: [created]
+
+jobs:
+  pavo:
+    if: ${{ github.event_name != 'issue_comment' || startsWith(github.event.comment.body, '/pavo') }}
+    uses: k35o/pavo/.github/workflows/review.yml@main
+    with:
+      instructions: default,typescript   # library。web は default,react,typescript / Next.js は default,nextjs,typescript
+    secrets: inherit
+YAML
+```
+
+- **secret**: `K35O_BOT_CLIENT_ID` / `K35O_BOT_PRIVATE_KEY` は step 6 で設定済み。加えて `CLAUDE_CODE_OAUTH_TOKEN`（`claude setup-token` で発行した Claude Code Max の token）が要る:
+
+  ```sh
+  gh secret set CLAUDE_CODE_OAUTH_TOKEN -R k35o/<name> --body "<claude setup-token の値>"
+  ```
+
+  ⚠️ この token は fnox に置いていない（機密かつ CLI 専用）。値は手元の控えから。**org secret 化しておけば以降の repo は設定不要**（推奨: `gh secret set CLAUDE_CODE_OAUTH_TOKEN --org k35o --visibility all --body "..."`）。
+
+- 停止: PR に `pavo:skip` ラベル。観点は [pavo の README](https://github.com/k35o/pavo#観点) 参照。`caller` は reusable workflow を `@main` 追従（Pavo 本体の改善が自動で反映される）。
 
 ## ハマりどころ（学習済み）
 
