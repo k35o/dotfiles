@@ -37,6 +37,8 @@ cmux new-surface --pane pane:2 --type terminal --focus false
 
 補助的な出力（プレビュー、ログ、一時シェル）は呼び出し元の右隣の補助ペイン1つに集約し、繰り返しの「開いて」はそのペインのタブとして追加する。
 
+正しいrefを渡してもレイアウトコマンドが失敗することがある（例: 呼び出し元workspaceが非表示のときの`drag-surface-to-split`）。focus系コマンドで回避せず、失敗として報告する。
+
 ## コマンド送信と画面の読み取り
 
 長時間タスクやサブエージェントの隔離実行に使う。数秒で終わるコマンドには不要。
@@ -69,11 +71,14 @@ cmux browser surface:7 wait --url-contains "/dashboard"
 cmux browser surface:7 get text e3
 cmux browser surface:7 eval 'document.title'
 cmux browser surface:7 screenshot --out shot.png
+cmux browser surface:7 viewport 390 844         # viewportをCSSピクセルでエミュレート（resetで解除）
 ```
 
 - ナビゲーションやDOM変化の後はrefが無効になるので再snapshotする。CSSセレクタではなくelement refを使う。
 - `snapshot --interactive`や`eval`が`js_error`を返すページでは`get text body` / `get html body`にフォールバックする。
-- WKWebViewベースなのでviewport偽装・ネットワークモック・トレース記録は`not_supported`。高レベルコマンド（click/fill/wait/snapshot）で代替する。
+- viewportはペインをリサイズせずページ側だけを縮尺するので、モバイル表示の確認に使える。screenshotも指定した論理サイズで撮れる。
+- ログイン状態は`state save <path>` / `state load <path>`で保存・復元できる。
+- WKWebViewベースなのでネットワークモック・オフライン擬似・トレース/スクリーンキャスト記録・低レベル生入力は`not_supported`。高レベルコマンド（click/fill/wait/snapshot）で代替する。
 
 ## Markdownプレビュー
 
@@ -89,6 +94,7 @@ git diffやパッチを専用ビューアのペインで開く。ユーザーは
 
 ```bash
 cmux diff                      # リポジトリのdiffを開く（ベースはスマート推定）
+cmux diff --last-turn          # 直前のエージェントターンの変更だけ（--unstaged | --staged | --branch も可）
 git diff main... | cmux diff   # 任意のパッチをstdinから渡す
 cmux diff --layout split       # unified | split
 ```
@@ -115,5 +121,5 @@ cmux clear-status build && cmux clear-progress
 - ターミナル描画（フォント・配色・scrollback・透過）: `~/.config/ghostty/config`
 - cmux本体（サイドバー・通知・ブラウザ・ショートカット・ペイン枠色）: `~/.config/cmux/cmux.json`（JSONC可）
 - どちらもchezmoi管理（dotfilesの`dot_config/ghostty/config`と`dot_config/cmux/cmux.json`）。`~/.config`を直接編集するとchezmoi applyで戻るので、dotfiles側を編集して適用する。
-- 適用は保存で自動反映される（`cmux reload-config`でも両方を再読込できる）。アプリの再起動は不要。
-- スキーマURLと設定ドキュメントは`cmux docs settings`が出力する。
+- 適用は保存で自動反映される（`cmux reload-config`でも両方を再読込できる）。アプリの再起動は不要。適用後は`cmux config validate`で未知キーを検査できる。
+- スキーマURLと公式ドキュメントは`cmux docs`が出力する（`settings`のほか`browser`・`agents`など領域別）。
