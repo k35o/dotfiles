@@ -13,7 +13,7 @@ chezmoi = "2.71.1"
 "npm:agent-browser" = "0.32.3"
 "npm:@openai/codex" = "0.145.0"
 # 自作パッケージなのでリリース隔離期間を適用しない
-"npm:mdscroll" = { version = "0.4.0", minimum_release_age = "0d" }
+"npm:mdscroll" = { version = "0.4.1", minimum_release_age = "0d" }
 
 # CLI ツール
 awscli = "2.36.5"
