@@ -76,7 +76,7 @@ gh api repos/k35o/<name>/rulesets -X POST --input - <<'JSON'
         "required_status_checks": [
           { "context": "Lint / Format / Types" },
           { "context": "Tests" },
-          { "context": "Changeset" }
+          { "context": "Change intent" }
         ]
     } }
   ],
@@ -85,7 +85,7 @@ gh api repos/k35o/<name>/rulesets -X POST --input - <<'JSON'
 JSON
 ```
 
-- `required_status_checks` の `context` は **ci.yml の job `name:` と完全一致**させる。library 雛形は `Lint / Format / Types` / `Tests` / `Changeset`、web 雛形は `Build / Lint / Types` / `Tests` / `Changeset`。
+- `required_status_checks` の `context` は **ci.yml の job `name:` と完全一致**させる。library 雛形は `Lint / Format / Types` / `Tests` / `Change intent`、web 雛形は `Build / Lint / Types` / `Tests` / `Change intent`。
 - CI ゲートが不要なら `required_status_checks` ルールを省く（oxc-config の初期はこれ）。
 
 ## 6. リリース用 secret（GitHub App token, fnox 経由）
