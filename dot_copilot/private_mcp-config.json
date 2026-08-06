@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "fnox": {
+      "tools": ["*"],
+      "command": "fnox",
+      "args": ["mcp"]
+    },
+    "figma": {
+      "tools": ["*"],
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "slack": {
+      "tools": ["*"],
+      "type": "http",
+      "url": "https://mcp.slack.com/mcp"
+    }
+  }
+}
