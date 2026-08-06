@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "type": "command",
+        "bash": "$HOME/.copilot/security-hooks/run-hook.sh copilot $HOME/.copilot/security-hooks/pre-bash-guard.ts",
+        "timeoutSec": 10
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "bash": "$HOME/.copilot/security-hooks/run-hook.sh copilot $HOME/.copilot/security-hooks/prompt-submit.ts",
+        "timeoutSec": 10
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "type": "command",
+        "bash": "$HOME/.copilot/security-hooks/run-hook.sh copilot $HOME/.copilot/security-hooks/pattern-check.ts",
+        "timeoutSec": 10
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "bash": "$HOME/.copilot/security-hooks/run-hook.sh copilot $HOME/.copilot/security-hooks/stop-review.ts",
+        "timeoutSec": 120
+      }
+    ]
+  }
+}
