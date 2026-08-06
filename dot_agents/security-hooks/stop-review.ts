@@ -2,14 +2,14 @@
 /**
  * L2: End-of-turn security review via Codex.
  *
- * Runs as the Stop hook for both Claude Code and Codex CLI. Computes the diff
- * of THIS TURN's changes (compared against the baseline captured at
+ * Runs as the Stop hook for Claude Code, Codex CLI, and Copilot CLI. Computes
+ * the diff of THIS TURN's changes (compared against the baseline captured at
  * UserPromptSubmit by prompt_submit.ts) and sends it to `codex exec` for a
  * security review using ~/.claude/claude-security-guidance.md.
  *
  * If the review finds issues, re-prompts the originating runtime with the
- * findings. Runtime detection drives the response shape (Claude's
- * `decision=block` vs Codex's `continue=false`).
+ * findings. Runtime detection drives the response shape (Claude's and
+ * Copilot's `decision=block` vs Codex's `continue=false`).
  *
  * Design notes:
  * - Reviewer is always Codex (k8o's choice). Implements writer != reviewer.

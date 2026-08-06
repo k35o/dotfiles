@@ -9,8 +9,8 @@
 #
 # Usage:
 #   run-hook.sh <runtime> <script> [extra args...]
-# where <runtime> is "claude" or "codex" — exported as SECURITY_HOOK_RUNTIME
-# so detectRuntime() picks it up deterministically.
+# where <runtime> is "claude", "codex", or "copilot" — exported as
+# SECURITY_HOOK_RUNTIME so detectRuntime() picks it up deterministically.
 
 set -u
 
