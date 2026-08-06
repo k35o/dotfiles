@@ -101,6 +101,15 @@ describe('extractEditedPaths', () => {
     expect(paths).toEqual(['/work/src/x.ts']);
   });
 
+  test('Copilot Edit / Write falls back to native `path` field', () => {
+    const paths = extractEditedPaths({
+      tool_name: 'Write',
+      tool_input: { path: '/abs/copilot.ts', file_text: 'content' },
+      cwd: '/tmp',
+    });
+    expect(paths).toEqual(['/abs/copilot.ts']);
+  });
+
   test('NotebookEdit prefers notebook_path', () => {
     const paths = extractEditedPaths({
       tool_name: 'NotebookEdit',
@@ -157,6 +166,7 @@ function resetRuntimeEnv() {
     'CLAUDE_PROJECT_DIR',
     'CODEX_HOME',
     'CODEX_SANDBOX_ENV_VAR',
+    'COPILOT_CLI',
   ]) {
     delete process.env[k];
   }
@@ -185,6 +195,13 @@ describe('detectRuntime', () => {
     reset();
     process.env['CODEX_HOME'] = '/y';
     expect(detectRuntime({})).toBe('codex');
+    Object.assign(process.env, orig);
+  });
+
+  test('copilot env detected', () => {
+    reset();
+    process.env['COPILOT_CLI'] = '1';
+    expect(detectRuntime({})).toBe('copilot');
     Object.assign(process.env, orig);
   });
 

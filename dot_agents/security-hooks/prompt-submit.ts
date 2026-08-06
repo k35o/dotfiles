@@ -2,9 +2,9 @@
 /**
  * UserPromptSubmit hook: capture the working-tree baseline for L2 diff review.
  *
- * Runs at the start of each user turn for both Claude Code and Codex CLI.
- * Saves a baseline SHA representing the working tree state at this moment so
- * that `stop_review.ts` can compute "this turn's changes".
+ * Runs at the start of each user turn for Claude Code, Codex CLI, and
+ * Copilot CLI. Saves a baseline SHA representing the working tree state at
+ * this moment so that `stop_review.ts` can compute "this turn's changes".
  *
  * Strategy:
  * - `git stash create` produces a commit object capturing tracked
