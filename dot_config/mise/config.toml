@@ -26,7 +26,7 @@ opentofu = "1.12.5"
 starship = "1.26.0"
 turso = "1.0.31"
 vercel = "58.7.1"
-wrangler = "4.119.0"
+wrangler = "4.120.0"
 zizmor = "1.29.0"
 
 # シークレット管理
