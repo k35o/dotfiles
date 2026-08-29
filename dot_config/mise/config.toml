@@ -25,7 +25,7 @@ jq = "1.8.2"
 opentofu = "1.12.6"
 starship = "1.26.0"
 turso = "1.0.32"
-vercel = "59.3.0"
+vercel = "59.4.0"
 wrangler = "4.125.0"
 zizmor = "1.29.0"
 
