@@ -10,7 +10,7 @@ bun = "1.4.0"
 chezmoi = "2.72.0"
 
 # npm 製ツール
-"npm:agent-browser" = "0.34.0"
+"npm:agent-browser" = "0.35.0"
 "npm:@openai/codex" = "0.149.1"
 # 自作パッケージなのでリリース隔離期間を適用しない
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
