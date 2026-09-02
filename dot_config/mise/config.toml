@@ -3,7 +3,7 @@ minimum_release_age = "7d"
 
 # ランタイム
 [tools]
-node = "24.19.0"
+node = "24.20.0"
 pnpm = "11.24.0"
 deno = "2.9.5"
 bun = "1.4.0"
@@ -16,7 +16,7 @@ chezmoi = "2.72.0"
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 
 # CLI ツール
-awscli = "2.36.30"
+awscli = "2.36.31"
 delta = "0.19.2"
 docker-cli = "29.7.2"
 gh = "2.98.0"
@@ -26,7 +26,7 @@ opentofu = "1.12.6"
 starship = "1.26.0"
 turso = "1.0.32"
 vercel = "59.5.0"
-wrangler = "4.125.0"
+wrangler = "4.126.0"
 zizmor = "1.29.0"
 
 # シークレット管理
