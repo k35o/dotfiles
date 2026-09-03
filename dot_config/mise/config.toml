@@ -11,7 +11,7 @@ chezmoi = "2.72.0"
 
 # npm 製ツール
 "npm:agent-browser" = "0.35.1"
-"npm:@openai/codex" = "0.150.0"
+"npm:@openai/codex" = "0.150.1"
 # 自作パッケージなのでリリース隔離期間を適用しない
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 
@@ -25,7 +25,7 @@ jq = "1.8.2"
 opentofu = "1.12.6"
 starship = "1.26.0"
 turso = "1.0.32"
-vercel = "59.6.2"
+vercel = "59.7.0"
 wrangler = "4.126.0"
 zizmor = "1.29.0"
 
