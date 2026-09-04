@@ -5,7 +5,7 @@ minimum_release_age = "7d"
 [tools]
 node = "24.20.0"
 pnpm = "11.24.0"
-deno = "2.9.5"
+deno = "2.9.6"
 bun = "1.4.0"
 chezmoi = "2.72.0"
 
@@ -16,7 +16,7 @@ chezmoi = "2.72.0"
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 
 # CLI ツール
-awscli = "2.36.32"
+awscli = "2.36.33"
 delta = "0.19.2"
 docker-cli = "29.7.2"
 gh = "2.98.0"
@@ -25,7 +25,7 @@ jq = "1.8.2"
 opentofu = "1.12.6"
 starship = "1.26.0"
 turso = "1.0.32"
-vercel = "59.7.0"
+vercel = "59.9.1"
 wrangler = "4.127.0"
 zizmor = "1.29.0"
 
