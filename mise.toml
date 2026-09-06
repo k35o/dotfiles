@@ -1,6 +1,6 @@
 [tools]
 node = "24.20.0"
-pnpm = "11.25.0"
+pnpm = "12.1.0"
 chezmoi = "2.72.1"
 shellcheck = "0.11.0"
 bun = "1.4.0"
