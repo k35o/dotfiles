@@ -4,7 +4,7 @@ minimum_release_age = "7d"
 # ランタイム
 [tools]
 node = "24.20.0"
-pnpm = "12.2.1"
+pnpm = "12.3.0"
 deno = "2.9.6"
 bun = "1.4.0"
 chezmoi = "2.72.1"
@@ -16,7 +16,7 @@ chezmoi = "2.72.1"
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 
 # CLI ツール
-awscli = "2.36.37"
+awscli = "2.36.38"
 delta = "0.19.2"
 docker-cli = "29.7.2"
 gh = "2.99.0"
