@@ -4,14 +4,14 @@ minimum_release_age = "7d"
 # ランタイム
 [tools]
 node = "24.20.0"
-pnpm = "12.3.0"
+pnpm = "12.3.1"
 deno = "2.9.6"
 bun = "1.4.0"
 chezmoi = "2.72.1"
 
 # npm 製ツール
 "npm:agent-browser" = "0.36.0"
-"npm:@openai/codex" = "0.152.1"
+"npm:@openai/codex" = "0.153.0"
 # 自作パッケージなのでリリース隔離期間を適用しない
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 
