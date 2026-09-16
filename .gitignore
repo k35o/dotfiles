@@ -24,3 +24,8 @@ node_modules
 
 # Local Claude settings
 settings.local.json
+
+# fnox
+# リポジトリ内で `fnox set` を実行すると、グローバル設定ではなくカレント
+# ディレクトリに fnox.toml が作られる。秘密を紛れ込ませないため ignore する。
+fnox.toml

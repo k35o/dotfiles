@@ -16,3 +16,6 @@ node_modules
 # fnox の age 秘密鍵は macOS キーチェーン（service "fnox" / account "age-key"）で管理する。
 # 万一 age.txt が生成されても絶対に commit/管理しないよう、防御的に ignore を残す。
 .config/fnox/age.txt
+
+# 同上。リポジトリ直下に fnox.toml が生成されても ~/fnox.toml として展開しない。
+fnox.toml
