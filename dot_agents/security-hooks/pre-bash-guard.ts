@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * L0: Pre-execution Bash guard (Claude Code / GitHub Copilot CLI).
+ * L0: Pre-execution Bash guard (Claude Code).
  *
  * Runs as a PreToolUse hook (matcher = "Bash") and inspects the command BEFORE
  * it executes. Denies (or gates with "ask") a small set of destructive /
@@ -9,10 +9,8 @@
  * writes into shell rc / ~/.ssh. These leave no file diff, so the L1
  * pattern-check and L2 Codex stop-review are structurally blind to them.
  *
- * Claude and Copilot only: both read the flat/nested PreToolUse decision JSON
- * emitted by emitPreToolDecision(). Codex's PreToolUse output shape is not
- * wired here yet, so Codex runs return early rather than emit an output
- * Codex would misread.
+ * Claude only: Codex's PreToolUse output shape is not wired here yet, so Codex
+ * runs return early rather than emit an output Codex would misread.
  *
  * Pure regex — no model call, no cost.
  *
@@ -104,7 +102,7 @@ async function main(): Promise<number> {
   const payload: HookPayload = await readPayload();
   if (Object.keys(payload).length === 0) return 0;
   const runtime = detectRuntime(payload);
-  if (runtime !== 'claude' && runtime !== 'copilot') return 0;
+  if (runtime !== 'claude') return 0;
   if ((payload.tool_name ?? '') !== 'Bash') return 0;
 
   const command = String((payload.tool_input ?? {})['command'] ?? '');

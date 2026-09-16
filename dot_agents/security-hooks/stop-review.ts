@@ -2,18 +2,24 @@
 /**
  * L2: End-of-turn security review via Codex.
  *
- * Runs as the Stop hook for Claude Code, Codex CLI, and Copilot CLI. Computes
+ * Runs as the Stop hook for Claude Code and Codex CLI. Computes
  * the diff of THIS TURN's changes (compared against the baseline captured at
  * UserPromptSubmit by prompt_submit.ts) and sends it to `codex exec` for a
  * security review using ~/.claude/claude-security-guidance.md.
  *
  * If the review finds issues, re-prompts the originating runtime with the
- * findings. Runtime detection drives the response shape (Claude's and
- * Copilot's `decision=block` vs Codex's `continue=false`).
+ * findings. Runtime detection drives the response shape (Claude's
+ * `decision=block` vs Codex's `continue=false`).
  *
  * Design notes:
  * - Reviewer is always Codex (k8o's choice). Implements writer != reviewer.
- * - Codex is invoked through `mise exec --` to use the mise-pinned version.
+ * - Codex runs under `fnox exec` because the provider API key lives in fnox
+ *   and never in the agent's shell, so a bare `codex` cannot authenticate.
+ * - Both binaries are resolved with `mise which` rather than run through
+ *   `mise exec --`: fnox re-resolves its child from PATH, where a stale codex
+ *   from another tool manager can shadow the mise-pinned one.
+ * - The `fugu` profile carries the model catalog and the feature disables the
+ *   provider needs; without it codex cannot resolve model metadata.
  * - The child process gets SECURITY_GUIDANCE_DISABLE=1 to prevent the reviewer
  *   session's hooks from spawning yet another reviewer (infinite recursion).
  * - Synchronous execution: Stop hooks block the turn end. 120s timeout in
@@ -28,7 +34,6 @@
  * - ENABLE_STOP_REVIEW=0 (this layer only)
  *
  * Tuning env:
- * - SECURITY_REVIEW_MODEL: codex model slug (default: gpt-5-codex)
  * - SECURITY_REVIEW_TIMEOUT: seconds (default: 90)
  * - SECURITY_REVIEW_MAX_RUNS: per-session cap (default: 3)
  * - SECURITY_REVIEW_MAX_DIFF_BYTES: skip if larger (default: 200000)
@@ -54,7 +59,7 @@ import {
   stringifyError,
 } from './lib/common.ts';
 
-const DEFAULT_MODEL = 'gpt-5-codex';
+const CODEX_PROFILE = 'fugu';
 const DEFAULT_TIMEOUT = 90;
 const DEFAULT_MAX_RUNS = 3;
 const DEFAULT_MAX_DIFF_BYTES = 200_000;
@@ -242,11 +247,21 @@ export function synthesizeUntrackedModifiedDiff(
   }
 }
 
+function isGitRepo(cwd: string): boolean {
+  const r = spawnSync('git', ['-C', cwd, 'rev-parse', '--git-dir'], {
+    timeout: 5000,
+    stdio: 'ignore',
+  });
+  return r.status === 0;
+}
+
 export function computeTurnDiff(
   cwd: string,
   baseline: Baseline | null,
   snapRoot: string,
 ): string {
+  if (!isGitRepo(cwd)) return '';
+
   const baseRef = baseline?.sha ?? 'HEAD';
   const baselineUntracked = new Set(baseline?.untracked ?? []);
 
@@ -286,18 +301,29 @@ function findMise(): string | null {
   return null;
 }
 
-/**
- * Invoke `codex exec` via `mise exec --` for the mise-pinned version.
- * Passing the long prompt via stdin avoids hitting argv length limits.
- */
+/** Resolve a mise-managed tool to its absolute path. */
+function miseWhich(mise: string, tool: string): string | null {
+  const r = spawnSync(mise, ['which', tool], {
+    encoding: 'utf8',
+    timeout: 5000,
+  });
+  const found = r.stdout?.trim();
+  if (r.status === 0 && found) return found;
+  log('stop-review', `mise which ${tool} failed`);
+  return null;
+}
+
+/** Invoke the mise-pinned `codex exec` with fnox-injected provider secrets. */
 function callCodex(
   diff: string,
   guidance: string,
   timeoutSec: number,
-  model: string,
 ): string | null {
   const mise = findMise();
   if (!mise) return null;
+  const fnox = miseWhich(mise, 'fnox');
+  const codex = miseWhich(mise, 'codex');
+  if (!fnox || !codex) return null;
 
   const prompt =
     'You are a security reviewer. Read the GUIDANCE first, then review the DIFF.\n' +
@@ -316,14 +342,14 @@ function callCodex(
 
   try {
     const r = spawnSync(
-      mise,
+      fnox,
       [
         'exec',
         '--',
-        'codex',
+        codex,
         'exec',
-        '--model',
-        model,
+        '-p',
+        CODEX_PROFILE,
         '--skip-git-repo-check',
         '--sandbox',
         'read-only',
@@ -347,7 +373,15 @@ function callCodex(
       );
       return null;
     }
-    return (r.stdout ?? '').trim();
+    const out = (r.stdout ?? '').trim();
+    if (!out) {
+      // exit 0 + empty stdout is how codex reports an auth/stream failure it
+      // already printed to stderr. Silently treating it as "no findings" is
+      // how this layer stayed broken unnoticed.
+      log('stop-review', 'codex exited 0 with no output');
+      return null;
+    }
+    return out;
   } catch (e) {
     log('stop-review', `codex call failed: ${stringifyError(e)}`);
     return null;
@@ -400,10 +434,9 @@ async function main(): Promise<number> {
     (await loadGuidance()) ||
     '(no guidance file found at ~/.claude/claude-security-guidance.md)';
   const timeout = safeIntEnv('SECURITY_REVIEW_TIMEOUT', DEFAULT_TIMEOUT);
-  const model = process.env['SECURITY_REVIEW_MODEL'] ?? DEFAULT_MODEL;
 
   bumpRunCount(sessionId);
-  const review = callCodex(diff, guidance, timeout, model);
+  const review = callCodex(diff, guidance, timeout);
   if (!review) return 0;
 
   if (isCleanReview(review)) return 0;

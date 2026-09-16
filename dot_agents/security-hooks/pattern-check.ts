@@ -5,7 +5,6 @@
  * Runs as PostToolUse hook for:
  * - Claude Code:  matcher = "Edit|Write|NotebookEdit"
  * - Codex CLI:    matcher = "^apply_patch$"
- * - Copilot CLI:  matcher = "Edit|Write"
  *
  * Reads the edited file from disk (after the edit lands) and matches the new
  * content against the patterns declared in ~/.claude/security-patterns.json.
@@ -18,8 +17,7 @@
  * - ENABLE_PATTERN_RULES=0 (this layer only)
  *
  * Output:
- * - JSON to stdout with `systemMessage`, a flat `additionalContext` (Copilot),
- *   and a nested `hookSpecificOutput` (Claude)
+ * - JSON to stdout with `systemMessage` and a nested `hookSpecificOutput`
  * - Exits 0 always (fail open — never break the tool because of a hook bug)
  */
 
