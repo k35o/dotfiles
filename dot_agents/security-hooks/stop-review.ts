@@ -247,11 +247,21 @@ export function synthesizeUntrackedModifiedDiff(
   }
 }
 
+function isGitRepo(cwd: string): boolean {
+  const r = spawnSync('git', ['-C', cwd, 'rev-parse', '--git-dir'], {
+    timeout: 5000,
+    stdio: 'ignore',
+  });
+  return r.status === 0;
+}
+
 export function computeTurnDiff(
   cwd: string,
   baseline: Baseline | null,
   snapRoot: string,
 ): string {
+  if (!isGitRepo(cwd)) return '';
+
   const baseRef = baseline?.sha ?? 'HEAD';
   const baselineUntracked = new Set(baseline?.untracked ?? []);
 

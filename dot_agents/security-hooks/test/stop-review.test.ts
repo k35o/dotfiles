@@ -123,6 +123,13 @@ describe('computeTurnDiff', () => {
     expect(computeTurnDiff(repo, null, join(repo, 'no-snap'))).toBe('');
   });
 
+  test('a cwd outside any git repo yields an empty diff', () => {
+    const dir = tempDir('not-a-repo-');
+    writeFileSync(join(dir, 'f.txt'), 'content\n');
+
+    expect(computeTurnDiff(dir, null, join(dir, 'no-snap'))).toBe('');
+  });
+
   test('without a baseline, tracked edits diff against HEAD', () => {
     const repo = makeRepo();
     writeFileSync(join(repo, 'tracked.txt'), 'modified\n');
