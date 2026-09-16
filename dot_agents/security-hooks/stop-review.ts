@@ -363,7 +363,15 @@ function callCodex(
       );
       return null;
     }
-    return (r.stdout ?? '').trim();
+    const out = (r.stdout ?? '').trim();
+    if (!out) {
+      // exit 0 + empty stdout is how codex reports an auth/stream failure it
+      // already printed to stderr. Silently treating it as "no findings" is
+      // how this layer stayed broken unnoticed.
+      log('stop-review', 'codex exited 0 with no output');
+      return null;
+    }
+    return out;
   } catch (e) {
     log('stop-review', `codex call failed: ${stringifyError(e)}`);
     return null;

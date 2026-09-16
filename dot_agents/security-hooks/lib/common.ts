@@ -11,13 +11,14 @@
 import { Buffer } from 'node:buffer';
 import { createHash } from 'node:crypto';
 import {
+  appendFileSync,
   existsSync,
   mkdirSync,
   renameSync,
   statSync,
   writeFileSync,
 } from 'node:fs';
-import { appendFile, readFile } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import process from 'node:process';
@@ -65,15 +66,15 @@ export type PatternRule = {
 };
 
 export function log(component: string, msg: string): void {
-  // Best-effort append; never throw.
+  // Synchronous: every hook returns straight into process.exit(), which drops
+  // a pending async append — the fast failure paths are exactly the ones whose
+  // log line matters most.
   try {
     mkdirSync(dirname(LOG_FILE), { recursive: true });
+    appendFileSync(LOG_FILE, `[${component}] ${msg}\n`);
   } catch {
     /* ignore */
   }
-  appendFile(LOG_FILE, `[${component}] ${msg}\n`).catch(() => {
-    /* ignore */
-  });
 }
 
 export function globallyDisabled(): boolean {
