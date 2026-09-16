@@ -12,6 +12,34 @@ fnox-activate() {
   export FNOX_AGE_KEY="$(security find-generic-password -s fnox -a age-key -w 2>/dev/null)"
   eval "$(fnox activate zsh)"
 }
+
+# claude -w 相当。git worktree を <repo>/.kiro/worktrees/<name> に作って kiro-cli chat を起動する。
+kiro-cli() {
+  if [[ "$1" != "-w" && "$1" != "--worktree" ]]; then
+    command kiro-cli "$@"
+    return
+  fi
+  shift
+
+  local repo_root
+  repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || {
+    echo "kiro-cli -w: gitリポジトリ内で実行してください" >&2
+    return 1
+  }
+
+  local name="$1"
+  [[ -n "$name" ]] && shift
+  [[ -z "$name" ]] && name="kiro-$(date +%Y%m%d-%H%M%S)"
+
+  local worktree_path="$repo_root/.kiro/worktrees/$name"
+
+  if [[ ! -d "$worktree_path" ]]; then
+    git -C "$repo_root" worktree add -b "$name" "$worktree_path" HEAD || return 1
+  fi
+
+  cd "$worktree_path" || return 1
+  command kiro-cli chat "$@"
+}
 {{ if eq (get . "profile") "personal" }}
 # tier1 の秘密（fnox の [secrets]: SAKANA_API_KEY 等の API キー）を対話シェルに自動ロード。
 # 新しい API キーは [secrets] に足せば自動で載る。tier2（[profiles.bot]）は載らない。
