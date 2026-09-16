@@ -4,14 +4,14 @@ k8o の macOS 環境設定。[chezmoi](https://www.chezmoi.io/) で管理する�
 
 ## 構成
 
-| ディレクトリ / ファイル          | 展開先          | 内容                                                                                            |
-| -------------------------------- | --------------- | ----------------------------------------------------------------------------------------------- |
-| `dot_agents/`                    | `~/.agents/`    | Claude Code / Codex 共有の資産。スキル集と security-hooks（TypeScript 製フック）                |
-| `dot_claude/`                    | `~/.claude/`    | Claude Code 設定。`settings.json`、`CLAUDE.md`、statusline、security-hooks とスキルへの symlink |
-| `dot_codex/`                     | `~/.codex/`     | Codex CLI 設定。`config.toml`（テンプレート）、`AGENTS.md`、プロファイル別設定                  |
-| `dot_config/`                    | `~/.config/`    | mise / fnox / zsh / ghostty / starship / pnpm                                                   |
-| `dot_local/bin/`                 | `~/.local/bin/` | `dotfiles-check.sh`（更新通知キャッシュの維持）                                                 |
-| `run_once_*.sh` `run_after_*.sh` | —               | `chezmoi apply` 時に実行されるスクリプト                                                        |
+| ディレクトリ / ファイル          | 展開先          | 内容                                                                                                                |
+| -------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `dot_agents/`                    | `~/.agents/`    | Claude Code / Codex 共有の資産。スキル集と security-hooks（TypeScript 製フック）                                    |
+| `dot_claude/`                    | `~/.claude/`    | Claude Code 設定。`settings.json`、`CLAUDE.md`、statusline、スラッシュコマンド、security-hooks とスキルへの symlink |
+| `dot_codex/`                     | `~/.codex/`     | Codex CLI 設定。`config.toml`（テンプレート）、`AGENTS.md`、プロファイル別設定                                      |
+| `dot_config/`                    | `~/.config/`    | mise / fnox / zsh / ghostty / starship / pnpm                                                                       |
+| `dot_local/bin/`                 | `~/.local/bin/` | `dotfiles-check.sh`（更新通知キャッシュの維持）                                                                     |
+| `run_once_*.sh` `run_after_*.sh` | —               | `chezmoi apply` 時に実行されるスクリプト                                                                            |
 
 `.chezmoiignore` に載っているファイル（この README、`package.json` などリポジトリ運用専用のファイル）はホームに展開されない。
 
