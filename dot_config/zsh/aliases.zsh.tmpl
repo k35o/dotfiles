@@ -14,12 +14,17 @@ fnox-activate() {
 }
 
 # claude -w 相当。git worktree を <repo>/.kiro/worktrees/<name> に作って kiro-cli chat を起動する。
-# --rm-on-exit を付けると chat 終了後に worktree を削除する（未コミットの変更が残っていればスキップ）。
+# -wr だと chat 終了後に worktree を削除する（未コミットの変更が残っていればスキップ）。
 kiro-cli() {
-  if [[ "$1" != "-w" && "$1" != "--worktree" ]]; then
-    command kiro-cli "$@"
-    return
-  fi
+  local rm_on_exit=0
+  case "$1" in
+    -wr) rm_on_exit=1 ;;
+    -w|--worktree) ;;
+    *)
+      command kiro-cli "$@"
+      return
+      ;;
+  esac
   shift
 
   local repo_root
@@ -27,18 +32,6 @@ kiro-cli() {
     echo "kiro-cli -w: gitリポジトリ内で実行してください" >&2
     return 1
   }
-
-  local rm_on_exit=0
-  local -a args
-  local arg
-  for arg in "$@"; do
-    if [[ "$arg" == "--rm-on-exit" ]]; then
-      rm_on_exit=1
-    else
-      args+=("$arg")
-    fi
-  done
-  set -- "${args[@]}"
 
   local name="$1"
   [[ -n "$name" ]] && shift
