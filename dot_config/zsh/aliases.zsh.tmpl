@@ -13,53 +13,7 @@ fnox-activate() {
   eval "$(fnox activate zsh)"
 }
 
-# claude -w 相当。git worktree を <repo>/.kiro/worktrees/<name> に作って kiro-cli chat を起動する。
-# -wr だと chat 終了後に worktree を削除する（未コミットの変更が残っていればスキップ）。
-kiro-cli() {
-  local rm_on_exit=0
-  case "$1" in
-    -wr) rm_on_exit=1 ;;
-    -w|--worktree) ;;
-    *)
-      command kiro-cli "$@"
-      return
-      ;;
-  esac
-  shift
-
-  local repo_root
-  repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || {
-    echo "kiro-cli -w: gitリポジトリ内で実行してください" >&2
-    return 1
-  }
-
-  local name="$1"
-  [[ -n "$name" ]] && shift
-  [[ -z "$name" ]] && name="kiro-$(date +%Y%m%d-%H%M%S)"
-
-  local worktree_path="$repo_root/.kiro/worktrees/$name"
-
-  if [[ ! -d "$worktree_path" ]]; then
-    git -C "$repo_root" worktree add -b "$name" "$worktree_path" HEAD || return 1
-  fi
-
-  cd "$worktree_path" || return 1
-  command kiro-cli chat "$@"
-  local exit_code=$?
-
-  if (( rm_on_exit )); then
-    cd "$repo_root" || return $exit_code
-    local rm_err
-    if rm_err="$(git -C "$repo_root" worktree remove "$worktree_path" 2>&1)"; then
-      echo "kiro-cli -w: worktreeを削除しました: $worktree_path" >&2
-    else
-      echo "kiro-cli -w: 未コミットの変更が残っているためworktreeを削除しませんでした: $worktree_path" >&2
-      echo "$rm_err" >&2
-    fi
-  fi
-
-  return $exit_code
-}
+source "$HOME/.config/zsh/kiro.zsh"
 {{ if eq (get . "profile") "personal" }}
 # tier1 の秘密（fnox の [secrets]: SAKANA_API_KEY 等の API キー）を対話シェルに自動ロード。
 # 新しい API キーは [secrets] に足せば自動で載る。tier2（[profiles.bot]）は載らない。
