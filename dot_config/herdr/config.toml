@@ -1,0 +1,7 @@
+# Herdrはcmux内でAgentセッションの管理・永続化に使う。
+# Workspaceの作り忘れを防ぎ、要対応のAgentを一覧の上位に表示する。
+[ui]
+agent_panel_sort = "priority"
+prompt_new_workspace_name = true
+confirm_close = true
+status_indicators = "symbols"
