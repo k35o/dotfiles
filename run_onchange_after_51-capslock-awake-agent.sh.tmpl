@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# main.swift: {{ include "dot_local/share/capslock-awake/main.swift" | sha256sum }}
+# plist: {{ include "private_Library/private_LaunchAgents/io.github.k35o.capslock-awake.plist.tmpl" | sha256sum }}
+set -euo pipefail
+
+label="io.github.k35o.capslock-awake"
+domain="gui/$(id -u)"
+
+swiftc -O -o "$HOME/.local/bin/capslock-awake" "$HOME/.local/share/capslock-awake/main.swift"
+
+launchctl bootout "$domain/$label" 2>/dev/null || true
+launchctl bootstrap "$domain" "$HOME/Library/LaunchAgents/$label.plist"
