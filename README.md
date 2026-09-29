@@ -4,14 +4,16 @@ k8o の macOS 環境設定。[chezmoi](https://www.chezmoi.io/) で管理する�
 
 ## 構成
 
-| ディレクトリ / ファイル          | 展開先          | 内容                                                                                                                |
-| -------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `dot_agents/`                    | `~/.agents/`    | エージェント向けの資産。スキル集と security-hooks（TypeScript 製フック）                                            |
-| `dot_claude/`                    | `~/.claude/`    | Claude Code 設定。`settings.json`、`CLAUDE.md`、statusline、スラッシュコマンド、security-hooks とスキルへの symlink |
-| `dot_kiro/`                      | `~/.kiro/`      | Kiro CLI のグローバル設定。`settings/cli.json`をprivate JSONとして全面管理                                          |
-| `dot_config/`                    | `~/.config/`    | mise / fnox / zsh / ghostty / starship / pnpm                                                                       |
-| `dot_local/bin/`                 | `~/.local/bin/` | `dotfiles-check.sh`（更新通知キャッシュの維持）                                                                     |
-| `run_once_*.sh` `run_after_*.sh` | —               | `chezmoi apply` 時に実行されるスクリプト                                                                            |
+| ディレクトリ / ファイル                              | 展開先                           | 内容                                                                                                                |
+| ---------------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `dot_agents/`                                        | `~/.agents/`                     | エージェント向けの資産。スキル集と security-hooks（TypeScript 製フック）                                            |
+| `dot_claude/`                                        | `~/.claude/`                     | Claude Code 設定。`settings.json`、`CLAUDE.md`、statusline、スラッシュコマンド、security-hooks とスキルへの symlink |
+| `dot_kiro/`                                          | `~/.kiro/`                       | Kiro CLI のグローバル設定。`settings/cli.json`をprivate JSONとして全面管理                                          |
+| `dot_config/`                                        | `~/.config/`                     | mise / fnox / zsh / ghostty / starship / pnpm                                                                       |
+| `dot_local/bin/`                                     | `~/.local/bin/`                  | `dotfiles-check.sh`（更新通知キャッシュの維持）                                                                     |
+| `dot_local/share/capslock-awake/`                    | `~/.local/share/capslock-awake/` | CapsLock でスリープを抑止する常駐プロセスのソース                                                                   |
+| `private_Library/`                                   | `~/Library/`                     | pnpm の設定への symlink、LaunchAgent                                                                                |
+| `run_once_*.sh` `run_after_*.sh` `run_onchange_*.sh` | —                                | `chezmoi apply` 時に実行されるスクリプト                                                                            |
 
 `.chezmoiignore` に載っているファイル（この README、`package.json` などリポジトリ運用専用のファイル）はホームに展開されない。
 
@@ -65,6 +67,28 @@ k8o の macOS 環境設定。[chezmoi](https://www.chezmoi.io/) で管理する�
 - tier2（`[profiles.bot]`: GitHub App 秘密鍵などの機密）: `fnox exec -P bot -- <command>`
 
 age の identity はキーチェーン（service `fnox` / account `age-key`）から `fnox-activate` が読み出す。
+
+## CapsLock でスリープ抑止
+
+CapsLock をオンにしている間、蓋を閉じても Mac がスリープしない。オフにすると通常のスリープに戻る。CapsLock の LED が抑止中の目印になる。
+
+- LaunchAgent `io.github.k35o.capslock-awake` がログイン時に起動し、CapsLock の状態に合わせて `pmset -a disablesleep` を切り替える
+- `pmset` の実行には root 権限が要るため、`chezmoi apply` が `/etc/sudoers.d/capslock-awake` を設置する（設置時にパスワードを求められる）。パスワードなしで許可するのは `/usr/bin/pmset -a disablesleep 0` と `/usr/bin/pmset -a disablesleep 1` だけ
+- ビルドに `swiftc`（Xcode Command Line Tools）を使う
+
+抑止中は発熱とバッテリー消費が増える。オンのままカバンに入れない。
+
+スリープ抑止が解除されなくなったときは手動で戻す:
+
+```sh
+sudo pmset -a disablesleep 0
+```
+
+`pmset` の失敗は統合ログに残る（zsh の組み込み `log` と衝突するためフルパスで呼ぶ）:
+
+```sh
+/usr/bin/log show --last 1h --predicate 'subsystem == "io.github.k35o.capslock-awake"'
+```
 
 ## 更新の仕組み
 
