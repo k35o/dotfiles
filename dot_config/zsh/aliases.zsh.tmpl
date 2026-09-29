@@ -15,7 +15,7 @@ fnox-activate() {
 
 source "$HOME/.config/zsh/kiro.zsh"
 {{ if eq (get . "profile") "personal" }}
-# tier1 の秘密（fnox の [secrets]: SAKANA_API_KEY 等の API キー）を対話シェルに自動ロード。
+# tier1 の秘密（fnox の [secrets]: 日常使う API キー）を対話シェルに自動ロード。
 # 新しい API キーは [secrets] に足せば自動で載る。tier2（[profiles.bot]）は載らない。
 # keychain は always-allow（~50ms）。エージェント(CLAUDECODE)では常駐させず fnox exec を使う。
 if [[ -z "$CLAUDECODE" ]]; then

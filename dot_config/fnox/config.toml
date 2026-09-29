@@ -11,8 +11,8 @@ age = { type = "age", recipients = [
 tools = ["exec"]
 secrets = []
 
+# tier1: 日常使う API キー。個人機の対話シェルに自動ロードされる。
 [secrets]
-SAKANA_API_KEY = { provider = "age", value = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBmSG1OcHU2T0FYODJMaUtOQVU2Z2dKb0dTZjhQMllRNDVvSHgwZnpEOFhrCkpjQklWWWc3dkNGbjBPa1V4Mm4yb041Z2FMdmRseEU4aS96WjVOS0EzakEKLT4gWDI1NTE5IDlWY2xBMmlDKzBQcTlJbzJuK2lRbnV1TmJkbEFiNlkwMHVwS1VCZkhWeHcKVmtDWDlSWG5ROVBJa1pRU2p1Z1Z2TVFubS93T1JpaFRUNyswcFo3RDhnQQotPiA2fjskQSUtZ3JlYXNlIEojCms0cFNYUmVtdVQ2Yi8reGdoTWdnVTBYUFdlNmVpVDdJVEhDUVlCVGczRGo3YzhOUHVkS0ZOMUpOMjlrNFhsdWoKeTVSVktia0N1WnNjK1JzcW9LcE5IQQotLS0gSzZQTGF0Sis2M01uQzFSMlg0dVpTcVVCWU1mOWFISTlxdDNiaGUyU0dncwrV8TtltZl01Lr+lTEs+qaL2sWAI5lgRfVvlwuU9FnGUsDIQxyzyZBJ3hnjqd7w/PdAkmO6L3dCi80hZa2q3VOociWPwkdM2K+weu/Xm8JJdrykoxZEhKoKBUYMoHi7OJSq9lfxIQ==" }
 
 # tier2: 機密（GitHub App 秘密鍵）。シェル auto-load / default exec には載らない。
 # 使うときだけ `fnox exec -P bot -- <command>`。

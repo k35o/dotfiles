@@ -1,36 +1,30 @@
 #!/bin/bash
 # Wrapper that hooks invoke to run the actual Bun script.
 #
-# Why: Claude Code and Codex CLI may spawn hooks from environments where
+# Why: Claude Code may spawn hooks from environments where
 # Homebrew's /opt/homebrew/bin and mise's shim dir are NOT on PATH (GUI launch,
 # daemon mode, login-less subprocess). Resolving mise / bun via a fixed,
 # wrapper-controlled PATH is more robust than relying on the bare `mise`
 # command resolving correctly.
 #
 # Usage:
-#   run-hook.sh <runtime> <script> [extra args...]
-# where <runtime> is "claude" or "codex" — exported as
-# SECURITY_HOOK_RUNTIME so detectRuntime() picks it up deterministically.
+#   run-hook.sh <script> [extra args...]
 
 set -u
 
-RUNTIME="${1:-}"
-SCRIPT="${2:-}"
+SCRIPT="${1:-}"
 
-if [[ -z "$RUNTIME" || -z "$SCRIPT" ]]; then
+if [[ -z "$SCRIPT" ]]; then
   # Nothing to do — fail open to keep the originating tool unblocked.
   exit 0
 fi
 
-shift 2
+shift
 
 # Prepend /opt/homebrew/bin so `mise` resolves on macOS ARM. Also include the
 # user's PATH-as-it-was in case the wrapper is being run from a shell that
 # already has things set up.
 export PATH="/opt/homebrew/bin:/usr/local/bin:${PATH:-/usr/bin:/bin}"
-
-# Hint to common.detectRuntime which originating tool we're under.
-export SECURITY_HOOK_RUNTIME="$RUNTIME"
 
 # Find mise. Fall back gracefully so a missing mise doesn't break the hook.
 MISE_BIN=""

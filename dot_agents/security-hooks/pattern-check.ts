@@ -2,9 +2,7 @@
 /**
  * L1: Per-edit security pattern check.
  *
- * Runs as PostToolUse hook for:
- * - Claude Code:  matcher = "Edit|Write|NotebookEdit"
- * - Codex CLI:    matcher = "^apply_patch$"
+ * Runs as a PostToolUse hook (matcher = "Edit|Write|MultiEdit|NotebookEdit").
  *
  * Reads the edited file from disk (after the edit lands) and matches the new
  * content against the patterns declared in ~/.claude/security-patterns.json.
