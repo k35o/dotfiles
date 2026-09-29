@@ -26,11 +26,6 @@ import process from 'node:process';
 export const HOME = homedir();
 export const LOG_FILE = join(HOME, '.cache', 'security-hooks', 'log.txt');
 export const STATE_DIR = join(HOME, '.cache', 'security-hooks');
-export const GUIDANCE_FILE = join(
-  HOME,
-  '.claude',
-  'claude-security-guidance.md',
-);
 export const PATTERNS_FILE = join(HOME, '.claude', 'security-patterns.json');
 
 export const MAX_FILE_BYTES = 512 * 1024;
@@ -38,11 +33,7 @@ export const MAX_FILE_BYTES = 512 * 1024;
 const RISKY_NESTED = /\([^)]*[+*][^)]*\)[+*]/u;
 const GREEDY_WILDCARD = /\.[*+]/gu;
 
-export type HookEvent =
-  | 'PreToolUse'
-  | 'PostToolUse'
-  | 'UserPromptSubmit'
-  | 'Stop';
+export type HookEvent = 'PreToolUse' | 'PostToolUse';
 
 export type Runtime = 'claude' | 'codex';
 
@@ -52,7 +43,6 @@ export type HookPayload = {
   transcript_path?: string;
   tool_name?: string;
   tool_input?: Record<string, unknown>;
-  stop_hook_active?: boolean;
   [k: string]: unknown;
 };
 
@@ -120,16 +110,6 @@ export function emitInject(text: string, event: HookEvent): void {
       additionalContext: text,
     };
   }
-  process.stdout.write(JSON.stringify(output));
-}
-
-export function emitReprompt(reason: string, runtime: Runtime): void {
-  // Claude の Stop hook は flat な { decision: "block", reason } を読む。
-  // Codex だけ Stop の契約が異なる。
-  const output =
-    runtime === 'codex'
-      ? { continue: false, stopReason: reason, systemMessage: reason }
-      : { decision: 'block', reason, systemMessage: reason };
   process.stdout.write(JSON.stringify(output));
 }
 
@@ -244,17 +224,6 @@ export async function loadGlobalExcludePaths(): Promise<string[]> {
       : [];
   } catch {
     return [];
-  }
-}
-
-export async function loadGuidance(): Promise<string> {
-  try {
-    const text = await readFile(GUIDANCE_FILE, 'utf8');
-    return text.slice(0, 8192);
-  } catch (e) {
-    if ((e as NodeJS.ErrnoException).code === 'ENOENT') return '';
-    log('common', `guidance read failed: ${stringifyError(e)}`);
-    return '';
   }
 }
 

@@ -7,7 +7,7 @@
  * exfiltration-shaped commands that the static settings.json deny-list cannot
  * express as argument patterns — `curl … | bash`, `chmod 777`, `rm -rf /`,
  * writes into shell rc / ~/.ssh. These leave no file diff, so the L1
- * pattern-check and L2 Codex stop-review are structurally blind to them.
+ * pattern-check is structurally blind to them.
  *
  * Claude only: Codex's PreToolUse output shape is not wired here yet, so Codex
  * runs return early rather than emit an output Codex would misread.

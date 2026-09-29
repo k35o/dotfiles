@@ -89,17 +89,6 @@
         ]
       }
     ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/prompt-submit.ts",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write|MultiEdit|NotebookEdit",
@@ -108,17 +97,6 @@
             "type": "command",
             "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/pattern-check.ts",
             "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/stop-review.ts",
-            "timeout": 120
           }
         ]
       }

@@ -4,8 +4,7 @@
 `~/.codex/security-hooks/`）と、`/security-review`・`code-review` skill・Codex レビュアー
 （`codex-reviewer` skill）から参照される共通の脅威モデル。
 
-レビュアーは「問題を見つけること」だけを役割とする。書いた本人ではなく、別プロセスの
-Codex セッションが fresh context で読む前提。
+レビュアーは「問題を見つけること」だけを役割とする。
 
 ---
 
