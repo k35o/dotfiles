@@ -6,9 +6,8 @@ k8o の macOS 環境設定。[chezmoi](https://www.chezmoi.io/) で管理する�
 
 | ディレクトリ / ファイル          | 展開先          | 内容                                                                                                                |
 | -------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `dot_agents/`                    | `~/.agents/`    | Claude Code / Codex 共有の資産。スキル集と security-hooks（TypeScript 製フック）                                    |
+| `dot_agents/`                    | `~/.agents/`    | エージェント向けの資産。スキル集と security-hooks（TypeScript 製フック）                                            |
 | `dot_claude/`                    | `~/.claude/`    | Claude Code 設定。`settings.json`、`CLAUDE.md`、statusline、スラッシュコマンド、security-hooks とスキルへの symlink |
-| `dot_codex/`                     | `~/.codex/`     | Codex CLI 設定。`config.toml`（テンプレート）、`AGENTS.md`、プロファイル別設定                                      |
 | `dot_kiro/`                      | `~/.kiro/`      | Kiro CLI のグローバル設定。`settings/cli.json`をprivate JSONとして全面管理                                          |
 | `dot_config/`                    | `~/.config/`    | mise / fnox / zsh / ghostty / starship / pnpm                                                                       |
 | `dot_local/bin/`                 | `~/.local/bin/` | `dotfiles-check.sh`（更新通知キャッシュの維持）                                                                     |

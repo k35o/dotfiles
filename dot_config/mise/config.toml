@@ -11,7 +11,6 @@ chezmoi = "2.72.2"
 
 # npm 製ツール
 "npm:agent-browser" = "0.38.1"
-"npm:@openai/codex" = "0.155.1"
 # 自作パッケージなのでリリース隔離期間を適用しない
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 

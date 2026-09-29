@@ -1,8 +1,7 @@
 # k8o のセキュリティガイダンス
 
-このファイルは、Claude Code / Codex CLI のセキュリティフック（`~/.claude/security-hooks/`,
-`~/.codex/security-hooks/`）と、`/security-review`・`code-review` skill・Codex レビュアー
-（`codex-reviewer` skill）から参照される共通の脅威モデル。
+このファイルは、Claude Code のセキュリティフック（`~/.claude/security-hooks/`）と、
+`/security-review`・`code-review` skill・`reviewer` agent から参照される共通の脅威モデル。
 
 レビュアーは「問題を見つけること」だけを役割とする。
 

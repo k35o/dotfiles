@@ -83,7 +83,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/pre-bash-guard.ts",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh $HOME/.claude/security-hooks/pre-bash-guard.ts",
             "timeout": 10
           }
         ]
@@ -95,7 +95,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/security-hooks/run-hook.sh claude $HOME/.claude/security-hooks/pattern-check.ts",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh $HOME/.claude/security-hooks/pattern-check.ts",
             "timeout": 10
           }
         ]

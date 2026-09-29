@@ -1,13 +1,10 @@
 import { describe, expect, test } from 'bun:test';
-import process from 'node:process';
 
 import {
-  detectRuntime,
   extractEditedPaths,
   fnmatch,
   isRiskyRegex,
   matchesAnyGlob,
-  parseCodexPatch,
   safeSessionKey,
 } from '../lib/common.ts';
 
@@ -110,95 +107,9 @@ describe('extractEditedPaths', () => {
     expect(paths).toEqual(['/abs/nb.ipynb']);
   });
 
-  test('apply_patch delegates to parseCodexPatch', () => {
-    const patch =
-      '*** Add File: a.ts\n+hello\n*** Update File: b.ts\n@@\n-old\n+new\n';
-    const paths = extractEditedPaths({
-      tool_name: 'apply_patch',
-      tool_input: { input: patch },
-      cwd: '/work',
-    });
-    expect(paths).toEqual(['/work/a.ts', '/work/b.ts']);
-  });
-
   test('unknown tool returns empty', () => {
     expect(extractEditedPaths({ tool_name: 'Bash', tool_input: {} })).toEqual(
       [],
     );
-  });
-});
-
-describe('parseCodexPatch', () => {
-  test('handles Add / Update / Move', () => {
-    const patch = [
-      '*** Add File: a.ts',
-      '+x',
-      '*** Update File: old.ts',
-      '*** Move to: new.ts',
-      '@@',
-      '-x',
-      '+y',
-    ].join('\n');
-    expect(parseCodexPatch(patch, '/work')).toEqual([
-      '/work/a.ts',
-      '/work/new.ts',
-    ]);
-  });
-
-  test('ignores delete-only patches', () => {
-    expect(parseCodexPatch('*** Delete File: gone.ts\n', '/work')).toEqual([]);
-  });
-});
-
-function resetRuntimeEnv() {
-  for (const k of [
-    'SECURITY_HOOK_RUNTIME',
-    'CLAUDECODE',
-    'CLAUDE_PROJECT_DIR',
-    'CODEX_HOME',
-    'CODEX_SANDBOX_ENV_VAR',
-  ]) {
-    delete process.env[k];
-  }
-}
-
-describe('detectRuntime', () => {
-  const orig = { ...process.env };
-  const reset = resetRuntimeEnv;
-
-  test('explicit env wins', () => {
-    reset();
-    process.env['SECURITY_HOOK_RUNTIME'] = 'codex';
-    process.env['CLAUDECODE'] = '1';
-    expect(detectRuntime({})).toBe('codex');
-    Object.assign(process.env, orig);
-  });
-
-  test('claude env detected', () => {
-    reset();
-    process.env['CLAUDE_PROJECT_DIR'] = '/x';
-    expect(detectRuntime({})).toBe('claude');
-    Object.assign(process.env, orig);
-  });
-
-  test('codex env detected', () => {
-    reset();
-    process.env['CODEX_HOME'] = '/y';
-    expect(detectRuntime({})).toBe('codex');
-    Object.assign(process.env, orig);
-  });
-
-  test('transcript_path heuristic', () => {
-    reset();
-    expect(detectRuntime({ transcript_path: '/x/.codex/sessions/y' })).toBe(
-      'codex',
-    );
-    Object.assign(process.env, orig);
-  });
-
-  test('defaults to claude', () => {
-    reset();
-    expect(detectRuntime({})).toBe('claude');
-    Object.assign(process.env, orig);
   });
 });
