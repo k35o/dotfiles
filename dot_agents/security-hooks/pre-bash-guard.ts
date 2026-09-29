@@ -7,10 +7,7 @@
  * exfiltration-shaped commands that the static settings.json deny-list cannot
  * express as argument patterns — `curl … | bash`, `chmod 777`, `rm -rf /`,
  * writes into shell rc / ~/.ssh. These leave no file diff, so the L1
- * pattern-check and L2 Codex stop-review are structurally blind to them.
- *
- * Claude only: Codex's PreToolUse output shape is not wired here yet, so Codex
- * runs return early rather than emit an output Codex would misread.
+ * pattern-check is structurally blind to them.
  *
  * Pure regex — no model call, no cost.
  *
@@ -25,7 +22,6 @@
 import process from 'node:process';
 
 import {
-  detectRuntime,
   emitPreToolDecision,
   globallyDisabled,
   log,
@@ -101,8 +97,6 @@ async function main(): Promise<number> {
 
   const payload: HookPayload = await readPayload();
   if (Object.keys(payload).length === 0) return 0;
-  const runtime = detectRuntime(payload);
-  if (runtime !== 'claude') return 0;
   if ((payload.tool_name ?? '') !== 'Bash') return 0;
 
   const command = String((payload.tool_input ?? {})['command'] ?? '');

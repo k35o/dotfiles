@@ -1,10 +1,9 @@
 /**
- * Claude Code / Codex CLI 対応のフック共通ユーティリティ。
+ * Claude Code のフック共通ユーティリティ。
  *
  * 設計方針:
  * - Bun ランタイム前提。追加の npm install は避ける（標準APIで完結）
  * - 例外で hook を落とさない（fail open）。エラーは log() に流す
- * - ツール検出は環境変数で行い、出力フォーマットを切り替える
  * - 個人情報や秘密値をログに出さない
  */
 
@@ -26,11 +25,6 @@ import process from 'node:process';
 export const HOME = homedir();
 export const LOG_FILE = join(HOME, '.cache', 'security-hooks', 'log.txt');
 export const STATE_DIR = join(HOME, '.cache', 'security-hooks');
-export const GUIDANCE_FILE = join(
-  HOME,
-  '.claude',
-  'claude-security-guidance.md',
-);
 export const PATTERNS_FILE = join(HOME, '.claude', 'security-patterns.json');
 
 export const MAX_FILE_BYTES = 512 * 1024;
@@ -38,21 +32,13 @@ export const MAX_FILE_BYTES = 512 * 1024;
 const RISKY_NESTED = /\([^)]*[+*][^)]*\)[+*]/u;
 const GREEDY_WILDCARD = /\.[*+]/gu;
 
-export type HookEvent =
-  | 'PreToolUse'
-  | 'PostToolUse'
-  | 'UserPromptSubmit'
-  | 'Stop';
-
-export type Runtime = 'claude' | 'codex';
+export type HookEvent = 'PreToolUse' | 'PostToolUse';
 
 export type HookPayload = {
   session_id?: string;
   cwd?: string;
-  transcript_path?: string;
   tool_name?: string;
   tool_input?: Record<string, unknown>;
-  stop_hook_active?: boolean;
   [k: string]: unknown;
 };
 
@@ -96,22 +82,6 @@ export async function readPayload(): Promise<HookPayload> {
   }
 }
 
-export function detectRuntime(payload: HookPayload): Runtime {
-  const explicit = (process.env['SECURITY_HOOK_RUNTIME'] ?? '').toLowerCase();
-  if (explicit === 'claude' || explicit === 'codex') {
-    return explicit;
-  }
-  if (process.env['CLAUDECODE'] || 'CLAUDE_PROJECT_DIR' in process.env) {
-    return 'claude';
-  }
-  if ('CODEX_HOME' in process.env || process.env['CODEX_SANDBOX_ENV_VAR']) {
-    return 'codex';
-  }
-  const tp = (payload.transcript_path ?? '').toLowerCase();
-  if (tp.includes('/.codex/')) return 'codex';
-  return 'claude';
-}
-
 export function emitInject(text: string, event: HookEvent): void {
   const output: Record<string, unknown> = { systemMessage: text };
   if (event === 'PostToolUse') {
@@ -123,19 +93,8 @@ export function emitInject(text: string, event: HookEvent): void {
   process.stdout.write(JSON.stringify(output));
 }
 
-export function emitReprompt(reason: string, runtime: Runtime): void {
-  // Claude の Stop hook は flat な { decision: "block", reason } を読む。
-  // Codex だけ Stop の契約が異なる。
-  const output =
-    runtime === 'codex'
-      ? { continue: false, stopReason: reason, systemMessage: reason }
-      : { decision: 'block', reason, systemMessage: reason };
-  process.stdout.write(JSON.stringify(output));
-}
-
 /**
  * Claude Code の PreToolUse 決定出力。ツール実行の前に allow/ask/deny を返す。
- * Codex は PreToolUse の出力契約が異なるため、呼び出し側で claude に限定する。
  */
 export function emitPreToolDecision(
   decision: 'deny' | 'ask',
@@ -247,17 +206,6 @@ export async function loadGlobalExcludePaths(): Promise<string[]> {
   }
 }
 
-export async function loadGuidance(): Promise<string> {
-  try {
-    const text = await readFile(GUIDANCE_FILE, 'utf8');
-    return text.slice(0, 8192);
-  } catch (e) {
-    if ((e as NodeJS.ErrnoException).code === 'ENOENT') return '';
-    log('common', `guidance read failed: ${stringifyError(e)}`);
-    return '';
-  }
-}
-
 /**
  * tmp + rename で原子的に書き込む。失敗しても throw しない。
  */
@@ -292,34 +240,11 @@ export function extractEditedPaths(payload: HookPayload): string[] {
     const p = inp['notebook_path'] ?? inp['file_path'];
     return typeof p === 'string' && p ? [absPath(p, cwd)] : [];
   }
-  if (tool === 'apply_patch') {
-    const patch = inp['input'];
-    return parseCodexPatch(typeof patch === 'string' ? patch : '', cwd);
-  }
   return [];
 }
 
 function absPath(p: string, cwd: string): string {
   return isAbsolute(p) ? p : join(cwd, p);
-}
-
-const CODEX_FILE_HEADER = /^\*\*\*\s+(?:Update|Add)\s+File:\s+(.+?)\s*$/u;
-const CODEX_MOVE_HEADER = /^\*\*\*\s+Move\s+to:\s+(.+?)\s*$/u;
-
-export function parseCodexPatch(patch: string, cwd: string): string[] {
-  const paths: string[] = [];
-  for (const line of patch.split('\n')) {
-    const m = CODEX_FILE_HEADER.exec(line);
-    if (m && m[1]) {
-      paths.push(absPath(m[1].trim(), cwd));
-      continue;
-    }
-    const mv = CODEX_MOVE_HEADER.exec(line);
-    if (mv && mv[1] && paths.length > 0) {
-      paths[paths.length - 1] = absPath(mv[1].trim(), cwd);
-    }
-  }
-  return paths;
 }
 
 export async function readFileCapped(path: string): Promise<string | null> {
