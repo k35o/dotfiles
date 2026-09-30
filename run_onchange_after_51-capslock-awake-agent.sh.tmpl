@@ -9,4 +9,8 @@ domain="gui/$(id -u)"
 swiftc -O -o "$HOME/.local/bin/capslock-awake" "$HOME/.local/share/capslock-awake/main.swift"
 
 launchctl bootout "$domain/$label" 2>/dev/null || true
+# bootout は停止の完了を待たずに戻り、直後の bootstrap が失敗するため、消えるまで待つ
+while launchctl print "$domain/$label" >/dev/null 2>&1; do
+  sleep 0.1
+done
 launchctl bootstrap "$domain" "$HOME/Library/LaunchAgents/$label.plist"

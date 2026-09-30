@@ -75,6 +75,11 @@ CapsLock をオンにしている間、蓋を閉じても Mac がスリープし
 - LaunchAgent `io.github.k35o.capslock-awake` がログイン時に起動し、CapsLock の状態に合わせて `pmset -a disablesleep` を切り替える
 - `pmset` の実行には root 権限が要るため、`chezmoi apply` が `/etc/sudoers.d/capslock-awake` を設置する（設置時にパスワードを求められる）。パスワードなしで許可するのは `/usr/bin/pmset -a disablesleep 0` と `/usr/bin/pmset -a disablesleep 1` だけ
 - ビルドに `swiftc`（Xcode Command Line Tools）を使う
+- CapsLock をスリープ抑止の専用スイッチにするため、キー入力から大文字化の効果を取り除く。これにはアクセシビリティの許可が要る
+
+アクセシビリティの許可は「システム設定 > プライバシーとセキュリティ > アクセシビリティ」で `capslock-awake` を有効にする。ビルドし直すと許可が外れるので、`main.swift` が変わったあとは一度オフにしてからオンに戻す。許可がない間もスリープ抑止は動き、大文字化だけが残る。
+
+パスワード欄などセキュア入力の間はキー入力に割り込めないため、CapsLock がオンだと大文字になる。
 
 抑止中は発熱とバッテリー消費が増える。オンのままカバンに入れない。
 
