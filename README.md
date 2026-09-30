@@ -97,7 +97,7 @@ sudo pmset -a disablesleep 0
 
 ## 更新の仕組み
 
-- `ds` エイリアス = `chezmoi update --apply`（リポジトリを pull して適用）
+- `ds` エイリアス = `chezmoi update --apply && mise install`（リポジトリを pull して適用し、更新されたツールを入れる）
 - `dotfiles-check.sh` が1時間ごとに upstream との差分コミット数を `~/.cache/dotfiles-notify/count` にキャッシュし、starship のプロンプトと Claude Code の statusline に `dotfiles ⇣N` として表示される
 
 ## 開発
