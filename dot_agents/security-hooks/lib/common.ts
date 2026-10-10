@@ -223,8 +223,10 @@ export function atomicWriteText(path: string, text: string): boolean {
 }
 
 export function safeSessionKey(sessionId: string): string {
-  const sid = sessionId || 'default';
-  return createHash('sha256').update(sid, 'utf8').digest('hex').slice(0, 16);
+  return createHash('sha256')
+    .update(sessionId || 'default', 'utf8')
+    .digest('hex')
+    .slice(0, 16);
 }
 
 export function extractEditedPaths(payload: HookPayload): string[] {
