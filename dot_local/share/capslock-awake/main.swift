@@ -1,12 +1,37 @@
 import ApplicationServices
 import Carbon.HIToolbox
 import Foundation
+import IOKit.hidsystem
 import os
 
 let logger = Logger(subsystem: "io.github.k35o.capslock-awake", category: "agent")
 
 func isCapsLockOn() -> Bool {
     CGEventSource.flagsState(.hidSystemState).contains(.maskAlphaShift)
+}
+
+func turnOnCapsLock() {
+    let hidSystem = IOServiceGetMatchingService(
+        kIOMainPortDefault, IOServiceMatching(kIOHIDSystemClass))
+    defer { IOObjectRelease(hidSystem) }
+    var connect: io_connect_t = 0
+    let opened = IOServiceOpen(hidSystem, mach_task_self_, UInt32(kIOHIDParamConnectType), &connect)
+    guard opened == KERN_SUCCESS else {
+        logger.error("failed to open IOHIDSystem: \(opened)")
+        return
+    }
+    defer { IOServiceClose(connect) }
+    let result = IOHIDSetModifierLockState(connect, Int32(kIOHIDCapsLockState), true)
+    if result != KERN_SUCCESS {
+        logger.error("failed to turn on caps lock: \(result)")
+    }
+}
+
+func currentInputSourceID() -> String {
+    let source = TISCopyCurrentKeyboardInputSource().takeRetainedValue()
+    let id = Unmanaged<CFString>.fromOpaque(
+        TISGetInputSourceProperty(source, kTISPropertyInputSourceID))
+    return id.takeUnretainedValue() as String
 }
 
 func setSleepDisabled(_ disabled: Bool) {
@@ -65,6 +90,10 @@ func startCapsLockFilter() {
 var applied = isCapsLockOn()
 setSleepDisabled(applied)
 
+var inputSource = currentInputSourceID()
+var inputSourceChangedAt: ContinuousClock.Instant?
+var capsLockOffPending = false
+
 AXIsProcessTrustedWithOptions([kAXTrustedCheckOptionPrompt.takeUnretainedValue(): true] as CFDictionary)
 
 // アクセシビリティの許可はビルドし直すと外れる。許可がない間もスリープ抑止は動かしたいので、
@@ -75,7 +104,25 @@ poll.setEventHandler {
     if capsLockFilter == nil {
         startCapsLockFilter()
     }
+    let source = currentInputSourceID()
+    if source != inputSource {
+        inputSource = source
+        inputSourceChangedAt = .now
+    }
     let capsLockOn = isCapsLockOn()
+    // macOS は日本語入力から ABC への切り替えで CapsLock をオフにする。入力ソースと CapsLock の
+    // どちらの変化が先に見えるかは定まらないため、オフを見たら 1 周期待ち、切り替え直後なら戻す
+    if applied && !capsLockOn && !capsLockOffPending {
+        capsLockOffPending = true
+        return
+    }
+    capsLockOffPending = false
+    if applied && !capsLockOn, let inputSourceChangedAt,
+        inputSourceChangedAt.duration(to: .now) < .seconds(1)
+    {
+        turnOnCapsLock()
+        return
+    }
     guard capsLockOn != applied else { return }
     setSleepDisabled(capsLockOn)
     applied = capsLockOn
