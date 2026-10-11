@@ -16,7 +16,7 @@ chezmoi = "2.73.0"
 
 # CLI ツール
 awscli = "2.37.9"
-delta = "0.19.2"
+delta = "0.20.1"
 docker-cli = "29.8.2"
 gh = "2.102.0"
 gitleaks = "8.30.1"
