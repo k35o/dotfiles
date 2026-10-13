@@ -167,8 +167,8 @@ importers:
   .:
     devDependencies:
       '@k8o/oxc-config':
-        specifier: 1.0.0
-        version: 1.0.0(vite-plus@1.0.0(@types/node@24.19.1)(@vitest/ui@5.0.1)(typescript@7.0.2))
+        specifier: 1.1.0
+        version: 1.1.0(vite-plus@1.0.0(@types/node@24.19.1)(@vitest/ui@5.0.1)(typescript@7.0.2))
       '@types/node':
         specifier: 24.19.1
         version: 24.19.1
@@ -206,12 +206,12 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@k8o/oxc-config@1.0.0':
-    resolution: {integrity: sha512-WIPNmwszJSsXiCflwoGgafVfXI/KuDLDUqaL2Yosr+Dg3/f8xU/LxdRjd9oR45Ms0Ggx+d3DArMX4nM/MTv4iw==}
+  '@k8o/oxc-config@1.1.0':
+    resolution: {integrity: sha512-pEdUKEUSK7h16UbxaJdb9nz0LfJ8DsC2iaCb9L2wzaQaaekr0OuNCM3p3pIWDZo35EB1GHeypKCMRtMNPMVHYA==}
     engines: {node: '>=24.13.0'}
     peerDependencies:
       '@k8o/html-nest': '>=0.2.0'
-      oxlint-tailwindcss: '>=1.12.0'
+      oxlint-tailwindcss: '>=1.14.0'
       vite-plus: '>=1.0.0'
     peerDependenciesMeta:
       '@k8o/html-nest':
@@ -1325,7 +1325,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@k8o/oxc-config@1.0.0(vite-plus@1.0.0(@types/node@24.19.1)(@vitest/ui@5.0.1)(typescript@7.0.2))':
+  '@k8o/oxc-config@1.1.0(vite-plus@1.0.0(@types/node@24.19.1)(@vitest/ui@5.0.1)(typescript@7.0.2))':
     dependencies:
       vite-plus: 1.0.0(@types/node@24.19.1)(@vitest/ui@5.0.1)(typescript@7.0.2)
 
