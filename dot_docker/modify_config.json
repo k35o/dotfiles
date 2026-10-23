@@ -1,0 +1,7 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* docker 自身が auths や currentContext を書き込むファイルなので、丸ごとは管理せず認証情報の保存先だけを決める */ -}}
+{{- $config := dict -}}
+{{- if .chezmoi.stdin -}}
+{{-   $config = fromJson .chezmoi.stdin -}}
+{{- end -}}
+{{- omit $config "cliPluginsExtraDirs" | setValueAtPath "credsStore" "osxkeychain" | toPrettyJson -}}

@@ -1,0 +1,15 @@
+# Font
+font-size = 12
+# font-family にすると英数字まで丸ゴになるため、日本語の範囲だけを割り当てる
+font-codepoint-map = U+3000-U+30FF,U+3400-U+4DBF,U+4E00-U+9FFF,U+F900-U+FAFF,U+FF00-U+FFEF=Hiragino Maru Gothic ProN
+
+# ArteOdyssey Dark Theme
+background = #18181b
+foreground = #fafafa
+cursor-color = #5eead4
+cursor-text = #18181b
+selection-background = #3f3f46
+selection-foreground = #fafafa
+
+# Scrollback
+scrollback-limit = 10000

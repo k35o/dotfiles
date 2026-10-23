@@ -1,0 +1,35 @@
+{
+  "editor.accessibilitySupport": "off",
+  "editor.fontFamily": "Menlo, 'Hiragino Maru Gothic ProN'",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "search.useIgnoreFiles": true,
+  "search.useGlobalIgnoreFiles": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "workbench.iconTheme": "material-icon-theme",
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "githubPullRequests.pullBranch": "never",
+  "gitlens.graph.layout": "editor",
+  "files.associations": {
+    "*.json5": "jsonc"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "workbench.editor.enablePreview": false,
+  "claudeCode.preferredLocation": "panel",
+  "python.defaultInterpreterPath": "/usr/bin/python3",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "json.schemaDownload.trustedDomains": {
+    "https://schemastore.azurewebsites.net/": true,
+    "https://raw.githubusercontent.com/": true,
+    "https://www.schemastore.org/": true,
+    "https://json.schemastore.org/": true,
+    "https://json-schema.org/": true,
+    "https://biomejs.dev": true,
+    "https://turborepo.com": true,
+    "https://docs.renovatebot.com": true,
+    "https://unpkg.com": true
+  },
+  "workbench.colorTheme": "GitHub Dark Default"
+}

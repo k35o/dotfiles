@@ -1,0 +1,23 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>k35o/renovate-config"],
+  "prConcurrentLimit": 10,
+  "mise": {
+    "enabled": true,
+    "managerFilePatterns": ["/^dot_config/mise/config\\.toml$/"]
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^dot_config/zsh/aliases\\.zsh$/"],
+      "matchStrings": ["npm:(?<depName>ccusage)@(?<currentValue>[0-9.]+)"],
+      "datasourceTemplate": "npm"
+    }
+  ]
+}

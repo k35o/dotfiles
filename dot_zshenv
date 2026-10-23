@@ -1,0 +1,2 @@
+# git の SSH 署名で ssh-keygen が Secure Enclave の鍵を使えるよう、すべての zsh に渡す
+export SSH_SK_PROVIDER=/usr/lib/ssh-keychain.dylib

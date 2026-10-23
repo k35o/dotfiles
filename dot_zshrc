@@ -1,0 +1,9 @@
+# シェルの起動を速く保つため、mise は shims だけを PATH に通す（全機能は mise-activate）
+typeset -U path
+path=("$HOME/.local/bin" "$HOME/.local/share/mise/shims" $path)
+
+autoload -Uz compinit
+compinit
+
+source "$HOME/.config/zsh/prompt.zsh"
+source "$HOME/.config/zsh/aliases.zsh"

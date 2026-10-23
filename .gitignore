@@ -1,0 +1,31 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# vite-plus
+.vite-hooks
+.turbo
+
+# Logs
+*.log
+
+# Environment
+.env*
+*.local
+
+# OS
+.DS_Store
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.sw?
+
+# Local Claude settings
+settings.local.json
+
+# fnox
+# リポジトリ内で `fnox set` を実行すると、グローバル設定ではなくカレント
+# ディレクトリに fnox.toml が作られる。秘密を紛れ込ませないため ignore する。
+fnox.toml

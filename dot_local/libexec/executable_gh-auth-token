@@ -1,0 +1,3 @@
+#!/bin/sh
+# pnpm の tokenHelper は引数なしの絶対パスしか受け付けないため、gh auth token を包む
+exec "$HOME/.local/share/mise/shims/gh" auth token

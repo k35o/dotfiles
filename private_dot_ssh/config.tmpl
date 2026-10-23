@@ -1,0 +1,7 @@
+Include {{ .chezmoi.homeDir }}/.colima/ssh_config
+
+Host github.com
+  IdentityFile ~/.local/share/ssh-auth/id_ecdsa_sk_rk_ssh-auth
+  IdentitiesOnly yes
+  # SSH_SK_PROVIDER を受け取れない GUI アプリから git を使うときのために、ここでも指定する
+  SecurityKeyProvider /usr/lib/ssh-keychain.dylib

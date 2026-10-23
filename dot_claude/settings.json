@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "language": "japanese",
+  "feedbackSurveyRate": 0,
+  "skipAutoPermissionPrompt": true,
+  "agentPushNotifEnabled": true,
+  "disableAgentView": true,
+  "enableAllProjectMcpServers": false,
+  "cleanupPeriodDays": 14,
+  "tui": "fullscreen",
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/statusline.sh"
+  },
+  "worktree": {
+    "symlinkDirectories": ["node_modules"]
+  },
+  "extraKnownMarketplaces": {
+    "k8o": {
+      "source": {
+        "source": "github",
+        "repo": "k35o/claude-plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "mcp@k8o": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "cloudflare@claude-plugins-official": true
+  },
+  "permissions": {
+    "defaultMode": "auto",
+    "deny": [
+      "Bash(npx *)",
+      "Bash(npm exec *)",
+      "Bash(npm x *)",
+      "Bash(npm create *)",
+      "Bash(pnpm dlx *)",
+      "Bash(pnpx *)",
+      "Bash(pnpm create *)",
+      "Bash(yarn dlx *)",
+      "Bash(yarn create *)",
+      "Bash(bunx *)",
+      "Bash(bun x *)",
+      "Bash(bun create *)",
+      "Bash(sudo *)",
+      "Bash(git clean *f*)",
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.development)",
+      "Read(**/.env.development.local)",
+      "Read(**/.env.production)",
+      "Read(**/.env.production.local)",
+      "Read(**/.env.test)",
+      "Read(**/.env.test.local)",
+      "Read(**/.env.staging)",
+      "Read(**/.env.vault)",
+      "Read(**/.aws/**)",
+      "Read(**/.ssh/**)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(git reset --hard *)",
+      "Bash(git commit --no-verify *)",
+      "Bash(git commit -n *)"
+    ]
+  },
+  "sandbox": {
+    "excludedCommands": ["git commit *", "chezmoi *", "pnpm install *"]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh $HOME/.claude/security-hooks/pre-bash-guard.ts",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+  "skipWorkflowUsageWarning": true
+}

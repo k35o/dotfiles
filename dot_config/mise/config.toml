@@ -1,0 +1,77 @@
+[settings]
+minimum_release_age = "7d"
+# 緊急のセキュリティパッチは完全一致のバージョンで書けば待機期間の対象外になる
+# 配布元の署名やビルド元を検証できる core・aqua・github・npm・packslip だけを使う。
+# 残りはソースからのビルド・任意の URL からの取得・プラグインの実行をするので止める
+disable_backends = [
+  "asdf",
+  "cargo",
+  "conda",
+  "dotnet",
+  "forgejo",
+  "gem",
+  "gitlab",
+  "go",
+  "http",
+  "pypi",
+  "s3",
+  "spinel",
+  "spm",
+  "ubi",
+  "vfox",
+]
+# 「attestation がない」という mise-versions の回答も GitHub に確かめ直す
+paranoid = ["provenance"]
+
+# 既定の ~/.rustup・~/.cargo は rustup の公式インストーラと共用になるため、
+# mise 管理のものだけを置く場所に分ける
+[settings.rust]
+rustup_home = "~/.local/share/rustup"
+cargo_home = "~/.local/share/cargo"
+
+# ランタイム
+[tools]
+node = "24.22.1"
+pnpm = "12.14.0"
+deno = "2.9.8"
+bun = "1.4.3"
+chezmoi = "2.73.1"
+rust = "1.99.1"
+
+# npm 製ツール
+"npm:agent-browser" = "0.39.1"
+# 自作パッケージなのでリリース隔離期間を適用しない
+"npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
+"npm:modern-web-guidance" = "0.0.194"
+"npm:typescript-language-server" = "6.0.2"
+"npm:vite-plus" = "1.3.0"
+
+# CLI ツール
+awscli = "2.38.1"
+bat = "0.26.1"
+delta = "0.20.1"
+fzf = "0.74.5"
+gh = "2.102.0"
+gitleaks = "8.30.1"
+jq = "1.8.2"
+opentofu = "1.13.1"
+ripgrep = "15.2.0"
+stripe = "1.53.1"
+turso = "1.0.34"
+vercel = "64.3.1"
+wrangler = "4.151.0"
+yazi = "26.9.1"
+zizmor = "1.31.1"
+
+# コンテナ（colima が lima の VM で docker エンジンを動かす）
+colima = "0.10.3"
+lima = "2.2.1"
+docker-cli = "29.9.1"
+docker-compose = "5.6.0"
+# docker はプラグインと認証情報ヘルパーを docker-* の名前で探すため、配布物の名前から付け替える
+"github:docker/buildx" = { version = "0.38.0", rename_exe = "docker-buildx" }
+"github:docker/docker-credential-helpers" = { version = "0.9.10", asset_pattern = "docker-credential-osxkeychain-*.darwin-arm64", rename_exe = "docker-credential-osxkeychain" }
+
+# シークレット管理
+age = "1.3.2"
+fnox = "1.39.0"

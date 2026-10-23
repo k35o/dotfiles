@@ -1,0 +1,8 @@
+ignore-scripts=true
+min-release-age=7
+audit=true
+fund=false
+engine-strict=true
+; pnpm 11 はグローバルの auth.ini の tokenHelper をプロジェクトの設定と見なして拒否するため、
+; npm が未知の設定として警告を出してもここに置く
+//npm.pkg.github.com/:tokenHelper={{ .chezmoi.homeDir }}/.local/libexec/gh-auth-token
