@@ -67,7 +67,7 @@ zizmor = "1.31.1"
 colima = "0.10.3"
 lima = "2.2.1"
 docker-cli = "29.9.2"
-docker-compose = "5.6.0"
+docker-compose = "5.6.1"
 # docker はプラグインと認証情報ヘルパーを docker-* の名前で探すため、配布物の名前から付け替える
 "github:docker/buildx" = { version = "0.38.1", rename_exe = "docker-buildx" }
 "github:docker/docker-credential-helpers" = { version = "0.9.12", asset_pattern = "docker-credential-osxkeychain-*.darwin-arm64", rename_exe = "docker-credential-osxkeychain" }
