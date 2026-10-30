@@ -1,6 +1,6 @@
 alias ds='mise self-update --yes && claude update && chezmoi update --apply && mise install && mise prune --tools --yes && { ! colima status &>/dev/null || colima update; }'
 # npm パッケージをネットワークと書き込みを許可しない deno のサンドボックスで動かすため、mise ではなく deno run で起動する
-alias ccusage='deno run -E -R -S=homedir npm:ccusage@20.0.41 --offline'
+alias ccusage='deno run -E -R -S=homedir npm:ccusage@20.0.42 --offline'
 
 mise-activate() {
   eval "$(MISE_OFFLINE=1 mise activate zsh)"
