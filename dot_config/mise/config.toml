@@ -39,7 +39,7 @@ chezmoi = "2.73.3"
 rust = "1.99.1"
 
 # npm 製ツール
-"npm:agent-browser" = "0.39.2"
+"npm:agent-browser" = "0.39.3"
 # 自作パッケージなのでリリース隔離期間を適用しない
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 "npm:modern-web-guidance" = "0.0.195"
