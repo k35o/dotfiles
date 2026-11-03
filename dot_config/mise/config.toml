@@ -32,14 +32,14 @@ cargo_home = "~/.local/share/cargo"
 # ランタイム
 [tools]
 node = "24.22.2"
-pnpm = "12.16.0"
+pnpm = "12.16.1"
 deno = "2.9.8"
 bun = "1.4.4"
 chezmoi = "2.73.3"
 rust = "1.99.1"
 
 # npm 製ツール
-"npm:agent-browser" = "0.39.4"
+"npm:agent-browser" = "0.40.0"
 # 自作パッケージなのでリリース隔離期間を適用しない
 "npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 "npm:modern-web-guidance" = "0.0.196"
@@ -47,7 +47,7 @@ rust = "1.99.1"
 "npm:vite-plus" = "1.4.0"
 
 # CLI ツール
-awscli = "2.38.6"
+awscli = "2.39.0"
 bat = "0.26.1"
 delta = "0.20.1"
 fzf = "0.74.5"
@@ -56,10 +56,10 @@ gitleaks = "8.30.1"
 jq = "1.8.2"
 opentofu = "1.13.2"
 ripgrep = "15.2.0"
-stripe = "1.55.2"
+stripe = "1.55.3"
 turso = "1.0.34"
 vercel = "65.4.0"
-wrangler = "4.153.0"
+wrangler = "4.154.0"
 yazi = "26.9.1"
 zizmor = "1.31.1"
 
