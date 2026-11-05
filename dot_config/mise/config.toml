@@ -61,7 +61,7 @@ turso = "1.0.34"
 vercel = "65.7.0"
 wrangler = "4.155.0"
 yazi = "26.9.1"
-zizmor = "1.31.1"
+zizmor = "1.32.0"
 
 # コンテナ（colima が lima の VM で docker エンジンを動かす）
 colima = "0.10.3"
