@@ -1,6 +1,7 @@
 ---
 name: new-project
 description: 新しい k8o プロジェクト/リポジトリを立ち上げる一連の手順。@k8o/create で雛形生成 → GitHub リポジトリ作成 → ブランチ保護 ruleset とマージ設定 → リリース用 secret(fnox経由) → npm 初回 publish と Renovate 有効化 → Pavo コードレビュー有効化まで。「新しい repo を作る」「プロジェクトを立ち上げる」「リポジトリの初期設定をする」ときに使用する。
+disable-model-invocation: true
 ---
 
 # new-project — k8o リポジトリ立ち上げ手順

@@ -1,99 +1,45 @@
 ---
 name: react
-description: Reactの正しい書き方を徹底するスキル。useRef/useStateの使い分け、useEffectの適切な使用と代替API、React 19の最新機能、Concurrent Modeに沿った記述を指導する。Reactコンポーネントの作成・修正・レビュー時に使用する。古いReactパターンを避け、現代のAsync Reactに沿ったコードを書く。
+description: Reactのコンポーネントやフックを書く、直す、レビューするときに使う。useEffectやuseRefの使い方、React 19の新しいAPI、Server Componentsの境界を判断するときや、「Reactで作って」「このコンポーネント直して」「useEffect要る？」と言われたときにも使う。
 ---
 
 # React
 
-正しいReactを書くためのスキル。パフォーマンス最適化ではなく、Reactのメンタルモデルに沿った正しいコードを書くことに重点を置く。
+パフォーマンス最適化ではなく、Reactのメンタルモデルに沿った正しいコードを書くためのスキル。学習データには古いReactが多く含まれるので、意識して現行のAPIに寄せる。
 
-## 基本原則
+## 書かないもの
 
-### useStateとuseRefの使い分け
+- `useMount`や`useEffectOnce`のようなライフサイクルフック
+- `useEffect`内でstateを更新して派生値を計算する
+- `useEffect`にイベントハンドラのロジックを書く
+- コンポーネントの中でコンポーネントを定義する（レンダーごとにstateが消える）
+- `forwardRef`と`<Context.Provider>`（React 19ではrefは通常のprop、Contextは`<Context>`を直接使う）
+- `// eslint-disable-next-line react-hooks/exhaustive-deps`。リンタが警告したらコードを直す
+- 1つのuseStateをラップするだけのカスタムフック
 
-| 基準                         | useState | useRef |
-| ---------------------------- | -------- | ------ |
-| レンダーに影響する値         | ✅       | ❌     |
-| 変更時に再レンダーが必要     | ✅       | ❌     |
-| タイムアウト/インターバルID  | ❌       | ✅     |
-| DOM要素への参照              | ❌       | ✅     |
-| レンダーに不要な最新値の保持 | ❌       | ✅     |
+## useEffect
 
-**判断基準**: その値が画面に表示されるか？ → useState。表示されないが保持が必要か？ → useRef。
+useEffectは外部システム（ブラウザAPI、サードパーティライブラリ、WebSocketなど）との同期のためだけに使う。エフェクトを書く前に [references/no-effect-patterns.md](references/no-effect-patterns.md) を読み、不要なパターンに当たらないかを確かめる。
 
-**refの鉄則**: レンダー中にref.currentを読み書きしない（一度きりの初期化パターンは例外）。
+依存配列は選ぶものではなくコードから導出されるもの。オブジェクトや関数が依存配列に入りそうになったら [references/effect-dependencies.md](references/effect-dependencies.md) を読む。エフェクトを書いたら、カスタムフックへの抽出を検討する。
 
-refでのDOM操作（フォーカス、スクロール、リスト内の複数ref、useImperativeHandle、flushSyncなど）の詳細は [references/dom-refs.md](references/dom-refs.md) を参照。
+## ref
 
-### useEffectの正しい使い方
+レンダー中に`ref.current`を読み書きしない（一度きりの初期化は例外）。フォーカスやスクロール、リスト内の複数ref、`useImperativeHandle`、`flushSync`を扱うときは [references/dom-refs.md](references/dom-refs.md) を読む。
 
-useEffectは**外部システムとの同期**のためだけに使う。それ以外の用途は大抵間違い。
+## React 19とConcurrent
 
-**正しい用途**:
+- 非同期処理の状態管理はActions（`useTransition`とasync関数）を使う。フォームは`useActionState`、楽観的UIは`useOptimistic`。
+- Promiseやコンテキストは`use`でレンダー中に読む。条件分岐の中でも呼べる。
+- refコールバックはクリーンアップ関数を返せる。
+- 重いstate更新は`startTransition`、高頻度で変わる値は`useDeferredValue`、非同期データの読み込み中の表示は`Suspense`で扱う。ローディング状態をuseStateとuseEffectで管理しない。
 
-- ブラウザAPI（IntersectionObserver、ResizeObserverなど）との同期
-- サードパーティライブラリとの連携
-- WebSocket/EventSourceへのサブスクリプション
-- ネットワークリクエスト（データフェッチング）
+## Server Components
 
-**useEffectが不要な11のパターン**: [references/no-effect-patterns.md](references/no-effect-patterns.md) を参照。
+Server Componentsが既定で、`"use client"`を付けたものだけがClient Componentになる。
 
-### 依存配列のルール
+- `"use client"`の境界はできるだけ葉に近い位置に置く。ページ全体をClient Componentにしない。
+- Server Actionsの引数は信頼できない入力として扱い、認証と認可を必ず検証する。
+- サーバーとクライアントの間で渡すデータはシリアライズ可能にする。
 
-- 依存配列は「選ぶ」ものではなく、コードから導出されるもの
-- エフェクト内で使うリアクティブな値は全て含める
-- リンタを無視しない。リンタが警告したらコードを修正する
-- オブジェクトや関数を依存配列に入れない → エフェクト内で生成するか、プリミティブ値を抽出する
-
-依存値の除去パターンの詳細は [references/effect-dependencies.md](references/effect-dependencies.md) を参照。
-
-## React 19の機能を使う
-
-学習データには古いReactが大量に含まれるため、意識して現行APIに寄せる:
-
-- 非同期処理の状態管理はActions（`useTransition` + async関数）。フォームは`useActionState`、楽観的UIは`useOptimistic`
-- Promiseやコンテキストは`use`でレンダー中に読む（useContextと違い条件分岐内でも呼べる）
-- refは通常のpropとして受け取る（`forwardRef`不要）。refコールバックはクリーンアップ関数を返せる
-- Contextは`<Context.Provider>`ではなく`<Context>`を直接使う
-
-## Concurrent Mode
-
-- 重いstate更新は`startTransition`でUIをブロックせずに行う
-- 高頻度で変わる値は`useDeferredValue`で入力のレスポンシブさを保つ
-- 非同期データの読み込みは`Suspense`で宣言的に扱う。ローディング状態の管理にuseState + useEffectを使わない
-
-## React Server Components
-
-Server Componentsがデフォルト。`"use client"`をつけたものだけがClient Component。
-
-**核心ルール:**
-
-- Server ComponentsではuseState/useEffect/イベントハンドラは使えない
-- `"use client"`の境界はできるだけ葉に近い位置に置く。ページ全体をClient Componentにしない
-- Server Actionsの引数は信頼できない入力として扱い、認証・認可を必ず検証する
-- サーバー↔クライアント間で渡すデータはシリアライズ可能でなければならない
-
-詳細（"use client"/"use server"のルール、compositionパターン、セキュリティ、シリアライズ可能な型一覧）は [references/rsc.md](references/rsc.md) を参照。
-
-## 避けるべきパターン
-
-- `useMount`、`useEffectOnce`のようなライフサイクルフック
-- `useEffect`内でのstate更新による派生値の計算
-- インラインでのコンポーネント定義（レンダーごとにstateがリセットされる）
-- `forwardRef`（React 19ではrefをpropとして渡す）
-- `useEffect`でのイベントハンドラロジック
-- `// eslint-disable-next-line react-hooks/exhaustive-deps`
-
-## カスタムフック
-
-- エフェクトを書くときは常にカスタムフックへの抽出を検討する
-- カスタムフックは`use`で始め、大文字を続ける
-- stateそのものではなく、stateを扱うロジックを共有する
-- 1つのuseStateをラップするだけのフックは作らない
-
-## リファレンス
-
-- [useEffectが不要な11のパターン](references/no-effect-patterns.md)
-- [エフェクト依存値の除去パターン](references/effect-dependencies.md)
-- [DOM操作とrefパターン](references/dom-refs.md)
-- [React Server Components / Server Actions](references/rsc.md)
+`"use client"`と`"use server"`の細かいルール、compositionパターン、シリアライズ可能な型を確かめるときは [references/rsc.md](references/rsc.md) を読む。
