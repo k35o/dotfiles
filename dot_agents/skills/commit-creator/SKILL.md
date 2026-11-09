@@ -1,44 +1,26 @@
 ---
 name: commit-creator
-description: Conventional Commitsに従ったアトミックなgitコミットを作成する。変更を論理単位に分割し、独立してrevert可能なコミットを生成する。コードの変更をコミットしたいとき、コミットメッセージを作りたいときに使用する。
+description: 変更をコミットするとき、コミットメッセージを書くときに使う。変更を独立してrevertできる単位に分け、Conventional Commitsのアトミックなコミットにする。「コミットして」「コミットを分けて」「メッセージ考えて」と言われたときや、作業の区切りで変更を記録するときにも使う。
 ---
 
 # Commit
 
-独立してrevert可能なアトミックコミットを、Conventional Commits仕様に従って作成する。
+独立してrevertできるアトミックなコミットを、Conventional Commitsで作る。
 
-## ワークフロー
+## Gotcha
 
-1. `git status` と `git diff` で変更を確認する
-2. `git log --oneline -20` で既存のコミットパターン（構造、スコープ命名、メッセージスタイル、言語）を確認する
-3. 各hunkを個別に調べ、独立してrevert可能な単位を特定する
-4. 単位ごとに:
-   - `git diff <file>` で対象hunkを確認する
-   - 必要なhunkだけのパッチを作成する
-   - `git apply -v` でパッチを適用する
-   - `git add <file>` でステージする
-   - コミットメッセージを作成してコミットする
-   - `git show HEAD` で確認する
+- 会話中に出てきた外部リポジトリのIssueやPRのURL、`owner/repo#123`をメッセージに書かない。GitHubが相手のリポジトリに被リンクを残してしまう。参照してよいのは作業中のリポジトリの`#123`だけで、どうしても外部に触れるときはバッククォートで囲んでオートリンクを止める。
+- ユーザーの依頼文（「〜してください」「〜を修正して」）をメッセージに転記しない。変更の事実と理由を書く。
+- `git add -p`や`git add -i`は対話的なので使えない。hunk単位で分けるときはパッチを作って`git apply --cached`で載せる。
 
-**`git add -p` や `git add --interactive` は使用不可。** Claude Codeは対話的コマンドに対応していない。
+## 進め方
 
-## パッチ適用
+1. `git status`と`git diff`で変更を見る。
+2. `git log --oneline -20`で既存のコミットの構造、スコープの命名、言語を確かめ、それに合わせる。
+3. hunkごとに、独立してrevertできる単位を決める。「これをrevertしたら他の機能が壊れるか」で判断し、迷ったら小さく分ける（あとでsquashはできるが、分割は難しい）。
+4. 単位ごとにステージしてコミットし、`git show HEAD`で中身を確かめる。
 
-```bash
-# 適用前に必ず検証する
-git apply --check patch.patch
-
-# 適用（常に-vをつける）
-git apply -v patch.patch
-
-# ホワイトスペース問題がある場合
-git apply --whitespace=fix -v patch.patch
-
-# 部分的に失敗する場合
-git apply --reject -v patch.patch
-```
-
-## コミットメッセージ形式
+## メッセージ
 
 ```
 <type>(<scope>): <subject>
@@ -46,16 +28,4 @@ git apply --reject -v patch.patch
 <body>
 ```
 
-**type**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, `revert`
-
-**body**: コミット前後の差分がわかるように書く。何が変わったか、なぜ変えたかを後から見返せる形で記述する。72文字で折り返す。
-
-**禁止**: ユーザーの指示をそのままコミットメッセージに転記しない。「〜してください」「〜を修正して」などの依頼文をメッセージにしない。変更の事実と理由を客観的に記述する。
-
-## 原則
-
-- 迷ったら小さくコミットする（後でsquashできるが、分割は難しい）
-- プロジェクトのスコープ命名規則に合わせる
-- issue/PR参照を含めるのは**作業中の同一リポジトリのもののみ**。`#123` 形式で書く
-- **会話中に出てきた外部リポジトリのIssue/PR URLや `owner/repo#123` をコミットメッセージに書かない**。GitHubがクロスリファレンス（被リンク）を相手リポジトリに残してしまうため。どうしても言及が必要な場合はバッククォートで囲み（例: `` `owner/repo#123` ``、URLもインラインコード化）オートリンクを無効化する
-- 各コミットが「これをrevertしたら他の機能が壊れるか？」を満たすこと
+typeは`feat`、`fix`、`docs`、`style`、`refactor`、`perf`、`test`、`build`、`ci`、`chore`、`revert`のいずれか。bodyには何が変わったかとなぜ変えたかを、後から読み返してわかる形で書き、72文字で折り返す。
