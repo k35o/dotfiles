@@ -15,7 +15,6 @@
     "*.json5": "jsonc"
   },
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "github.copilot.nextEditSuggestions.enabled": true,
   "workbench.editor.enablePreview": false,
   "claudeCode.preferredLocation": "panel",
   "python.defaultInterpreterPath": "/usr/bin/python3",
