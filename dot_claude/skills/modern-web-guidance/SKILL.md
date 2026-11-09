@@ -41,7 +41,7 @@ DISABLE_TELEMETRY=1 modern-web-guidance retrieve "light-dismiss-a-dialog,html"
     - 「Safari 17.4+ のみ」（macOS や Tauri ベースのデスクトップアプリ向け）
     - 「polyfill は推奨・実装しない。Baseline Newly Available な機能がコア機能に必須なら、軽量な独自フォールバックか別アプローチで設計する」（バンドルサイズと技術的負債を最小化したい場合）
     - 「Baseline Newly Available な機能はネイティブで使ってよい。ただし厳密な機能検出と段階的劣化を前提とする」（プログレッシブエンハンスメント方針）
-- **ポリシーの能動的な発見**：以下のような兆候が会話に出てきたら、`CLAUDE.md` や `AGENTS.md` にブラウザサポートポリシーを明文化することを提案する。
+- **ポリシーの能動的な発見**：以下のような兆候が会話に出てきたら、`CLAUDE.md` にブラウザサポートポリシーを明文化することを提案する。
   - 限定的なランタイム向けに作っている（Electron、Tauri など）
   - 特定ターゲットを明示的に除外している（例：「Desktop Chrome はサポートしない」）
   - polyfill の複雑さ・バンドルサイズ・性能コストへの懸念を示している
