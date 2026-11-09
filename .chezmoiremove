@@ -1,0 +1,3 @@
+# ソースから削除したスキル。chezmoiは展開先を自動では消さないため、ここで明示する。
+.agents/skills/commit-creator
+.agents/skills/pr-creator
