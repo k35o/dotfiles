@@ -52,7 +52,7 @@ description: 日本語の文章を書く、書き直すときに使う。ブロ�
 ### PR本文
 
 - ですます調で書く（例: スクロール位置を復元する処理を追加しました。）。
-- 構成と書く範囲は`pr-creator`スキルに従う。
+- 構成と書く範囲は`CLAUDE.md`の「コミットとPR」に従う。
 
 ### コードコメント
 
@@ -73,7 +73,7 @@ bash ${CLAUDE_SKILL_DIR}/../writing-review/scripts/check.sh <file>
 
 このスキルで書いた文章に指摘を受けたら、直したあとで、別の題材でも同じ指摘を受けそうかを判断する。受けそうなら、下のGotchaか用途別の項目に足す一文を変更案として示し、合意してから反映する。レビューでも検出したい語句や表記なら`writing-review`の`references/`に足す。題材や事実だけに関わる指摘は取り入れず、その理由を一言添える。
 
-反映はdotfilesの`dot_agents/skills/`でブランチを切り、`pr-creator`スキルでPRを立てる（`skill-creator`のGotcha参照）。
+反映はdotfilesの`dot_agents/skills/`でブランチを切り、PRを立てる（`skill-creator`のGotcha参照）。
 
 ## Gotcha
 
