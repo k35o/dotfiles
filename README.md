@@ -11,7 +11,7 @@ k8o の macOS 環境設定。[chezmoi](https://www.chezmoi.io/) で管理する�
 | `dot_zshrc` `dot_zshenv` `dot_gitconfig` `dot_npmrc.tmpl`        | `~/`                | シェル・git・npm の設定                                                                                                 |
 | `empty_dot_zprofile` `empty_dot_bashrc` `empty_dot_bash_profile` | `~/`                | 空のまま管理する。インストーラが PATH などを書き足すと `chezmoi status` に差分として出る                                |
 | `private_dot_ssh/`                                               | `~/.ssh/`           | `config`（github.com で Secure Enclave の鍵を使う）                                                                     |
-| `dot_config/`                                                    | `~/.config/`        | mise / fnox / zsh / git / ghostty / cmux / pnpm                                                                         |
+| `dot_config/`                                                    | `~/.config/`        | mise / fnox / zsh / git / pnpm                                                                                          |
 | `dot_docker/`                                                    | `~/.docker/`        | compose と buildx のプラグイン（mise の shims へのリンク）と、`config.json` のうち認証情報の保存先だけ                  |
 | `dot_local/bin/`                                                 | `~/.local/bin/`     | `dotfiles-check.sh`（更新の件数と、宣言外のインストールの検出）                                                         |
 | `dot_local/libexec/`                                             | `~/.local/libexec/` | `gh-auth-token`（pnpm の `tokenHelper` が呼ぶ）                                                                         |
