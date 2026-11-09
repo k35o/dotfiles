@@ -40,8 +40,6 @@ rust = "1.99.1"
 
 # npm 製ツール
 "npm:agent-browser" = "0.41.1"
-# 自作パッケージなのでリリース隔離期間を適用しない
-"npm:mdscroll" = { version = "0.4.2", minimum_release_age = "0d" }
 "npm:modern-web-guidance" = "0.0.196"
 "npm:typescript-language-server" = "6.0.2"
 "npm:vite-plus" = "1.4.0"

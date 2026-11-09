@@ -4,19 +4,18 @@ k8o の macOS 環境設定。[chezmoi](https://www.chezmoi.io/) で管理する�
 
 ## 構成
 
-| ディレクトリ / ファイル                                          | 展開先              | 内容                                                                                                                    |
-| ---------------------------------------------------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `dot_agents/`                                                    | `~/.agents/`        | エージェント向けの資産。スキル集と security-hooks（TypeScript 製フック）                                                |
-| `dot_claude/`                                                    | `~/.claude/`        | Claude Code 設定。`settings.json`、`CLAUDE.md`、statusline、セキュリティガイダンス、security-hooks とスキルへの symlink |
-| `dot_zshrc` `dot_zshenv` `dot_gitconfig` `dot_npmrc.tmpl`        | `~/`                | シェル・git・npm の設定                                                                                                 |
-| `empty_dot_zprofile` `empty_dot_bashrc` `empty_dot_bash_profile` | `~/`                | 空のまま管理する。インストーラが PATH などを書き足すと `chezmoi status` に差分として出る                                |
-| `private_dot_ssh/`                                               | `~/.ssh/`           | `config`（github.com で Secure Enclave の鍵を使う）                                                                     |
-| `dot_config/`                                                    | `~/.config/`        | mise / fnox / zsh / git / pnpm                                                                                          |
-| `dot_docker/`                                                    | `~/.docker/`        | compose と buildx のプラグイン（mise の shims へのリンク）と、`config.json` のうち認証情報の保存先だけ                  |
-| `dot_local/bin/`                                                 | `~/.local/bin/`     | `dotfiles-check.sh`（更新の件数と、宣言外のインストールの検出）                                                         |
-| `dot_local/libexec/`                                             | `~/.local/libexec/` | `gh-auth-token`（pnpm の `tokenHelper` が呼ぶ）                                                                         |
-| `private_Library/`                                               | `~/Library/`        | pnpm の設定（`config.yaml` への symlink と空の `auth.ini`）、LaunchAgent、VS Code の設定                                |
-| `run_once_*.sh` `run_after_*.sh` `run_onchange_*.sh`             | —                   | `chezmoi apply` 時に実行されるスクリプト                                                                                |
+| ディレクトリ / ファイル                                          | 展開先              | 内容                                                                                                                                              |
+| ---------------------------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dot_claude/`                                                    | `~/.claude/`        | Claude Code 設定。`settings.json`、`CLAUDE.md`、statusline、セキュリティガイダンス、スキル集、security-hooks（TypeScript 製の PreToolUse フック） |
+| `dot_zshrc` `dot_zshenv` `dot_gitconfig` `dot_npmrc.tmpl`        | `~/`                | シェル・git・npm の設定                                                                                                                           |
+| `empty_dot_zprofile` `empty_dot_bashrc` `empty_dot_bash_profile` | `~/`                | 空のまま管理する。インストーラが PATH などを書き足すと `chezmoi status` に差分として出る                                                          |
+| `private_dot_ssh/`                                               | `~/.ssh/`           | `config`（github.com で Secure Enclave の鍵を使う）                                                                                               |
+| `dot_config/`                                                    | `~/.config/`        | mise / fnox / zsh / git / pnpm                                                                                                                    |
+| `dot_docker/`                                                    | `~/.docker/`        | compose と buildx のプラグイン（mise の shims へのリンク）と、`config.json` のうち認証情報の保存先だけ                                            |
+| `dot_local/bin/`                                                 | `~/.local/bin/`     | `dotfiles-check.sh`（更新の件数と、宣言外のインストールの検出）                                                                                   |
+| `dot_local/libexec/`                                             | `~/.local/libexec/` | `gh-auth-token`（pnpm の `tokenHelper` が呼ぶ）                                                                                                   |
+| `private_Library/`                                               | `~/Library/`        | pnpm の設定（`config.yaml` への symlink と空の `auth.ini`）、LaunchAgent、VS Code の設定                                                          |
+| `run_once_*.sh` `run_after_*.sh` `run_onchange_*.sh`             | —                   | `chezmoi apply` 時に実行されるスクリプト                                                                                                          |
 
 `.chezmoiignore` に載っているファイル（この README、`package.json` などリポジトリ運用専用のファイル）はホームに展開されない。
 
@@ -130,7 +129,7 @@ Homebrew は使わない。mise で入れられないものは配布元から直
 ```sh
 pnpm install
 pnpm check        # lint + format (vite-plus)
-cd dot_agents/security-hooks && bun test
+cd dot_claude/security-hooks && bun test
 ```
 
 CI（PR 時）: `pnpm check` / security-hooks の `bun test` / shellcheck / zizmor / `chezmoi apply --dry-run`。

@@ -99,7 +99,7 @@ describe('evaluateCommand - deny', () => {
         ?.name,
     ).toBe('write-agent-config');
     expect(
-      evaluateCommand('echo exit >> ~/.agents/security-hooks/run-hook.sh')
+      evaluateCommand('echo exit >> ~/.claude/security-hooks/run-hook.sh')
         ?.name,
     ).toBe('write-agent-config');
     expect(evaluateCommand('echo x | tee ~/.claude/hooks/x.sh')?.name).toBe(

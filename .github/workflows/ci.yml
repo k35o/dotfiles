@@ -46,7 +46,7 @@ jobs:
           cache: true
 
       - name: Run security-hooks tests
-        working-directory: dot_agents/security-hooks
+        working-directory: dot_claude/security-hooks
         run: bun test
 
   shellcheck:
