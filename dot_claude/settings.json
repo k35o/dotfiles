@@ -30,7 +30,8 @@
   "enabledPlugins": {
     "mcp@k8o": true,
     "typescript-lsp@claude-plugins-official": true,
-    "cloudflare@claude-plugins-official": true
+    "cloudflare@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
   },
   "permissions": {
     "defaultMode": "auto",
