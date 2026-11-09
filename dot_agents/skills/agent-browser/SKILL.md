@@ -1,6 +1,6 @@
 ---
 name: agent-browser
-description: agent-browser（Rust製ヘッドレスブラウザCLI）を使ったブラウザ自動化。Webページの操作、スクレイピング、フォーム入力、スクリーンショット取得、E2Eテスト的な操作を行うときに使用する。
+description: ブラウザを自動で操作するときに使う。Webページの操作、スクレイピング、フォーム入力、スクリーンショットの取得、E2Eテストのような確認をagent-browser（Rust製のヘッドレスブラウザCLI）で行う。「画面を確認して」「スクショを撮って」と言われたときにも使う。
 ---
 
 # agent-browser

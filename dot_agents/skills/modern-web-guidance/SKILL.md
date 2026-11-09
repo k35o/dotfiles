@@ -1,20 +1,6 @@
 ---
 name: modern-web-guidance
-description: |
-  モダンなWeb開発のベストプラクティスを検索・参照するスキル。HTML/CSS/クライアントサイドJSの実装タスクでは最初に必ず参照する。Web APIは急速に進化しており、モデルの学習データには時代遅れのパターンが多く含まれているため、本スキルで最新の推奨実装を確認する。
-
-  以下のテーマで即座に利用する：
-  - UI/レイアウト：モーダル、ダイアログ、ポップオーバー、テーブル、ダークモード、anchor positioning、コンテナクエリ、`:has()`
-  - スクロール/モーション：View Transitions、スクロール駆動アニメーション、パララックス/スクロールリビール
-  - パフォーマンス：Core Web Vitals（LCP、INP）、content-visibility、Fetch Priority、画像最適化
-  - システム/API：セキュリティ、パスキー、HTMLのサニタイズ、Web Components、日付・タイムゾーン、Built-in AI、WebAssembly
-  - フレームワーク：React/Vue/Angular の中で使う標準のHTML/CSS/DOM
-  - 一般フロントエンド：フォーム、バリデーション（`:user-valid`）、autofill、アクセシビリティ、カスタムセレクト、スクロールバー
-
-  以下では使用しない：
-  - バックエンド：SQL、ORM、API ルート
-  - インフラ/スクリプト：CI/CD、Docker、GitHub Actions、Python/Go、Git
-  - ツール/些細な作業：Vite、tsconfig、ESLint、テスト、コピーや名前の変更、サードパーティのドキュメント
+description: HTML、CSS、クライアントサイドJSでWebのUIを実装する、直すときに最初に使う。モーダルやポップオーバー、レイアウト、ダークモード、View Transitionsやスクロールアニメーション、Core Web Vitals、フォームとバリデーション、アクセシビリティ、パスキーなどで、学習データの古いパターンではなく最新の推奨実装を確かめる。React内で使う標準のHTML、CSS、DOMも対象。バックエンド、インフラ、ビルドツールの設定、テストには使わない。
 ---
 
 # Modern Web Guidance
