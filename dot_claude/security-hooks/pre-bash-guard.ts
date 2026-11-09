@@ -67,7 +67,7 @@ const DENY_RULES: Rule[] = [
   },
   {
     name: 'write-agent-config',
-    re: /(?:>>?|\btee\b(?:\s+-[a-zA-Z]+)*)\s*["']?[^\s"'|;&<>]*(?:\.claude\/(?:settings[\w.-]*\.json|hooks\/|security-hooks\/)|\.agents\/security-hooks\/)/u,
+    re: /(?:>>?|\btee\b(?:\s+-[a-zA-Z]+)*)\s*["']?[^\s"'|;&<>]*\.claude\/(?:settings[\w.-]*\.json|hooks\/|security-hooks\/)/u,
     reason:
       'Claude Code の設定やフック（.claude/settings*.json・hooks・security-hooks）にシェルから書き込もうとしています。権限やフックを外す経路になり得ます。変更が必要ならユーザーに確認してください。',
   },

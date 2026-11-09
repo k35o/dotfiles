@@ -36,5 +36,5 @@ description: スキルを新しく作る、既存のスキルを直す、スキ�
 
 ## Gotcha
 
-- 個人スキルの正本はdotfilesリポジトリの`dot_agents/skills/<スキル名>/`。chezmoiが`~/.agents/skills`に展開し、`~/.claude/skills`はそこへのシンボリックリンク。展開先を直接編集すると次の`chezmoi apply`で消える。
+- 個人スキルの正本はdotfilesリポジトリの`dot_claude/skills/<スキル名>/`。chezmoiが`~/.claude/skills`に展開する。展開先を直接編集すると次の`chezmoi apply`で消える。
 - 公式skill-creatorはClaude Codeに同梱されていない。`skill-creator:skill-creator`が一覧に無ければ`/plugin install skill-creator@claude-plugins-official`で入れる。
