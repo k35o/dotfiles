@@ -40,7 +40,7 @@ rust = "1.99.1"
 
 # npm 製ツール
 "npm:agent-browser" = "0.41.2"
-"npm:modern-web-guidance" = "0.0.197"
+"npm:modern-web-guidance" = "1.0.0"
 "npm:typescript-language-server" = "6.0.3"
 "npm:vite-plus" = "1.5.0"
 
