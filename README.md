@@ -14,7 +14,7 @@ k8o の macOS 環境設定。[chezmoi](https://www.chezmoi.io/) で管理する�
 | `dot_docker/`                                                    | `~/.docker/`        | compose と buildx のプラグイン（mise の shims へのリンク）と、`config.json` のうち認証情報の保存先だけ                                            |
 | `dot_local/bin/`                                                 | `~/.local/bin/`     | `dotfiles-check.sh`（更新の件数と、宣言外のインストールの検出）                                                                                   |
 | `dot_local/libexec/`                                             | `~/.local/libexec/` | `gh-auth-token`（pnpm の `tokenHelper` が呼ぶ）                                                                                                   |
-| `private_Library/`                                               | `~/Library/`        | pnpm の設定（`config.yaml` への symlink と空の `auth.ini`）、LaunchAgent、VS Code の設定                                                          |
+| `private_Library/`                                               | `~/Library/`        | pnpm の設定（`config.yaml` への symlink と空の `auth.ini`）、LaunchAgent                                                                          |
 | `run_once_*.sh` `run_after_*.sh` `run_onchange_*.sh`             | —                   | `chezmoi apply` 時に実行されるスクリプト                                                                                                          |
 
 `.chezmoiignore` に載っているファイル（この README、`package.json` などリポジトリ運用専用のファイル）はホームに展開されない。
