@@ -59,7 +59,7 @@ ripgrep = "15.2.0"
 stripe = "1.55.8"
 turso = "1.0.34"
 vercel = "65.11.0"
-wrangler = "4.157.0"
+wrangler = "4.158.0"
 yazi = "26.9.1"
 zizmor = "1.32.0"
 
