@@ -65,7 +65,7 @@ zizmor = "1.32.0"
 
 # コンテナ（colima が lima の VM で docker エンジンを動かす）
 colima = "0.10.3"
-lima = "2.2.1"
+lima = "2.3.0"
 docker-cli = "29.9.3"
 docker-compose = "5.7.0"
 # docker はプラグインと認証情報ヘルパーを docker-* の名前で探すため、配布物の名前から付け替える
