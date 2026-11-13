@@ -45,7 +45,7 @@ rust = "1.99.1"
 "npm:vite-plus" = "1.5.0"
 
 # CLI ツール
-awscli = "2.39.5"
+awscli = "2.39.6"
 bat = "0.26.1"
 delta = "0.20.1"
 fzf = "0.74.5"
