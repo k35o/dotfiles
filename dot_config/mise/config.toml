@@ -42,7 +42,7 @@ rust = "1.99.1"
 "npm:agent-browser" = "0.41.2"
 "npm:modern-web-guidance" = "1.0.0"
 "npm:typescript-language-server" = "6.0.3"
-"npm:vite-plus" = "1.5.0"
+"npm:vite-plus" = "1.5.1"
 
 # CLI ツール
 awscli = "2.39.6"
@@ -59,7 +59,7 @@ ripgrep = "15.2.0"
 stripe = "1.55.8"
 turso = "1.0.34"
 vercel = "65.12.1"
-wrangler = "4.158.0"
+wrangler = "4.159.0"
 yazi = "26.9.1"
 zizmor = "1.32.0"
 
