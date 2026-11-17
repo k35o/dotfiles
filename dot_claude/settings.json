@@ -91,6 +91,16 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/security-hooks/run-hook.sh $HOME/.claude/security-hooks/pre-edit-comments.ts",
+            "timeout": 10
+          }
+        ]
       }
     ]
   },
