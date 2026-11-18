@@ -42,7 +42,7 @@ rust = "1.99.1"
 "npm:agent-browser" = "0.42.0"
 "npm:modern-web-guidance" = "1.0.0"
 "npm:typescript-language-server" = "6.0.3"
-"npm:vite-plus" = "1.5.1"
+"npm:vite-plus" = "1.6.0"
 
 # CLI ツール
 awscli = "2.40.0"
@@ -67,7 +67,7 @@ zizmor = "1.32.0"
 colima = "0.10.3"
 lima = "2.3.0"
 docker-cli = "29.9.3"
-docker-compose = "5.7.0"
+docker-compose = "5.7.1"
 # docker はプラグインと認証情報ヘルパーを docker-* の名前で探すため、配布物の名前から付け替える
 "github:docker/buildx" = { version = "0.38.2", rename_exe = "docker-buildx" }
 "github:docker/docker-credential-helpers" = { version = "0.9.13", asset_pattern = "docker-credential-osxkeychain-*.darwin-arm64", rename_exe = "docker-credential-osxkeychain" }
