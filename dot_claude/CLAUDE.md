@@ -2,7 +2,7 @@
 
 秘密は fnox 管理で、シェルには常駐しない。使うコマンドだけを `fnox exec` で包む。
 
-- **tier1**（サービスごとの profile: `cloudflare` `vercel` `turso`）: `fnox exec -P <service> -- <command>`。
+- **tier1**（サービスごとの profile: `cloudflare` `vercel` `turso` `anthropic`）: `fnox exec -P <service> -- <command>`。
 - **tier2**（`bot`: GitHub App 秘密鍵 `K35O_BOT_*`）: `fnox exec -P bot -- <command>`。復号のたびにユーザーのキーチェーン確認が要る。
 
 新しい秘密は「CLI が日常的に使う API キー → そのサービスの profile（`--provider age`）」「機密 → `bot`（`--provider age-bot`）」に振り分ける。`fnox get` や `security find-generic-password` で値を直接読まない。
