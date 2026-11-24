@@ -26,6 +26,13 @@
         "repo": "k35o/claude-plugins"
       },
       "autoUpdate": true
+    },
+    "ui-compare": {
+      "source": {
+        "source": "github",
+        "repo": "k35o/ui-compare"
+      },
+      "autoUpdate": true
     }
   },
   "enabledPlugins": {
@@ -35,7 +42,8 @@
     "guard@k8o": true,
     "typescript-lsp@claude-plugins-official": true,
     "cloudflare@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "ui-compare@ui-compare": true
   },
   "permissions": {
     "defaultMode": "auto",
