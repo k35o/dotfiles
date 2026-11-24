@@ -58,7 +58,7 @@ opentofu = "1.13.9"
 ripgrep = "15.2.0"
 stripe = "1.55.12"
 turso = "1.0.34"
-vercel = "65.16.0"
+vercel = "65.17.0"
 wrangler = "4.163.0"
 yazi = "26.9.1"
 zizmor = "1.32.0"
@@ -67,7 +67,7 @@ zizmor = "1.32.0"
 colima = "0.10.3"
 lima = "2.3.0"
 docker-cli = "29.10.0"
-docker-compose = "5.7.1"
+docker-compose = "5.7.2"
 # docker はプラグインと認証情報ヘルパーを docker-* の名前で探すため、配布物の名前から付け替える
 "github:docker/buildx" = { version = "0.39.0", rename_exe = "docker-buildx" }
 "github:docker/docker-credential-helpers" = { version = "0.9.13", asset_pattern = "docker-credential-osxkeychain-*.darwin-arm64", rename_exe = "docker-credential-osxkeychain" }
