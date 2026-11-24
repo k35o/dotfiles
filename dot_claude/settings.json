@@ -31,6 +31,7 @@
   "enabledPlugins": {
     "mcp@k8o": true,
     "hud@k8o": true,
+    "theme@k8o": true,
     "guard@k8o": true,
     "typescript-lsp@claude-plugins-official": true,
     "cloudflare@claude-plugins-official": true,
