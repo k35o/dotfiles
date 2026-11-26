@@ -35,7 +35,7 @@ Claude Code Desktop のセッションの提案（`start_session` の title・pr
 
 実装・設計のタスクは、着手前に認識合わせの要否を判断する。依頼が曖昧・領域が不慣れ・影響が大きい場合は、先に grilling スキル（インタビュー＋盲点列挙）を走らせてから作業に入る。
 
-コードを書き始める前に、その領域のスキルが一覧にあれば先に起動する（React → react、テスト → testing、Web の UI/CSS → modern-web-guidance）。
+コードを書き始める前に、その領域のスキルが一覧にあれば先に起動する（React → practices:react、テスト → practices:testing、Web の UI/CSS → modern-web-guidance）。
 
 # 設計・実装の原則
 
