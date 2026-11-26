@@ -49,7 +49,7 @@ Claude Code Desktop のセッションの提案（`start_session` の title・pr
 
 # セキュリティレビュー
 
-変更をレビューするとき（`/code-review`・`/security-review` を含む）は `~/.claude/claude-security-guidance.md` を読み、そのハードルールに反する箇所を必ず指摘する。
+変更をレビューするとき（`/code-review`・`/security-review` を含む）は `practices:security` スキルを起動し、そのハードルールに反する箇所を必ず指摘する。
 
 # 自動メモリ
 
