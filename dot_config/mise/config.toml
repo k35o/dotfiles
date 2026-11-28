@@ -45,7 +45,7 @@ rust = "1.100.0"
 "npm:vite-plus" = "1.7.0"
 
 # CLI ツール
-awscli = "2.41.2"
+awscli = "2.42.1"
 bat = "0.26.1"
 delta = "0.21.2"
 fzf = "0.75.0"
@@ -59,7 +59,7 @@ ripgrep = "15.2.0"
 stripe = "1.55.14"
 turso = "1.0.34"
 vercel = "65.17.0"
-wrangler = "4.165.0"
+wrangler = "4.166.0"
 yazi = "26.9.1"
 zizmor = "1.32.0"
 
